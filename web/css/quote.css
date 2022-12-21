@@ -1,0 +1,65 @@
+.quote-container {
+  width: 580;
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  font-size: 14px;
+  color: #383838;
+  background-color: #e8e8e8;
+  margin-top: 6px;
+}
+
+.quote-domain-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.quote-author {
+  font-size: 1.5em;
+  text-align: left;
+  padding-left: 5px;
+}
+
+.quote-domain-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.quote-domain {
+  width: 100%;
+  max-width: 400px;
+  text-align: left;
+  margin-right: 10px;
+}
+
+.quote-hashtag {
+  white-space: nowrap;
+  min-width: 10px;
+  width: 220px;
+  font-size: 0.9em;
+}
+
+.quote-text-container {
+  font-size: 1.2em;
+  display: flex;
+  flex-direction: row;
+}
+
+.quote-left-quote {
+  padding-right: 2px;
+}
+
+.quote-right-quote {
+  padding-left: 2px;
+}
+
+.quote-text {
+  width: 550px;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  font-style: italic;
+  padding-bottom: 2px;
+  text-align: left;
+}

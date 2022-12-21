@@ -1,0 +1,64 @@
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thoughtful3</title>
+<style>
+{{ range $index, $value := .Css }}
+{{ $value }}
+{{ end }}
+{{.Css}}
+</style>
+</head>
+<body>
+<div class="overlay" id="overlay">
+  <div class="dialogue" id="dialogue">
+    <button class="close-button" id="close-button">X</button>
+    <div class="dialogue-text">
+      <div class="thoughts-container" id='new-thought-container'>
+       <div class="thought-container">
+         <div class="thought-author-container">
+          <div contenteditable="true" class="thought-author" id='new-thought-author'></div>
+          <div class="thought-domain-container">
+            <div class="thought-domain" id='new-domain'></div>
+            #<div class="thought-hashtag" id='new-thought-hashtag' contenteditable="true"></div>
+          </div>
+         </div>
+         <div class="thought-text-container">
+           <div class="thought-left-quote">❝</div>
+            <div class="thought-text" contenteditable="true" id="new-thought-text"></div>
+            <div class="thought-right-quote">❞</div>
+         </div>
+       </div>
+       <div class="quote-container" id='quote-container'>
+           <div class="quote-author-container">
+            <div class="quote-author" id='quote-author'></div>
+            <div class="quote-domain-container">
+              <div class="quote-domain" id='quote-domain'></div>
+              <div class="quote-hashtag" id='quote-hashtag'></div>
+            </div>
+           </div>
+           <div class="quote-text-container">
+             <div class="quote-text" id="quote-text"></div>
+           </div>
+       </div>
+       <div class='new-thought-rest-container'>
+       <div class="counter" id="counter">300</div>
+       <div class='new-thought-publish-link'>
+       <a class="new-thought-publish" id="new-thought-publish" href='#'>📧</a>
+       </div>
+       </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="all-container">
+<img src="data:image/png;base64,{{.Logo}}" width="40px" height="40px" id="logo">
+<div class="thoughts-container" id="thoughts-container">
+</div>
+</div>
+<script>
+{{.Script}}
+</script>
+</body>
+</html>

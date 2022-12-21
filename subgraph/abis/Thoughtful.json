@@ -1,0 +1,216 @@
+[
+  {
+    "name": "NewTweet",
+    "inputs": [
+      { "name": "pk", "type": "uint128", "indexed": false },
+      { "name": "sender", "type": "address", "indexed": true },
+      { "name": "text", "type": "string", "indexed": false },
+      { "name": "displayName", "type": "string", "indexed": true },
+      { "name": "hashtag", "type": "string", "indexed": true },
+      { "name": "retweetOf", "type": "uint128", "indexed": false },
+      { "name": "isReplyRetweet", "type": "bool", "indexed": false }
+    ],
+    "anonymous": false,
+    "type": "event"
+  },
+  {
+    "name": "NewReply",
+    "inputs": [
+      { "name": "pk", "type": "uint128", "indexed": false },
+      { "name": "sender", "type": "address", "indexed": true },
+      { "name": "text", "type": "string", "indexed": false },
+      { "name": "displayName", "type": "string", "indexed": true },
+      { "name": "tweet", "type": "uint128", "indexed": true },
+      { "name": "seq_num", "type": "uint16", "indexed": false }
+    ],
+    "anonymous": false,
+    "type": "event"
+  },
+  {
+    "name": "NewLike",
+    "inputs": [
+      { "name": "pk", "type": "uint128", "indexed": true },
+      { "name": "sender", "type": "address", "indexed": false }
+    ],
+    "anonymous": false,
+    "type": "event"
+  },
+  {
+    "name": "NewReplyLike",
+    "inputs": [
+      { "name": "pk", "type": "uint128", "indexed": true },
+      { "name": "sender", "type": "address", "indexed": false }
+    ],
+    "anonymous": false,
+    "type": "event"
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "name": "tweet",
+    "inputs": [
+      { "name": "text", "type": "string" },
+      { "name": "displayName", "type": "string" },
+      { "name": "hashtag", "type": "string" }
+    ],
+    "outputs": [{ "name": "", "type": "uint128" }]
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "name": "retweet",
+    "inputs": [
+      { "name": "pk", "type": "uint128" },
+      { "name": "text", "type": "string" },
+      { "name": "displayName", "type": "string" }
+    ],
+    "outputs": [{ "name": "", "type": "uint128" }]
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "name": "retweet_reply",
+    "inputs": [
+      { "name": "pk", "type": "uint128" },
+      { "name": "text", "type": "string" },
+      { "name": "displayName", "type": "string" }
+    ],
+    "outputs": [{ "name": "", "type": "uint128" }]
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "name": "reply",
+    "inputs": [
+      { "name": "text", "type": "string" },
+      { "name": "displayName", "type": "string" },
+      { "name": "tweet", "type": "uint128" },
+      { "name": "seq_num", "type": "uint16" }
+    ],
+    "outputs": [{ "name": "", "type": "uint128" }]
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "name": "like",
+    "inputs": [{ "name": "pk", "type": "uint128" }],
+    "outputs": []
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "name": "like_reply",
+    "inputs": [{ "name": "pk", "type": "uint128" }],
+    "outputs": []
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "num_tweets",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint128" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "tweets",
+    "inputs": [{ "name": "arg0", "type": "uint128" }],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "components": [
+          { "name": "pk", "type": "uint128" },
+          { "name": "sender", "type": "address" },
+          { "name": "text", "type": "string" },
+          { "name": "displayName", "type": "string" },
+          { "name": "hashtag", "type": "string" },
+          { "name": "likes", "type": "uint32" },
+          { "name": "retweets", "type": "uint32" },
+          { "name": "retweetOf", "type": "uint128" },
+          { "name": "isReplyRetweet", "type": "bool" }
+        ]
+      }
+    ]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "num_tweets_per_sender",
+    "inputs": [{ "name": "arg0", "type": "address" }],
+    "outputs": [{ "name": "", "type": "uint64" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "tweets_per_sender",
+    "inputs": [
+      { "name": "arg0", "type": "address" },
+      { "name": "arg1", "type": "uint64" }
+    ],
+    "outputs": [{ "name": "", "type": "uint128" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "num_tweets_per_hashtag",
+    "inputs": [{ "name": "arg0", "type": "string" }],
+    "outputs": [{ "name": "", "type": "uint64" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "tweets_per_hashtag",
+    "inputs": [
+      { "name": "arg0", "type": "string" },
+      { "name": "arg1", "type": "uint64" }
+    ],
+    "outputs": [{ "name": "", "type": "uint128" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "num_replies",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint128" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "replies",
+    "inputs": [{ "name": "arg0", "type": "uint128" }],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "components": [
+          { "name": "pk", "type": "uint128" },
+          { "name": "sender", "type": "address" },
+          { "name": "text", "type": "string" },
+          { "name": "displayName", "type": "string" },
+          { "name": "tweet", "type": "uint128" },
+          { "name": "seq_num", "type": "uint16" },
+          { "name": "likes", "type": "uint32" },
+          { "name": "retweets", "type": "uint32" }
+        ]
+      }
+    ]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "num_replies_per_tweet",
+    "inputs": [{ "name": "arg0", "type": "uint128" }],
+    "outputs": [{ "name": "", "type": "uint16" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "name": "replies_per_tweet",
+    "inputs": [
+      { "name": "arg0", "type": "uint128" },
+      { "name": "arg1", "type": "uint16" }
+    ],
+    "outputs": [{ "name": "", "type": "uint128" }]
+  }
+]

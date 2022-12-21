@@ -1,0 +1,33 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Thoughtful
+    network: mainnet
+    source:
+      address: "0xA8DF0077656a861395529E9BFC9aDC6f67fEEB4A"
+      abi: Thoughtful
+      startBlock: 16236388
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - NewTweet
+        - NewReply
+        - NewLike
+        - NewReplyLike
+      abis:
+        - name: Thoughtful
+          file: ./abis/Thoughtful.json
+      eventHandlers:
+        - event: NewTweet(uint128,indexed address,string,indexed string,indexed string,uint128,bool)
+          handler: handleNewTweet
+        - event: NewReply(uint128,indexed address,string,indexed string,indexed uint128,uint16)
+          handler: handleNewReply
+        - event: NewLike(indexed uint128,address)
+          handler: handleNewLike
+        - event: NewReplyLike(indexed uint128,address)
+          handler: handleNewReplyLike
+      file: ./src/thoughtful.ts

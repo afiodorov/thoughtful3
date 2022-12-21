@@ -1,0 +1,50 @@
+type NewTweet @entity {
+  id: String!
+  sender: Bytes! # address
+  text: String! # string
+  displayName: String! # string
+  hashtag: String! # string
+  retweetOf: BigInt! # uint128
+  isReplyRetweet: Boolean! # bool
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+  numReplies: Int!
+  numLikes: Int!
+  numRetweets: Int!
+  quoteText: String!
+  quoteDisplayName: String!
+  quoteHashtag: String!
+}
+
+type NewReply @entity {
+  id: String!
+  sender: Bytes! # address
+  text: String! # string
+  displayName: String! # string
+  tweet: BigInt! # uint128
+  seq_num: Int! # uint16
+  numLikes: Int!
+  numRetweets: Int!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type NewLike @entity(immutable: true) {
+  id: Bytes!
+  pk: BigInt! # uint128
+  sender: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type NewReplyLike @entity(immutable: true) {
+  id: Bytes!
+  pk: BigInt! # uint128
+  sender: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

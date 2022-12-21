@@ -1,0 +1,78 @@
+.thought-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px dashed;
+}
+
+.thought-text-container {
+  font-size: 1.2em;
+  display: flex;
+  flex-direction: row;
+}
+
+.thought-text {
+  width: 570px;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  font-style: italic;
+  padding-bottom: 2px;
+  text-align: left;
+}
+
+.thought-author {
+  width: 593px;
+  font-size: 1.5em;
+  text-align: left;
+  padding-left: 5px;
+}
+
+.thought-domain-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.thought-domain {
+  width: 100%;
+  max-width: 420px;
+  text-align: left;
+  margin-right: 10px;
+}
+
+.thought-hashtag {
+  white-space: nowrap;
+  min-width: 10px;
+  max-width: 240px;
+  font-size: 0.9em;
+}
+
+.thought-reply {
+  display: flex;
+  flex-direction: row;
+}
+
+.thought-like {
+  display: flex;
+  flex-direction: row;
+}
+
+.thought-left-quote {
+  padding-right: 2px;
+}
+
+.thought-right-quote {
+  padding-left: 2px;
+}
+
+.thought-rest-container {
+  font-size: 1.3em;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 3fr;
+}
+
+.thought-date {
+  text-align: right;
+  padding-right: 5px;
+}

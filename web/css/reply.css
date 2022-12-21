@@ -1,0 +1,55 @@
+.reply-like {
+  display: flex;
+  flex-direction: row;
+}
+
+.reply-left-quote {
+  padding-right: 2px;
+}
+
+.reply-text {
+  width: 570px;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  font-style: italic;
+  padding-bottom: 2px;
+  text-align: left;
+}
+
+.reply-text-container {
+  font-size: 1.2em;
+  display: flex;
+  flex-direction: row;
+}
+
+.reply-rest-container {
+  font-size: 1.3em;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 3fr;
+}
+
+.reply-author {
+  width: 593px;
+  font-size: 1.5em;
+  text-align: left;
+  padding-left: 5px;
+}
+
+.reply-domain {
+  text-align: left;
+}
+
+.reply-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px dashed;
+  background-color: #e8e8e8;
+}
+
+.reply-date {
+  text-align: right;
+  padding-right: 5px;
+}

@@ -1,0 +1,17 @@
+.new-thought-rest-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.new-thought-publish-link {
+  font-size: 2em;
+  text-align: right;
+}
+
+.counter {
+  color: #dbdbdb;
+  size: 0.9em;
+  font-weight: bold;
+  margin-top: 5px;
+  margin-left: 20px;
+}
