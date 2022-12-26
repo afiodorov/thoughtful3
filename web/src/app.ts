@@ -20,7 +20,7 @@ if (appManager.metaMask !== null) {
 
   const newThoughtPublish = document.getElementById('new-thought-publish')!;
   newThoughtPublish.addEventListener('click', (event) =>
-    appManager.interactionState.publishThought(event, appManager.metaMask!)
+    appManager.interactionState.publishThought(event, appManager.metaMask!, appManager)
   );
 }
 

@@ -4,6 +4,8 @@ import { fetchReplies } from './reply';
 import { formatSingleLineText, formatMultiLineText } from './formatters';
 import { defaultHashtag, defaultName, defaultText } from './config';
 import { toUTF8Array } from './utils';
+import { Thought } from './responses';
+import { makeThoughtContainer } from './thought';
 
 export class InteractionState {
   private toggledLock: Map<string, boolean> = new Map();
@@ -305,19 +307,87 @@ export class InteractionState {
   }
 
   private publishThoughtLock = false;
-  async publishThought(event: Event, metaMask: MetaMask): Promise<void> {
+  async publishThought(event: Event, metaMask: MetaMask, appManager: AppManager): Promise<void> {
     if (!(event.target instanceof Element)) {
       return;
     }
 
-    if (this.likeThoughtLock) {
+    if (this.publishThoughtLock) {
       return;
     }
 
     this.publishThoughtLock = true;
 
-    const thoughtI = event!.target!.getAttribute('thought-id');
+    const thoughtID = event!.target!.getAttribute('thought-id');
     const replyID = event!.target!.getAttribute('reply-id');
+
+    const text = document.getElementById('new-thought-text')!.textContent!;
+    const hashtag = document.getElementById('new-thought-hashtag')!.textContent!;
+    const displayName = document.getElementById('new-thought-author')!.textContent!;
+
+    let quoteText = '';
+    let quoteDisplayName = '';
+    let quoteHashtag = '';
+
+    let quoteID: string | null;
+
+    if (thoughtID) {
+      quoteID = thoughtID;
+      quoteHashtag = hashtag;
+      quoteText = appManager.entityStore.thoughts.get(thoughtID)!.text;
+      quoteDisplayName = appManager.entityStore.thoughts.get(thoughtID)!.displayName;
+    } else if (replyID) {
+      quoteID = replyID;
+      quoteHashtag = hashtag;
+      quoteText = appManager.entityStore.replies.get(replyID)!.text;
+      quoteDisplayName = appManager.entityStore.replies.get(replyID)!.displayName;
+    } else {
+      quoteID = null;
+    }
+
+    const newThoughtID = await metaMask.newThought(
+      text,
+      hashtag,
+      displayName,
+      quoteID,
+      replyID !== null
+    );
+
+    if (newThoughtID !== null) {
+      class NewThought implements Thought {
+        readonly id: string = newThoughtID![0] as string;
+        readonly sender: string = newThoughtID![2];
+        readonly text: string = text;
+        readonly displayName: string = displayName;
+        readonly hashtag: string = hashtag;
+        readonly blockTimestamp: number = newThoughtID![1];
+        readonly numLikes: number = 0;
+        readonly numReplies: number = 0;
+        readonly numRetweets: number = 0;
+        readonly quoteText: string = quoteText;
+        readonly quoteDisplayName: string = quoteDisplayName;
+        readonly quoteHashtag: string = quoteHashtag;
+      }
+
+      const t = new NewThought();
+
+      appManager.entityStore.thoughts.set(newThoughtID![0], t);
+      const container = makeThoughtContainer(t, appManager);
+
+      const allThoughts = document.getElementById('thoughts-container')!;
+      const firstChild = allThoughts.firstChild;
+      if (firstChild) {
+        allThoughts.insertBefore(container, firstChild);
+      } else {
+        allThoughts.append(container);
+      }
+
+      const overlay = document.getElementById('overlay')!;
+      const dialogue = document.getElementById('dialogue')!;
+
+      dialogue.style.display = 'none';
+      overlay.style.display = 'none';
+    }
 
     this.publishThoughtLock = false;
   }

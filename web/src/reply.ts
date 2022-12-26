@@ -98,6 +98,7 @@ function makeReplyContainer(
   }
 
   const quoteElement = document.createElement('div');
+  quoteElement.classList.add('rest-quote');
   quoteElement.appendChild(quoteElementLink);
   quoteElement.appendChild(quoteElementText);
 

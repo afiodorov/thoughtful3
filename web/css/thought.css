@@ -50,11 +50,19 @@
 
 .thought-reply {
   display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+}
+
+.thought-quote {
+  display: flex;
+  flex-wrap: nowrap;
   flex-direction: row;
 }
 
 .thought-like {
   display: flex;
+  flex-wrap: nowrap;
   flex-direction: row;
 }
 
@@ -67,9 +75,11 @@
 }
 
 .thought-rest-container {
+  white-space: nowrap;
   font-size: 1.3em;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 3fr;
+  max-height: 28px;
 }
 
 .thought-date {

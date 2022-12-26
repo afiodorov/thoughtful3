@@ -1,4 +1,4 @@
-import { AbiItem } from 'web3-utils';
+import { AbiItem, AbiInput } from 'web3-utils';
 import Web3 from 'web3';
 import abi from '../../contracts/abi.json';
 
@@ -37,7 +37,6 @@ export class MetaMask {
     const transactionParameters = {
       to: this._deployedContract,
       from: this._ethereum.selectedAddress,
-      gas: '0xB009',
       data: txData,
       chainId: '0x1'
     };
@@ -74,7 +73,7 @@ export class MetaMask {
     hashtag: string,
     retweetOf: string | null,
     isReplyQuote: boolean
-  ): Promise<string | null> {
+  ): Promise<[string, number, string] | null> {
     try {
       await this._ethereum.request({ method: 'eth_requestAccounts' });
     } catch {
@@ -106,20 +105,91 @@ export class MetaMask {
     const transactionParameters = {
       to: this._deployedContract,
       from: this._ethereum.selectedAddress,
-      // gas: '0xB009',
       data: txData,
       chainId: '0x1'
     };
 
-    let resolved: string | null = null;
+    let txHash: string | null = null;
 
     try {
-      resolved = await this._ethereum.request({
+      txHash = await this._ethereum.request({
         method: 'eth_sendTransaction',
         params: [transactionParameters]
       });
     } catch (error) {}
 
-    return resolved;
+    if (!txHash) {
+      return null;
+    }
+
+    var newThought: [string, string] | null = null;
+
+    try {
+      newThought = await this.getNewThoughtID(txHash);
+    } catch (error) {}
+
+    if (!newThought) {
+      return null;
+    }
+
+    var blockTimestamp: number | null = null;
+
+    try {
+      blockTimestamp = await this.getBlockTimestamp(newThought[1]);
+    } catch (error) {}
+
+    if (!blockTimestamp) {
+      return null;
+    }
+
+    return [newThought[0], blockTimestamp, this._ethereum.selectedAddress];
+  }
+
+  async getNewThoughtID(txHash: string): Promise<[string, string] | null> {
+    const myAbi = abi[0]['inputs'] as AbiInput[];
+
+    let receipt: any = null;
+
+    try {
+      receipt = await this._ethereum.request({
+        method: 'eth_getTransactionReceipt',
+        params: [txHash]
+      });
+    } catch (error) {}
+
+    if (!receipt) {
+      return null;
+    }
+
+    if (receipt.status !== '0x1') {
+      return null;
+    }
+
+    const decodedLogs = this._web3.eth.abi.decodeLog(
+      myAbi,
+      receipt.logs[0].data,
+      receipt.logs[0].topics.slice(1)
+    );
+
+    const decoded = decodedLogs[0] as string;
+    const blockNumber = receipt['blockNumber'] as string;
+
+    return [decoded, blockNumber];
+  }
+
+  async getBlockTimestamp(blockNumber: string): Promise<number | null> {
+    let timestamp: number | null = null;
+
+    try {
+      const block = this._web3.eth.getBlock(blockNumber);
+      const t = (await block).timestamp;
+      if (typeof t == 'number') {
+        timestamp = t;
+      } else {
+        timestamp = parseInt(t);
+      }
+    } catch (error) {}
+
+    return timestamp;
   }
 }

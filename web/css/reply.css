@@ -1,5 +1,6 @@
 .reply-like {
   display: flex;
+  flex-wrap: nowrap;
   flex-direction: row;
 }
 
@@ -25,9 +26,11 @@
 }
 
 .reply-rest-container {
+  white-space: nowrap;
   font-size: 1.3em;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 3fr;
+  grid-template-columns: 1fr 1fr 1fr 2fr;
+  max-height: 28px;
 }
 
 .reply-author {
@@ -35,6 +38,12 @@
   font-size: 1.5em;
   text-align: left;
   padding-left: 5px;
+}
+
+.reply-quote {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
 }
 
 .reply-domain {

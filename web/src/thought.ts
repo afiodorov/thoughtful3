@@ -125,6 +125,7 @@ export function makeThoughtContainer(t: Thought, appManager: AppManager): HTMLDi
   }
 
   const quoteElement = document.createElement('div');
+  quoteElement.classList.add('thought-quote');
   quoteElement.appendChild(quoteElementLink);
   quoteElement.appendChild(quoteElementText);
 
