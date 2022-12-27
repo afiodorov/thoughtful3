@@ -64,10 +64,11 @@ export function handleNewTweet(event: NewTweetEvent): void {
 
     if (event.params.isReplyRetweet) {
       const quote = contract.replies(event.params.retweetOf);
+      const quoteOf = contract.tweets(quote.tweet);
 
       entity.quoteText = quote.text;
       entity.quoteDisplayName = quote.displayName;
-      entity.quoteHashtag = "";
+      entity.quoteHashtag = quoteOf.hashtag;
     } else {
       const quote = contract.tweets(event.params.retweetOf);
 

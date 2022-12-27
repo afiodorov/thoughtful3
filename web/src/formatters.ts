@@ -3,7 +3,8 @@ export function formatMultiLineText(text: string): string {
 }
 
 export function formatSingleLineText(text: string): string {
-  return text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  // return text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return text;
 }
 
 export function formatDate(timestampSeconds: number): string {

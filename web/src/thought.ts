@@ -1,6 +1,7 @@
 import { Thought } from './responses';
 import { formatSingleLineText, formatMultiLineText, formatDate } from './formatters';
 import { AppManager } from './app_manager';
+import { makeQuoteContainer } from './quote';
 
 export function makeThoughtContainer(t: Thought, appManager: AppManager): HTMLDivElement {
   const text = t.text;
@@ -143,6 +144,10 @@ export function makeThoughtContainer(t: Thought, appManager: AppManager): HTMLDi
 
   thoughtContainer.appendChild(authorContainer);
   thoughtContainer.appendChild(textContainer);
+  if (t.quoteText) {
+    thoughtContainer!.appendChild(makeQuoteContainer(t));
+  }
+
   thoughtContainer.appendChild(restContainer);
   thoughtContainer.appendChild(repliesContainer);
 

@@ -4,7 +4,7 @@ import { fetchReplies } from './reply';
 import { formatSingleLineText, formatMultiLineText } from './formatters';
 import { defaultHashtag, defaultName, defaultText } from './config';
 import { toUTF8Array } from './utils';
-import { Thought } from './responses';
+import { Thought, NewThought } from './responses';
 import { makeThoughtContainer } from './thought';
 
 export class InteractionState {
@@ -177,11 +177,6 @@ export class InteractionState {
         document.getElementById('quote-domain')!.textContent = sender;
       }
 
-      document.getElementById('quote-hashtag')!.textContent = `#${formatSingleLineText(
-        appManager.entityStore.thoughts.get(thoughtID)!.hashtag
-      )}`;
-
-      document.getElementById('quote-hashtag')!.style.display = 'block';
       document.getElementById('quote-container')!.style.display = 'flex';
     } else if (replyID) {
       const newHashtagElement = document.getElementById('new-thought-hashtag')!;
@@ -212,7 +207,6 @@ export class InteractionState {
         document.getElementById('quote-domain')!.textContent = sender;
       }
 
-      document.getElementById('quote-hashtag')!.style.display = 'none';
       document.getElementById('quote-container')!.style.display = 'flex';
     } else {
       const newHashtagElement = document.getElementById('new-thought-hashtag')!;
@@ -354,22 +348,20 @@ export class InteractionState {
     );
 
     if (newThoughtID !== null) {
-      class NewThought implements Thought {
-        readonly id: string = newThoughtID![0] as string;
-        readonly sender: string = newThoughtID![2];
-        readonly text: string = text;
-        readonly displayName: string = displayName;
-        readonly hashtag: string = hashtag;
-        readonly blockTimestamp: number = newThoughtID![1];
-        readonly numLikes: number = 0;
-        readonly numReplies: number = 0;
-        readonly numRetweets: number = 0;
-        readonly quoteText: string = quoteText;
-        readonly quoteDisplayName: string = quoteDisplayName;
-        readonly quoteHashtag: string = quoteHashtag;
-      }
-
-      const t = new NewThought();
+      const t = new NewThought({
+        id: newThoughtID![0] as string,
+        sender: newThoughtID![2],
+        text: text,
+        displayName: displayName,
+        hashtag: hashtag,
+        blockTimestamp: newThoughtID![1],
+        numLikes: 0,
+        numReplies: 0,
+        numRetweets: 0,
+        quoteText: quoteText,
+        quoteDisplayName: quoteDisplayName,
+        quoteHashtag: quoteHashtag
+      });
 
       appManager.entityStore.thoughts.set(newThoughtID![0], t);
       const container = makeThoughtContainer(t, appManager);

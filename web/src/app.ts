@@ -3,6 +3,7 @@ import { makeThoughtContainer } from './thought';
 import { AppManager } from './app_manager';
 import { toUTF8Array } from './utils';
 import { defaultName, defaultText, defaultHashtag } from './config';
+import { makeQuoteContainer } from './quote';
 
 const appManager = new AppManager();
 
