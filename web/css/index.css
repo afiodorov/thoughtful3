@@ -83,6 +83,7 @@ body {
   cursor: pointer; /* change the cursor to a pointer when hovering over the image */
 }
 
-textarea {
-  font-size: 18px;
+.instruction {
+  text-align: right;
+  font-style: italic;
 }

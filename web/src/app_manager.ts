@@ -26,6 +26,8 @@ export class AppManager {
       this._metaMask.registerAccountChangeListener((accounts) => {
         this._intereractionState.toggleAccounts(accounts, this);
       });
+
+      document.getElementById('instruction')!.style.display = 'none';
     } else {
       this._metaMask = null;
     }
