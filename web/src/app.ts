@@ -3,7 +3,8 @@ import { makeThoughtContainer } from './thought';
 import { AppManager } from './app_manager';
 import { toUTF8Array } from './utils';
 import { defaultName, defaultText, defaultHashtag } from './config';
-import { makeQuoteContainer } from './quote';
+import { parseCurrentURL } from './params';
+import { allRecentThoughts, thoughtByID } from './queries';
 
 const appManager = new AppManager();
 
@@ -25,25 +26,17 @@ if (appManager.metaMask !== null) {
   );
 }
 
-const thoughts = (
-  await appManager.queryDispatcher.fetch(`
-{
-  newTweets(orderBy: id, orderDirection: desc, first: 30) {
-    id
-    sender
-    text
-    displayName
-    hashtag
-    blockTimestamp
-    numLikes
-    numReplies
-    numRetweets
-    quoteText
-    quoteDisplayName
-    quoteHashtag
-  }
-}`)
-)['newTweets'] as Thought[];
+const params = parseCurrentURL();
+
+let query: string;
+
+if (params.thoughtID) {
+  query = thoughtByID(params.thoughtID);
+} else {
+  query = allRecentThoughts;
+}
+
+const thoughts = (await appManager.queryDispatcher.fetch(query))['newTweets'] as Thought[];
 
 thoughts.forEach((t) => {
   appManager.entityStore.thoughts.set(t.id, t);
@@ -126,5 +119,7 @@ function init() {
 }
 
 init();
+
+console.log(parseCurrentURL());
 
 export {};

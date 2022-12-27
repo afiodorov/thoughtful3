@@ -60,6 +60,13 @@
   flex-direction: row;
 }
 
+.thought-date {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
 .thought-like {
   display: flex;
   flex-wrap: nowrap;

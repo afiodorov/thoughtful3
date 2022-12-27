@@ -64,7 +64,17 @@ export function makeThoughtContainer(t: Thought, appManager: AppManager): HTMLDi
 
   const dateElement = document.createElement('div');
   dateElement.classList.add('thought-date');
-  dateElement.textContent = `📅${formatDate(t.blockTimestamp)}`;
+
+  const dateElementText = document.createElement('div');
+  dateElementText.classList.add('thought-date-text');
+  dateElementText.textContent = `${formatDate(t.blockTimestamp)}`;
+
+  const dateElementLink = document.createElement('div');
+  dateElementLink.classList.add('thought-date-link');
+  dateElementLink.innerHTML = `<a href='?thought-id=${t.id}'>📅</a>`;
+
+  dateElement.appendChild(dateElementLink);
+  dateElement.appendChild(dateElementText);
 
   const likeElement = document.createElement('div');
   likeElement.classList.add('thought-like');
