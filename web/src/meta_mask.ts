@@ -9,6 +9,18 @@ interface Ethereum {
   on(k: string, fn: (a: any) => void): void;
 }
 
+class Success<T> {
+  value: T;
+  sender: string;
+  blockTimestamp: number;
+
+  constructor(value: T, sender: string, blockTimestamp: number) {
+    this.value = value;
+    this.sender = sender;
+    this.blockTimestamp = blockTimestamp;
+  }
+}
+
 export class MetaMask {
   private _deployedContract: string;
   private _ethereum: Ethereum;
@@ -113,7 +125,7 @@ export class MetaMask {
     hashtag: string,
     retweetOf: string | null,
     isReplyQuote: boolean
-  ): Promise<[string, number, string] | null> {
+  ): Promise<Success<string> | null> {
     try {
       await this._ethereum.request({ method: 'eth_requestAccounts' });
     } catch (error) {
@@ -172,7 +184,7 @@ export class MetaMask {
       return null;
     }
 
-    var newThought: [string, string] | null = null;
+    let newThought: [string, string] | null = null;
 
     try {
       newThought = await this.getNewThoughtID(txHash);
@@ -185,12 +197,12 @@ export class MetaMask {
       return null;
     }
 
-    console.log(newThought);
+    const [newThoughtID, blockNumber] = newThought;
 
     var blockTimestamp: number | null = null;
 
     try {
-      blockTimestamp = await this.getBlockTimestamp(newThought[1]);
+      blockTimestamp = await this.getBlockTimestamp(blockNumber);
     } catch (error) {
       console.log(error);
     }
@@ -199,7 +211,7 @@ export class MetaMask {
       return null;
     }
 
-    return [newThought[0], blockTimestamp, this._ethereum.selectedAddress];
+    return new Success<string>(newThoughtID, this._ethereum.selectedAddress, blockTimestamp);
   }
 
   async getNewThoughtID(txHash: string): Promise<[string, string] | null> {

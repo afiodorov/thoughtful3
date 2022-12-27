@@ -1,6 +1,8 @@
 import { Reply } from './responses';
 import { formatSingleLineText, formatDate, formatMultiLineText } from './formatters';
 import { AppManager } from './app_manager';
+import { ReplyEntity } from './entity_store';
+import { likeReply } from './handlers/like';
 
 function makeReplyContainer(
   r: Reply,
@@ -70,7 +72,7 @@ function makeReplyContainer(
     likeElementLink.classList.add('reply-like-link');
     likeElementLink.setAttribute('reply-id', r.id);
     likeElementLink.addEventListener('click', (event) =>
-      appManager.interactionState.likeReply(event, appManager.metaMask!)
+      likeReply(event, appManager.metaMask!, appManager.entityStore, appManager.queryDispatcher)
     );
 
     likeElement.appendChild(likeElementLink);
@@ -105,6 +107,7 @@ function makeReplyContainer(
 
   const quoteElementText = document.createElement('div');
   quoteElementText.classList.add('reply-quote-text');
+  quoteElementText.id = `reply-${r.id}-quotes`;
   if (r.numRetweets > 0) {
     quoteElementText.textContent = `${r.numRetweets}`;
   }
@@ -136,7 +139,7 @@ export async function fetchReplies(
 ): Promise<Array<HTMLDivElement>> {
   const query = `{ newReplies(first: 30, orderBy: blockNumber, where:{tweet: "${id}"}) { id sender text displayName tweet blockTimestamp numLikes numRetweets seq_num } }`;
   const fetchedReplies = (await appManager.queryDispatcher.fetch(query))['newReplies'] as Reply[];
-  fetchedReplies.forEach((r) => appManager.entityStore.replies.set(r.id, r));
+  fetchedReplies.forEach((r) => appManager.entityStore.replies.set(r.id, new ReplyEntity(r)));
 
   const replies = processReplies(fetchedReplies, thoughtDisplayName, thoughtSender);
   return replies.map((reply, i, replies) => {

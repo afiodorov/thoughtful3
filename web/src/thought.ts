@@ -2,6 +2,7 @@ import { Thought } from './responses';
 import { formatSingleLineText, formatMultiLineText, formatDate } from './formatters';
 import { AppManager } from './app_manager';
 import { makeQuoteContainer } from './quote';
+import { likeThought } from './handlers/like';
 
 export function makeThoughtContainer(t: Thought, appManager: AppManager): HTMLDivElement {
   const text = t.text;
@@ -87,7 +88,7 @@ export function makeThoughtContainer(t: Thought, appManager: AppManager): HTMLDi
     likeElementLink.classList.add('thought-like-link');
     likeElementLink.setAttribute('thought-id', t.id);
     likeElementLink.addEventListener('click', (event) =>
-      appManager.interactionState.likeThought(event, appManager.metaMask!)
+      likeThought(event, appManager.metaMask!, appManager.entityStore, appManager.queryDispatcher)
     );
 
     likeElement.appendChild(likeElementLink);
@@ -143,6 +144,7 @@ export function makeThoughtContainer(t: Thought, appManager: AppManager): HTMLDi
 
   const quoteElementText = document.createElement('div');
   quoteElementText.classList.add('thought-quote-text');
+  quoteElementText.id = `thought-${t.id}-quotes`;
   if (t.numRetweets > 0) {
     quoteElementText.textContent = `${t.numRetweets}`;
   }

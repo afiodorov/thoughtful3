@@ -4,13 +4,11 @@ import { fetchReplies } from './reply';
 import { formatSingleLineText, formatMultiLineText } from './formatters';
 import { defaultHashtag, defaultName, defaultText } from './config';
 import { toUTF8Array } from './utils';
-import { NewThought } from './responses';
+import { ThoughtEntity } from './entity_store';
 import { makeThoughtContainer } from './thought';
 
 export class InteractionState {
   private toggledLock: Map<string, boolean> = new Map();
-  private likeThoughtLock: Map<string, boolean> = new Map();
-  private likeReplyLock: Map<string, boolean> = new Map();
   private dialogueVisibleLock = false;
   private toggleAccountsLock = false;
 
@@ -43,74 +41,6 @@ export class InteractionState {
 
       this.toggledLock.set(thoughtID, false);
     });
-  }
-
-  async likeThought(event: Event, metaMask: MetaMask): Promise<void> {
-    if (!(event.target instanceof Element)) {
-      return;
-    }
-
-    const thoughtID: string = event!.target!.getAttribute('thought-id')!;
-    const curLikesElement = document.getElementById(`thought-${thoughtID}-likes`);
-    if (curLikesElement === null) {
-      return;
-    }
-
-    let numLikes: number;
-
-    try {
-      numLikes = parseInt(curLikesElement.textContent!) || 0;
-    } catch (e) {
-      numLikes = 0;
-    }
-
-    if (this.likeThoughtLock.has(thoughtID) && this.likeThoughtLock.get(thoughtID)) {
-      return;
-    }
-
-    this.likeThoughtLock.set(thoughtID, true);
-
-    const tx = await metaMask.newLike(thoughtID, false);
-
-    if (tx !== null) {
-      curLikesElement.textContent = `${numLikes + 1}`;
-    }
-
-    this.likeThoughtLock.set(thoughtID, false);
-  }
-
-  async likeReply(event: Event, metaMask: MetaMask): Promise<void> {
-    if (!(event.target instanceof Element)) {
-      return;
-    }
-
-    const replyID: string = event!.target!.getAttribute('reply-id')!;
-    const curLikesElement = document.getElementById(`reply-${replyID}-likes`);
-    if (curLikesElement === null) {
-      return;
-    }
-
-    let numLikes: number;
-
-    try {
-      numLikes = parseInt(curLikesElement.textContent!) || 0;
-    } catch (e) {
-      numLikes = 0;
-    }
-
-    if (this.likeReplyLock.has(replyID) && this.likeReplyLock.get(replyID)) {
-      return;
-    }
-
-    this.likeReplyLock.set(replyID, true);
-
-    const tx = await metaMask.newLike(replyID, true);
-
-    if (tx !== null) {
-      curLikesElement.textContent = `${numLikes + 1}`;
-    }
-
-    this.likeReplyLock.set(replyID, false);
   }
 
   async toggleDialogue(event: Event, metaMask: MetaMask, appManager: AppManager): Promise<void> {
@@ -296,90 +226,6 @@ export class InteractionState {
     ) {
       event.preventDefault();
     }
-  }
-
-  private publishThoughtLock = false;
-  async publishThought(event: Event, metaMask: MetaMask, appManager: AppManager): Promise<void> {
-    if (!(event.target instanceof Element)) {
-      return;
-    }
-
-    if (this.publishThoughtLock) {
-      return;
-    }
-
-    this.publishThoughtLock = true;
-
-    const thoughtID = event!.target!.getAttribute('thought-id');
-    const replyID = event!.target!.getAttribute('reply-id');
-
-    const text = document.getElementById('new-thought-text')!.textContent!;
-    const hashtag = document.getElementById('new-thought-hashtag')!.textContent!;
-    const displayName = document.getElementById('new-thought-author')!.textContent!;
-
-    let quoteText = '';
-    let quoteDisplayName = '';
-    let quoteHashtag = '';
-
-    let quoteID: string | null;
-
-    if (thoughtID) {
-      quoteID = thoughtID;
-      quoteHashtag = hashtag;
-      quoteText = appManager.entityStore.thoughts.get(thoughtID)!.text;
-      quoteDisplayName = appManager.entityStore.thoughts.get(thoughtID)!.displayName;
-    } else if (replyID) {
-      quoteID = replyID;
-      quoteHashtag = hashtag;
-      quoteText = appManager.entityStore.replies.get(replyID)!.text;
-      quoteDisplayName = appManager.entityStore.replies.get(replyID)!.displayName;
-    } else {
-      quoteID = null;
-    }
-
-    const newThoughtID = await metaMask.newThought(
-      text,
-      displayName,
-      hashtag,
-      quoteID,
-      replyID !== null
-    );
-
-    if (newThoughtID !== null) {
-      const t = new NewThought({
-        id: newThoughtID![0] as string,
-        sender: newThoughtID![2],
-        text: text,
-        displayName: displayName,
-        hashtag: hashtag,
-        blockTimestamp: newThoughtID![1],
-        numLikes: 0,
-        numReplies: 0,
-        numRetweets: 0,
-        quoteText: quoteText,
-        quoteDisplayName: quoteDisplayName,
-        quoteHashtag: quoteHashtag
-      });
-
-      appManager.entityStore.thoughts.set(newThoughtID![0], t);
-      const container = makeThoughtContainer(t, appManager);
-
-      const allThoughts = document.getElementById('thoughts-container')!;
-      const firstChild = allThoughts.firstChild;
-      if (firstChild) {
-        allThoughts.insertBefore(container, firstChild);
-      } else {
-        allThoughts.append(container);
-      }
-
-      const overlay = document.getElementById('overlay')!;
-      const dialogue = document.getElementById('dialogue')!;
-
-      dialogue.style.display = 'none';
-      overlay.style.display = 'none';
-    }
-
-    this.publishThoughtLock = false;
   }
 }
 

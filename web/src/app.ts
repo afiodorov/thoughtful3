@@ -5,6 +5,8 @@ import { toUTF8Array } from './utils';
 import { defaultName, defaultText, defaultHashtag } from './config';
 import { parseCurrentURL } from './params';
 import { allRecentThoughts, thoughtByID } from './queries';
+import { ThoughtEntity } from './entity_store';
+import { publishThought } from './handlers/publish_thought';
 
 const appManager = new AppManager();
 
@@ -22,7 +24,7 @@ if (appManager.metaMask !== null) {
 
   const newThoughtPublish = document.getElementById('new-thought-publish')!;
   newThoughtPublish.addEventListener('click', (event) =>
-    appManager.interactionState.publishThought(event, appManager.metaMask!, appManager)
+    publishThought(event, appManager.metaMask!, appManager)
   );
 }
 
@@ -39,7 +41,7 @@ if (params.thoughtID) {
 const thoughts = (await appManager.queryDispatcher.fetch(query))['newTweets'] as Thought[];
 
 thoughts.forEach((t) => {
-  appManager.entityStore.thoughts.set(t.id, t);
+  appManager.entityStore.thoughts.set(t.id, new ThoughtEntity(t));
 });
 
 const thoughtsContainer = document.getElementById('thoughts-container');

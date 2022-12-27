@@ -37,4 +37,8 @@ export class QueryDispatcher {
 
     return res['data'];
   }
+
+  invalidateCache() {
+    this._cache.clear();
+  }
 }
