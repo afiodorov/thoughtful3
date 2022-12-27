@@ -4,7 +4,7 @@ import { fetchReplies } from './reply';
 import { formatSingleLineText, formatMultiLineText } from './formatters';
 import { defaultHashtag, defaultName, defaultText } from './config';
 import { toUTF8Array } from './utils';
-import { Thought, NewThought } from './responses';
+import { NewThought } from './responses';
 import { makeThoughtContainer } from './thought';
 
 export class InteractionState {
@@ -341,8 +341,8 @@ export class InteractionState {
 
     const newThoughtID = await metaMask.newThought(
       text,
-      hashtag,
       displayName,
+      hashtag,
       quoteID,
       replyID !== null
     );

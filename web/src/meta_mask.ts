@@ -28,7 +28,8 @@ export class MetaMask {
   async newLike(id: string, isReplyLike: boolean): Promise<string | null> {
     try {
       await this._ethereum.request({ method: 'eth_requestAccounts' });
-    } catch {
+    } catch (error) {
+      console.log(error);
       return null;
     }
 
@@ -48,7 +49,9 @@ export class MetaMask {
         method: 'eth_sendTransaction',
         params: [transactionParameters]
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
 
     return resolved;
   }
@@ -56,7 +59,8 @@ export class MetaMask {
   async selectedAddress(): Promise<string | null> {
     try {
       await this._ethereum.request({ method: 'eth_requestAccounts' });
-    } catch {
+    } catch (error) {
+      console.log(error);
       return null;
     }
 
@@ -76,7 +80,9 @@ export class MetaMask {
   ): Promise<[string, number, string] | null> {
     try {
       await this._ethereum.request({ method: 'eth_requestAccounts' });
-    } catch {
+    } catch (error) {
+      console.log(error);
+
       return null;
     }
 
@@ -88,18 +94,24 @@ export class MetaMask {
         displayName,
         hashtag
       ]);
+
+      console.log(`calling tweet(${text},${displayName},${hashtag})`);
     } else if (!isReplyQuote) {
       txData = this._web3.eth.abi.encodeFunctionCall(this._abi.get('retweet')!, [
         retweetOf,
         text,
         displayName
       ]);
+
+      console.log(`calling retweet(${retweetOf},${text},${displayName})`);
     } else {
       txData = this._web3.eth.abi.encodeFunctionCall(this._abi.get('retweet_reply')!, [
         retweetOf,
         text,
         displayName
       ]);
+
+      console.log(`calling retweet_reply(${retweetOf},${text},${displayName})`);
     }
 
     const transactionParameters = {
@@ -116,7 +128,9 @@ export class MetaMask {
         method: 'eth_sendTransaction',
         params: [transactionParameters]
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
 
     if (!txHash) {
       return null;
@@ -126,7 +140,9 @@ export class MetaMask {
 
     try {
       newThought = await this.getNewThoughtID(txHash);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
 
     if (!newThought) {
       return null;
@@ -136,7 +152,9 @@ export class MetaMask {
 
     try {
       blockTimestamp = await this.getBlockTimestamp(newThought[1]);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
 
     if (!blockTimestamp) {
       return null;
@@ -155,7 +173,9 @@ export class MetaMask {
         method: 'eth_getTransactionReceipt',
         params: [txHash]
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
 
     if (!receipt) {
       return null;
@@ -188,7 +208,9 @@ export class MetaMask {
       } else {
         timestamp = parseInt(t);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
 
     return timestamp;
   }
