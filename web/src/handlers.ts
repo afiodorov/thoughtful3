@@ -172,7 +172,7 @@ export class InteractionState {
       if (domain !== null) {
         document.getElementById('quote-domain')!.textContent = `@${domain}`;
       } else {
-        document.getElementById('quote-domain')!.textContent = sender;
+        document.getElementById('quote-domain')!.textContent = `@${sender}`;
       }
 
       document.getElementById('quote-container')!.style.display = 'flex';
@@ -450,7 +450,7 @@ async function setDomain(account: string, appManager: AppManager) {
   if (domain) {
     domainElement.textContent = `@${domain}`;
   } else {
-    domainElement.textContent = account;
+    domainElement.textContent = `@${account}`;
   }
 
   const authorElement = document.getElementById('new-thought-author')!;
