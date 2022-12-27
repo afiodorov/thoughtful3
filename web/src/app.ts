@@ -25,9 +25,23 @@ if (appManager.metaMask !== null) {
 }
 
 const thoughts = (
-  await appManager.queryDispatcher.fetch(
-    '{ newTweets(first: 30, orderBy: id, orderDirection: desc) { id sender text displayName hashtag blockTimestamp numLikes numReplies numRetweets quoteText quoteDisplayName quoteHashtag } }'
-  )
+  await appManager.queryDispatcher.fetch(`
+{
+  newTweets(orderBy: id, orderDirection: desc, first: 30) {
+    id
+    sender
+    text
+    displayName
+    hashtag
+    blockTimestamp
+    numLikes
+    numReplies
+    numRetweets
+    quoteText
+    quoteDisplayName
+    quoteHashtag
+  }
+}`)
 )['newTweets'] as Thought[];
 
 thoughts.forEach((t) => {
