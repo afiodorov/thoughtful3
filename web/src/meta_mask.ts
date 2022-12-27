@@ -1,6 +1,7 @@
 import { AbiItem, AbiInput } from 'web3-utils';
 import Web3 from 'web3';
 import abi from '../../contracts/abi.json';
+import { chainID } from './config';
 
 interface Ethereum {
   request(t: object): Promise<string | null>;
@@ -39,7 +40,7 @@ export class MetaMask {
       to: this._deployedContract,
       from: this._ethereum.selectedAddress,
       data: txData,
-      chainId: '0x1'
+      chainId: chainID
     };
 
     let resolved: string | null = null;
@@ -118,7 +119,7 @@ export class MetaMask {
       to: this._deployedContract,
       from: this._ethereum.selectedAddress,
       data: txData,
-      chainId: '0x1'
+      chainId: chainID
     };
 
     let txHash: string | null = null;
@@ -145,8 +146,11 @@ export class MetaMask {
     }
 
     if (!newThought) {
+      console.log('no new thought');
       return null;
     }
+
+    console.log(newThought);
 
     var blockTimestamp: number | null = null;
 
@@ -168,20 +172,28 @@ export class MetaMask {
 
     let receipt: any = null;
 
-    try {
-      receipt = await this._ethereum.request({
-        method: 'eth_getTransactionReceipt',
-        params: [txHash]
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    while (true) {
+      try {
+        receipt = await this._ethereum.request({
+          method: 'eth_getTransactionReceipt',
+          params: [txHash]
+        });
+      } catch (error) {
+        console.log(error);
+        break;
+      }
 
-    if (!receipt) {
-      return null;
+      if (receipt) {
+        break;
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
 
     if (receipt.status !== '0x1') {
+      console.log('receipt not successfull');
+      console.log(receipt)
+
       return null;
     }
 
