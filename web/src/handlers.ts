@@ -73,7 +73,6 @@ export class InteractionState {
     const tx = await metaMask.newLike(thoughtID, false);
 
     if (tx !== null) {
-      // we'll just assume it's succeeded for now
       curLikesElement.textContent = `${numLikes + 1}`;
     }
 
@@ -108,7 +107,6 @@ export class InteractionState {
     const tx = await metaMask.newLike(replyID, true);
 
     if (tx !== null) {
-      // we'll just assume it's succeeded for now
       curLikesElement.textContent = `${numLikes + 1}`;
     }
 

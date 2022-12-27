@@ -43,10 +43,10 @@ export class MetaMask {
       chainId: chainID
     };
 
-    let resolved: string | null = null;
+    let txHash: string | null = null;
 
     try {
-      resolved = await this._ethereum.request({
+      txHash = await this._ethereum.request({
         method: 'eth_sendTransaction',
         params: [transactionParameters]
       });
@@ -54,7 +54,42 @@ export class MetaMask {
       console.log(error);
     }
 
-    return resolved;
+    if (!txHash) {
+      return null;
+    }
+
+    let receipt: any;
+
+    while (true) {
+      try {
+        receipt = await this._ethereum.request({
+          method: 'eth_getTransactionReceipt',
+          params: [txHash]
+        });
+      } catch (error) {
+        console.log(error);
+        break;
+      }
+
+      if (receipt) {
+        break;
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+
+    if (!receipt) {
+      return null;
+    }
+
+    if (receipt.status !== '0x1') {
+      console.log('receipt not successfull');
+      console.log(receipt);
+
+      return null;
+    }
+
+    return txHash;
   }
 
   async selectedAddress(): Promise<string | null> {
@@ -192,7 +227,7 @@ export class MetaMask {
 
     if (receipt.status !== '0x1') {
       console.log('receipt not successfull');
-      console.log(receipt)
+      console.log(receipt);
 
       return null;
     }
