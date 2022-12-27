@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   entry: './src/app.ts',
@@ -21,5 +22,12 @@ module.exports = {
   },
   experiments: {
     topLevelAwait: true
-  }
+  },
+  plugins: [
+     new webpack.DefinePlugin({
+       'process.env': {
+         THOUGHTFUL_ENV: JSON.stringify(process.env.THOUGHTFUL_ENV),
+       },
+     }),
+   ],
 };
