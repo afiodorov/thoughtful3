@@ -85,7 +85,7 @@
   white-space: nowrap;
   font-size: 1.3em;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 3fr;
+  grid-template-columns: 1fr 1fr 1fr 2fr;
   max-height: 28px;
 }
 

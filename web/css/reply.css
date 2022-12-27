@@ -59,6 +59,8 @@
 }
 
 .reply-date {
-  text-align: right;
-  padding-right: 5px;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: flex-end;
 }

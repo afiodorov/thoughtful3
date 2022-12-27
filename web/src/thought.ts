@@ -121,13 +121,25 @@ export function makeThoughtContainer(t: Thought, appManager: AppManager): HTMLDi
     replyElement.appendChild(replyLink);
   }
 
-  const quoteElementLink = document.createElement('a');
-  quoteElementLink.href = '#';
-  quoteElementLink.textContent = '🔄';
-  quoteElementLink.setAttribute('thought-id', t.id);
-  quoteElementLink.addEventListener('click', (event) =>
-    appManager.interactionState.toggleDialogue(event, appManager.metaMask!, appManager)
-  );
+  const quoteElement = document.createElement('div');
+  quoteElement.classList.add('thought-quote');
+
+  if (appManager.metaMask) {
+    const quoteElementLink = document.createElement('a');
+    quoteElementLink.href = '#';
+    quoteElementLink.textContent = '🔄';
+    quoteElementLink.setAttribute('thought-id', t.id);
+    quoteElementLink.addEventListener('click', (event) =>
+      appManager.interactionState.toggleDialogue(event, appManager.metaMask!, appManager)
+    );
+
+    quoteElement.appendChild(quoteElementLink);
+  } else {
+    const quoteElementNoLink = document.createElement('div');
+    quoteElementNoLink.textContent = '🔄';
+
+    quoteElement.appendChild(quoteElementNoLink);
+  }
 
   const quoteElementText = document.createElement('div');
   quoteElementText.classList.add('thought-quote-text');
@@ -135,9 +147,6 @@ export function makeThoughtContainer(t: Thought, appManager: AppManager): HTMLDi
     quoteElementText.textContent = `${t.numRetweets}`;
   }
 
-  const quoteElement = document.createElement('div');
-  quoteElement.classList.add('thought-quote');
-  quoteElement.appendChild(quoteElementLink);
   quoteElement.appendChild(quoteElementText);
 
   const repliesContainer = document.createElement('div');

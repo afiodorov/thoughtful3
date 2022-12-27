@@ -83,13 +83,25 @@ function makeReplyContainer(
   likeElementText.id = `reply-${r.id}-likes`;
   likeElement.appendChild(likeElementText);
 
-  const quoteElementLink = document.createElement('a');
-  quoteElementLink.href = '#';
-  quoteElementLink.textContent = '🔄';
-  quoteElementLink.setAttribute('reply-id', r.id);
-  quoteElementLink.addEventListener('click', (event) =>
-    appManager.interactionState.toggleDialogue(event, appManager.metaMask!, appManager)
-  );
+  const quoteElement = document.createElement('div');
+  quoteElement.classList.add('rest-quote');
+
+  if (appManager.metaMask) {
+    const quoteElementLink = document.createElement('a');
+    quoteElementLink.href = '#';
+    quoteElementLink.textContent = '🔄';
+    quoteElementLink.setAttribute('reply-id', r.id);
+    quoteElementLink.addEventListener('click', (event) =>
+      appManager.interactionState.toggleDialogue(event, appManager.metaMask!, appManager)
+    );
+
+    quoteElement.appendChild(quoteElementLink);
+  } else {
+    const quoteElementNoLink = document.createElement('div');
+    quoteElementNoLink.textContent = '🔄';
+
+    quoteElement.appendChild(quoteElementNoLink);
+  }
 
   const quoteElementText = document.createElement('div');
   quoteElementText.classList.add('reply-quote-text');
@@ -97,9 +109,6 @@ function makeReplyContainer(
     quoteElementText.textContent = `${r.numRetweets}`;
   }
 
-  const quoteElement = document.createElement('div');
-  quoteElement.classList.add('rest-quote');
-  quoteElement.appendChild(quoteElementLink);
   quoteElement.appendChild(quoteElementText);
 
   const replyElement = document.createElement('div');
