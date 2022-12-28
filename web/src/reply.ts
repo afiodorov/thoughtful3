@@ -86,7 +86,7 @@ function makeReplyContainer(
   likeElement.appendChild(likeElementText);
 
   const quoteElement = document.createElement('div');
-  quoteElement.classList.add('rest-quote');
+  quoteElement.classList.add('reply-quote');
 
   if (appManager.metaMask) {
     const quoteElementLink = document.createElement('a');

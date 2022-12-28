@@ -4,7 +4,7 @@ import abi from '../../contracts/abi.json';
 import { chainID } from './config';
 
 interface Ethereum {
-  request(t: object): Promise<string | null>;
+  request(t: object): Promise<any | null>;
   selectedAddress: string;
   on(k: string, fn: (a: any) => void): void;
 }
@@ -166,6 +166,7 @@ export class MetaMask {
       to: this._deployedContract,
       from: this._ethereum.selectedAddress,
       data: txData,
+      gas: '0x7CADE',
       chainId: chainID
     };
 
@@ -183,6 +184,8 @@ export class MetaMask {
     if (!txHash) {
       return null;
     }
+
+    console.log(`submitted ${txHash}`);
 
     let newThought: [string, string] | null = null;
 
@@ -202,6 +205,7 @@ export class MetaMask {
     var blockTimestamp: number | null = null;
 
     try {
+      // blockTimestamp = await this.getBlockTimestamp(parseInt(blockNumber.slice(2), 16));
       blockTimestamp = await this.getBlockTimestamp(blockNumber);
     } catch (error) {
       console.log(error);
@@ -260,13 +264,11 @@ export class MetaMask {
     let timestamp: number | null = null;
 
     try {
-      const block = this._web3.eth.getBlock(blockNumber);
-      const t = (await block).timestamp;
-      if (typeof t == 'number') {
-        timestamp = t;
-      } else {
-        timestamp = parseInt(t);
-      }
+      const block = await this._ethereum.request({
+        method: 'eth_getBlockByNumber',
+        params: [blockNumber, false]
+      });
+      timestamp = parseInt(block.timestamp.slice(2), 16);
     } catch (error) {
       console.log(error);
     }

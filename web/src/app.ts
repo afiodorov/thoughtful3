@@ -122,6 +122,4 @@ function init() {
 
 init();
 
-console.log(parseCurrentURL());
-
 export {};
