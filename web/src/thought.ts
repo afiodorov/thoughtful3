@@ -44,9 +44,10 @@ export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): 
   const domainContainer = document.createElement('div');
   domainContainer.classList.add('thought-domain-container');
 
-  const domainElement = document.createElement('div');
+  const domainElement = document.createElement('a');
   domainElement.classList.add('thought-domain');
   domainElement.textContent = `@${t.sender}`;
+  domainElement.href = `?address=${t.sender}`;
 
   const hashtagElement = document.createElement('div');
   hashtagElement.classList.add('thought-hashtag');

@@ -31,9 +31,10 @@ export function makeQuoteContainer(q: QuoteEntity, appManager: AppManager): HTML
   const quoteDomainContainer = document.createElement('div');
   quoteDomainContainer.classList.add('quote-domain-container');
 
-  const quoteDomain = document.createElement('div');
+  const quoteDomain = document.createElement('a');
   quoteDomain.classList.add('quote-domain');
   quoteDomain.textContent = `${q.quoteSender}`;
+  quoteDomain.href = `?address=${q.quoteSender}`;
   appManager.ensLooker.reverseLookup(q.quoteSender).then((result) => {
     if (result === null) {
       return;

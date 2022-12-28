@@ -44,9 +44,10 @@ export function makeReplyContainer(
     authorLink.textContent = `${author}`;
     authorElement.appendChild(authorLink);
 
-    const domainElement = document.createElement('div');
+    const domainElement = document.createElement('a');
     domainElement.classList.add('reply-domain');
     domainElement.textContent = `@${r.sender}`;
+    domainElement.href = `?address=${r.sender}`;
 
     const authorContainer = document.createElement('div');
     authorContainer.classList.add('reply-author-container');
