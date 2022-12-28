@@ -51,3 +51,19 @@ export const repliesByThought = (thoughtID: string) => `
   }
 }
 `;
+
+export const replyByID = (replyID: string) => `
+{
+  newReplies(first: 1, where:{id: "${replyID}"}) {
+    id
+    sender
+    text
+    displayName
+    tweet
+    blockTimestamp
+    numLikes
+    numRetweets
+    seq_num
+  }
+}
+`;

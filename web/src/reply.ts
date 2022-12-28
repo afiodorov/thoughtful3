@@ -5,7 +5,7 @@ import { ReplyEntity } from './entity_store';
 import { likeReply } from './handlers/like';
 import { repliesByThought } from './queries';
 
-function makeReplyContainer(
+export function makeReplyContainer(
   r: Reply,
   shouldShowName: boolean,
   appManager: AppManager,

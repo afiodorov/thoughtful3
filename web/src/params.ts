@@ -1,4 +1,4 @@
-class Params {
+export class ThoughtParams {
   thoughtID: string | null;
 
   constructor(thoughtID: string | null) {
@@ -6,9 +6,24 @@ class Params {
   }
 }
 
-export function parseCurrentURL(): Params {
+export class ReplyParams {
+  replyID: string;
+
+  constructor(replyID: string) {
+    this.replyID = replyID;
+  }
+}
+
+export function parseCurrentURL(): ThoughtParams | ReplyParams {
   const currentUrl = new URL(window.location.href);
   const searchParams = new URLSearchParams(currentUrl.search);
 
-  return new Params(searchParams.get('thought-id'));
+  const thoughtID = searchParams.get('thought-id');
+  const replyID = searchParams.get('reply-id');
+
+  if (replyID) {
+    return new ReplyParams(replyID);
+  }
+
+  return new ThoughtParams(thoughtID);
 }
