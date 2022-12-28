@@ -71,3 +71,13 @@ export const replyByID = (replyID: string) => `
   }
 }
 `;
+
+export const hashtagByThoughtID = (thoughtID: string) => {
+  return `
+{
+  newTweets(first: 1, where:{id: "${thoughtID}"}) {
+    hashtag
+  }
+}
+`;
+};

@@ -2,6 +2,7 @@ import { AppManager } from '../app_manager';
 import { MetaMask } from '../meta_mask';
 import { formatSingleLineText, formatMultiLineText } from '../formatters';
 import { setDomain } from '../utils';
+import { getHashtag } from '../utils';
 
 let dialogueVisibleLock = false;
 
@@ -79,10 +80,20 @@ export async function toggleDialogue(
   } else if (replyID) {
     const newHashtagElement = document.getElementById('new-thought-hashtag')!;
     newHashtagElement.removeAttribute('contenteditable');
-    newHashtagElement.textContent = formatSingleLineText(
-      appManager.entityStore.thoughts.get(appManager.entityStore.replies.get(replyID)!.tweet)!
-        .hashtag
+
+    const quotedTweet = appManager.entityStore.thoughts.get(
+      appManager.entityStore.replies.get(replyID)!.tweet
     );
+
+    if (quotedTweet) {
+      newHashtagElement.textContent = formatSingleLineText(quotedTweet.hashtag);
+    } else {
+      getHashtag(appManager.entityStore.replies.get(replyID)!.tweet, appManager).then((res) => {
+        if (res) {
+          newHashtagElement.textContent = res;
+        }
+      });
+    }
 
     const publishButton = document.getElementById('new-thought-publish')!;
     publishButton.setAttribute('reply-id', replyID);

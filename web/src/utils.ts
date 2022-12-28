@@ -1,6 +1,7 @@
-import { formatSingleLineText, formatMultiLineText } from './formatters';
+import { formatSingleLineText } from './formatters';
 import { AppManager } from './app_manager';
 import { defaultName } from './config';
+import { hashtagByThoughtID } from './queries';
 
 export function toUTF8Array(str: string): number[] {
   var utf8 = [];
@@ -109,4 +110,29 @@ async function findLatestName(account: string, appManager: AppManager): Promise<
   }
 
   return null;
+}
+
+export async function getHashtag(
+  thoughtID: string,
+  appManager: AppManager
+): Promise<string | null> {
+  let res: any = null;
+
+  try {
+    res = await appManager.queryDispatcher.fetch(hashtagByThoughtID(thoughtID));
+  } catch (error) {
+    console.log(error);
+  }
+
+  if (!res) {
+    return null;
+  }
+
+  interface withHashtag {
+    hashtag: string;
+  }
+
+  const a = res['newTweets'] as withHashtag[];
+
+  return a[0].hashtag;
 }
