@@ -30,12 +30,6 @@ export function init(appManager: AppManager) {
     }
   };
 
-  const disableEnter = (event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-    }
-  };
-
   const newThought = document.getElementById('new-thought-text')!;
   const counter = document.getElementById('new-thought-counter')!;
 
@@ -52,7 +46,7 @@ export function init(appManager: AppManager) {
   );
 
   const newAuthor = document.getElementById('new-thought-author')!;
-  newAuthor.addEventListener('keydown', disableEnter);
+  newAuthor.addEventListener('keydown', appManager.interactionState.disableEnter);
   newAuthor.addEventListener('focus', (event) =>
     appManager.interactionState.focusNewThoughtAuthor(event)
   );
@@ -61,7 +55,7 @@ export function init(appManager: AppManager) {
   );
 
   const newHashtag = document.getElementById('new-thought-hashtag')!;
-  newHashtag.addEventListener('keydown', disableEnter);
+  newHashtag.addEventListener('keydown', appManager.interactionState.disableEnter);
   newHashtag.addEventListener('focus', (event) =>
     appManager.interactionState.focusNewThoughtHashtag(event)
   );

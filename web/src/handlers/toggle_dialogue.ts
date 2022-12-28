@@ -28,7 +28,7 @@ export async function toggleDialogue(
     return;
   }
 
-  await setDomain(me, appManager);
+  await setDomain(me, appManager, null);
 
   const dialogue = document.getElementById('dialogue')!;
   const overlay = document.getElementById('overlay')!;

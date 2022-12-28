@@ -170,7 +170,7 @@ export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): 
   const repliesContainer = document.createElement('div');
   repliesContainer.classList.add('thought-replies-container');
   repliesContainer.id = `replies-${t.id}`;
-  repliesContainer.appendChild(makeNewReplyContainer(t.id));
+  repliesContainer.appendChild(makeNewReplyContainer(t.id, appManager));
 
   const thoughtContainer = document.createElement('div');
   thoughtContainer.classList.add('thought-container');

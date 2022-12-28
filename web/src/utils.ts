@@ -28,8 +28,17 @@ export function toUTF8Array(str: string): number[] {
   return utf8;
 }
 
-export async function setDomain(account: string, appManager: AppManager) {
-  const domainElement = document.getElementById('new-domain')!;
+export async function setDomain(account: string, appManager: AppManager, thoughtID: string | null) {
+  let domainElement: HTMLElement;
+  let authorElement: HTMLElement;
+
+  if (!thoughtID) {
+    domainElement = document.getElementById('new-thought-domain')!;
+    authorElement = document.getElementById('new-thought-author')!;
+  } else {
+    domainElement = document.getElementById(`new-reply-domain-${thoughtID}`)!;
+    authorElement = document.getElementById(`new-reply-author-${thoughtID}`)!;
+  }
 
   const domain = await appManager.ensLooker.reverseLookup(account);
   if (domain) {
@@ -37,8 +46,6 @@ export async function setDomain(account: string, appManager: AppManager) {
   } else {
     domainElement.textContent = `@${account}`;
   }
-
-  const authorElement = document.getElementById('new-thought-author')!;
 
   if (
     !authorElement.textContent ||

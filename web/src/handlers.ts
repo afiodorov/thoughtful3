@@ -15,6 +15,19 @@ export class InteractionState {
     }
   }
 
+  private newReplyAuthorWasFocused: Map<string, boolean> = new Map();
+  focusNewReplyAuthor(_: Event, thoughtID: string) {
+    if (this.newReplyAuthorWasFocused.get(thoughtID)) {
+      return;
+    }
+
+    this.newReplyAuthorWasFocused.set(thoughtID, true);
+    const newReplyAuthorElement = document.getElementById(`new-reply-author-${thoughtID}`)!;
+    if (newReplyAuthorElement.textContent == defaultName) {
+      newReplyAuthorElement.textContent = '';
+    }
+  }
+
   private newThoughtAuthorWasFocused = false;
   focusNewThoughtAuthor(_: Event) {
     if (this.newThoughtAuthorWasFocused) {
@@ -41,6 +54,12 @@ export class InteractionState {
       const selection = window.getSelection();
       selection?.removeAllRanges();
       selection?.addRange(range);
+    }
+  }
+
+  disableEnter(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
     }
   }
 

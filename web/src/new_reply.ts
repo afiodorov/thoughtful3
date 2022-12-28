@@ -1,8 +1,12 @@
-export function makeNewReplyContainer(thoughtID: string) {
+import { AppManager } from './app_manager';
+import { defaultName } from './config';
+
+export function makeNewReplyContainer(thoughtID: string, appManager: AppManager) {
   const newReplyContainer = document.createElement('div');
   newReplyContainer.id = `new-reply-${thoughtID}`;
   newReplyContainer.classList.add('reply-container');
   newReplyContainer.style.display = 'none';
+  newReplyContainer.setAttribute('acc-update-thought-id', thoughtID);
 
   const leftQuoteElement = document.createElement('div');
   leftQuoteElement.classList.add('reply-left-quote');
@@ -19,11 +23,22 @@ export function makeNewReplyContainer(thoughtID: string) {
 
   const authorElement = document.createElement('div');
   authorElement.classList.add('reply-author');
-  authorElement.textContent = 'author';
+  authorElement.textContent = defaultName;
+  authorElement.setAttribute('contenteditable', 'true');
+  authorElement.id = `new-reply-author-${thoughtID}`;
+
+  authorElement.addEventListener('keydown', appManager.interactionState.disableEnter);
+  authorElement.addEventListener('focus', (event) =>
+    appManager.interactionState.focusNewReplyAuthor(event, thoughtID)
+  );
+  authorElement.addEventListener('keydown', (event) =>
+    appManager.interactionState.maxLength(40, event)
+  );
 
   const domainElement = document.createElement('div');
   domainElement.classList.add('reply-domain');
   domainElement.textContent = 'sender';
+  domainElement.id = `new-reply-domain-${thoughtID}`;
 
   const authorContainer = document.createElement('div');
   authorContainer.classList.add('reply-author-container');

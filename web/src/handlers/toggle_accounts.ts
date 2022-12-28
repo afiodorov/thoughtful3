@@ -8,7 +8,7 @@ export async function toggleAccounts(accounts: string[], appManager: AppManager)
     return;
   }
 
-  const domainElement = document.getElementById('new-domain')!;
+  const domainElement = document.getElementById('new-thought-domain')!;
 
   if (accounts.length === 0) {
     domainElement.textContent = 'not connected';
@@ -17,7 +17,16 @@ export async function toggleAccounts(accounts: string[], appManager: AppManager)
 
   toggleAccountsLock = true;
 
-  await setDomain(accounts[0], appManager);
+  await setDomain(accounts[0], appManager, null);
+
+  const elements = document.querySelectorAll('[id^="new-reply-"]');
+  for (const element of elements) {
+    const attr = element.getAttribute('acc-update-thought-id');
+    if (!attr) {
+      continue;
+    }
+    await setDomain(accounts[0], appManager, attr);
+  }
 
   toggleAccountsLock = false;
 }
