@@ -24,12 +24,6 @@ export function init(appManager: AppManager) {
     event.stopPropagation();
   });
 
-  const disableEnterAllowShift = (event: KeyboardEvent) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-    }
-  };
-
   const newThought = document.getElementById('new-thought-text')!;
   const counter = document.getElementById('new-thought-counter')!;
 
@@ -37,7 +31,7 @@ export function init(appManager: AppManager) {
     counter.textContent = `${300 - toUTF8Array(newThought.textContent!).length}`;
   });
 
-  newThought.addEventListener('keydown', disableEnterAllowShift);
+  newThought.addEventListener('keydown', appManager.interactionState.disableEnterAllowShift);
   newThought.addEventListener('focus', (event) =>
     appManager.interactionState.focusNewThoughtText(event)
   );

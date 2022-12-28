@@ -1,6 +1,7 @@
 .new-thought-rest-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  padding: 0px 10px;
 }
 
 .new-thought-publish-link {
@@ -10,6 +11,14 @@
 
 .new-thought-counter {
   color: #dbdbdb;
+  size: 0.9em;
+  font-weight: bold;
+  margin-top: 5px;
+  margin-left: 20px;
+}
+
+.new-reply-counter {
+  color: #ffffff;
   size: 0.9em;
   font-weight: bold;
   margin-top: 5px;

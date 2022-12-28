@@ -15,6 +15,19 @@ export class InteractionState {
     }
   }
 
+  private newReplyTextWasFocused: Map<string, boolean> = new Map();
+  focusNewReplyText(_: Event, thoughtID: string) {
+    if (this.newReplyTextWasFocused.get(thoughtID)) {
+      return;
+    }
+
+    this.newReplyTextWasFocused.set(thoughtID, true);
+    const newReplyTextElement = document.getElementById(`new-reply-text-${thoughtID}`)!;
+    if (newReplyTextElement.textContent == defaultText) {
+      newReplyTextElement.textContent = '';
+    }
+  }
+
   private newReplyAuthorWasFocused: Map<string, boolean> = new Map();
   focusNewReplyAuthor(_: Event, thoughtID: string) {
     if (this.newReplyAuthorWasFocused.get(thoughtID)) {
@@ -59,6 +72,12 @@ export class InteractionState {
 
   disableEnter(event: KeyboardEvent) {
     if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  }
+
+  disableEnterAllowShift(event: KeyboardEvent) {
+    if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
     }
   }
