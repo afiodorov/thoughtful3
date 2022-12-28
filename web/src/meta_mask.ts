@@ -196,7 +196,6 @@ export class MetaMask {
     }
 
     if (!newThought) {
-      console.log('no new thought');
       return null;
     }
 

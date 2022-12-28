@@ -85,5 +85,14 @@ body {
 
 .instruction {
   text-align: right;
+  margin: 5px 5px;
+}
+
+.instruction-text {
   font-style: italic;
+}
+
+.top-panel {
+  display: flex;
+  flex-direction: row;
 }
