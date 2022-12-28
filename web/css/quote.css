@@ -15,6 +15,9 @@
 }
 
 .quote-author {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
   font-size: 1.5em;
   text-align: left;
   padding-left: 5px;

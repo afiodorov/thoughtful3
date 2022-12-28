@@ -11,6 +11,8 @@ export interface Thought {
   readonly quoteText: string;
   readonly quoteDisplayName: string;
   readonly quoteHashtag: string;
+  readonly retweetOf: string;
+  readonly isReplyRetweet: boolean;
 }
 
 export interface Reply {
@@ -23,10 +25,4 @@ export interface Reply {
   readonly numRetweets: number;
   readonly seq_num: number;
   readonly tweet: string;
-}
-
-export interface Quote {
-  readonly quoteText: string;
-  readonly quoteDisplayName: string;
-  readonly quoteHashtag: string;
 }

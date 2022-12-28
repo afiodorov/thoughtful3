@@ -1,4 +1,4 @@
-import { EntityStore } from '../entity_store';
+import { EntityStore } from '../entity/store';
 import { MetaMask } from '../meta_mask';
 import { QueryDispatcher } from '../query';
 

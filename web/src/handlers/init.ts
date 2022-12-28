@@ -2,6 +2,7 @@ import { AppManager } from '../app_manager';
 import { toUTF8Array } from '../utils';
 import { defaultName, defaultText, defaultHashtag } from '../config';
 import { publishThought } from './publish_thought';
+import { toggleDialogue } from './toggle_dialogue';
 
 export function init(appManager: AppManager) {
   const overlay = document.getElementById('overlay')!;
@@ -75,12 +76,12 @@ export function init(appManager: AppManager) {
   if (appManager.metaMask !== null) {
     const closeButton = document.getElementById('close-button');
     closeButton!.addEventListener('click', (event) =>
-      appManager.interactionState.toggleDialogue(event, appManager.metaMask!, appManager)
+      toggleDialogue(event, appManager.metaMask!, appManager)
     );
 
     const logo = document.getElementById('logo')!;
     logo.addEventListener('click', (event) =>
-      appManager.interactionState.toggleDialogue(event, appManager.metaMask!, appManager)
+      toggleDialogue(event, appManager.metaMask!, appManager)
     );
     logo.classList.add('link');
 

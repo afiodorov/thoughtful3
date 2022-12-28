@@ -13,6 +13,8 @@ export const allRecentThoughts = `
     quoteText
     quoteDisplayName
     quoteHashtag
+    retweetOf
+    isReplyRetweet
   }
 }
 `;
@@ -32,6 +34,8 @@ export const thoughtByID = (id: string) => `
     quoteText
     quoteDisplayName
     quoteHashtag
+    retweetOf
+    isReplyRetweet
   }
 }
 `;

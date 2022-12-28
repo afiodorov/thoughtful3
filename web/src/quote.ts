@@ -1,7 +1,7 @@
-import { Quote } from './responses';
+import { QuoteEntity } from './entity/entities';
 import { formatSingleLineText, formatMultiLineText } from './formatters';
 
-export function makeQuoteContainer(q: Quote): HTMLDivElement {
+export function makeQuoteContainer(q: QuoteEntity): HTMLDivElement {
   const quoteContainer = document.createElement('div');
   quoteContainer.classList.add('quote-container');
 
@@ -10,7 +10,17 @@ export function makeQuoteContainer(q: Quote): HTMLDivElement {
 
   const quoteAuthor = document.createElement('div');
   quoteAuthor.classList.add('quote-author');
-  quoteAuthor.textContent = `>${formatSingleLineText(q.quoteDisplayName)}`;
+
+  const quoteAuthorLink = document.createElement('a');
+  quoteAuthorLink.textContent = '>';
+  quoteAuthorLink.href = q.isReplyQuote ? `?reply-id=${q.quoteOf}` : `?thought-id=${q.quoteOf}`;
+
+  const quoteAuthorText = document.createElement('div');
+  quoteAuthorText.classList.add('quote-author-text');
+  quoteAuthorText.textContent = formatSingleLineText(q.quoteDisplayName);
+
+  quoteAuthor.appendChild(quoteAuthorLink);
+  quoteAuthor.appendChild(quoteAuthorText);
 
   const quoteDomainContainer = document.createElement('div');
   quoteDomainContainer.classList.add('quote-domain-container');

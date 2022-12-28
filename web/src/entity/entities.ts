@@ -1,19 +1,6 @@
-import { Thought, Reply } from './responses';
+import { Thought, Reply } from '../responses';
 
-export class EntityStore {
-  private _thoughts: Map<string, ThoughtEntity> = new Map();
-  private _replies: Map<string, ReplyEntity> = new Map();
-
-  get thoughts(): Map<string, ThoughtEntity> {
-    return this._thoughts;
-  }
-
-  get replies(): Map<string, ReplyEntity> {
-    return this._replies;
-  }
-}
-
-export class ThoughtEntity implements Thought {
+export class ThoughtEntity {
   id: string;
   sender: string;
   text: string;
@@ -22,10 +9,12 @@ export class ThoughtEntity implements Thought {
   blockTimestamp: number;
   numLikes: number;
   numReplies: number;
-  numRetweets: number;
+  numQuotes: number;
   quoteText: string;
   quoteDisplayName: string;
   quoteHashtag: string;
+  quoteOf: string;
+  isReplyQuote: boolean;
 
   constructor({
     id,
@@ -39,7 +28,9 @@ export class ThoughtEntity implements Thought {
     numRetweets,
     quoteText,
     quoteDisplayName,
-    quoteHashtag
+    quoteHashtag,
+    retweetOf,
+    isReplyRetweet
   }: Thought) {
     this.id = id;
     this.sender = sender;
@@ -49,21 +40,23 @@ export class ThoughtEntity implements Thought {
     this.blockTimestamp = blockTimestamp;
     this.numLikes = numLikes;
     this.numReplies = numReplies;
-    this.numRetweets = numRetweets;
+    this.numQuotes = numRetweets;
     this.quoteText = quoteText;
     this.quoteDisplayName = quoteDisplayName;
     this.quoteHashtag = quoteHashtag;
+    this.quoteOf = retweetOf;
+    this.isReplyQuote = isReplyRetweet;
   }
 }
 
-export class ReplyEntity implements Reply {
+export class ReplyEntity {
   id: string;
   sender: string;
   text: string;
   displayName: string;
   blockTimestamp: number;
   numLikes: number;
-  numRetweets: number;
+  numQuotes: number;
   seq_num: number;
   tweet: string;
   constructor({
@@ -83,8 +76,24 @@ export class ReplyEntity implements Reply {
     this.displayName = displayName;
     this.blockTimestamp = blockTimestamp;
     this.numLikes = numLikes;
-    this.numRetweets = numRetweets;
+    this.numQuotes = numRetweets;
     this.seq_num = seq_num;
     this.tweet = tweet;
+  }
+}
+
+export class QuoteEntity {
+  quoteText: string;
+  quoteDisplayName: string;
+  quoteHashtag: string;
+  quoteOf: string;
+  isReplyQuote: boolean;
+
+  constructor({ quoteText, quoteDisplayName, quoteHashtag, retweetOf, isReplyRetweet }: Thought) {
+    this.quoteText = quoteText;
+    this.quoteDisplayName = quoteDisplayName;
+    this.quoteHashtag = quoteHashtag;
+    this.quoteOf = retweetOf;
+    this.isReplyQuote = isReplyRetweet;
   }
 }

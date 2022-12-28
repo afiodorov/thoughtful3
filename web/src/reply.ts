@@ -1,12 +1,13 @@
 import { Reply } from './responses';
+import { ReplyEntity } from './entity/entities';
 import { formatSingleLineText, formatDate, formatMultiLineText } from './formatters';
 import { AppManager } from './app_manager';
-import { ReplyEntity } from './entity_store';
 import { likeReply } from './handlers/like';
 import { repliesByThought } from './queries';
+import { toggleDialogue } from './handlers/toggle_dialogue';
 
 export function makeReplyContainer(
-  r: Reply,
+  r: ReplyEntity,
   shouldShowName: boolean,
   appManager: AppManager,
   isLast: boolean
@@ -105,7 +106,7 @@ export function makeReplyContainer(
     quoteElementLink.textContent = '🔄';
     quoteElementLink.setAttribute('reply-id', r.id);
     quoteElementLink.addEventListener('click', (event) =>
-      appManager.interactionState.toggleDialogue(event, appManager.metaMask!, appManager)
+      toggleDialogue(event, appManager.metaMask!, appManager)
     );
 
     quoteElement.appendChild(quoteElementLink);
@@ -119,8 +120,8 @@ export function makeReplyContainer(
   const quoteElementText = document.createElement('div');
   quoteElementText.classList.add('reply-quote-text');
   quoteElementText.id = `reply-${r.id}-quotes`;
-  if (r.numRetweets > 0) {
-    quoteElementText.textContent = `${r.numRetweets}`;
+  if (r.numQuotes > 0) {
+    quoteElementText.textContent = `${r.numQuotes}`;
   }
 
   quoteElement.appendChild(quoteElementText);
@@ -148,24 +149,28 @@ export async function fetchReplies(
 ): Promise<Array<HTMLDivElement>> {
   const query = repliesByThought(thoughtID);
   const fetchedReplies = (await appManager.queryDispatcher.fetch(query))['newReplies'] as Reply[];
-  fetchedReplies.forEach((r) => appManager.entityStore.replies.set(r.id, new ReplyEntity(r)));
+  const entities = fetchedReplies.map((r) => {
+    const entity = new ReplyEntity(r);
+    appManager.entityStore.replies.set(r.id, entity);
+    return entity;
+  });
 
   const thought = appManager.entityStore.thoughts.get(thoughtID);
   const thoughtDisplayName = thought?.displayName;
   const thoughtSender = thought?.sender;
 
-  const replies = processReplies(fetchedReplies, thoughtDisplayName, thoughtSender);
+  const replies = processReplies(entities, thoughtDisplayName, thoughtSender);
   return replies.map((reply, i, replies) => {
     return makeReplyContainer(reply[0], reply[1], appManager, replies.length - 1 === i);
   });
 }
 
 export function processReplies(
-  replies: Array<Reply>,
+  replies: Array<ReplyEntity>,
   thoughtDisplayName: string | undefined,
   thoughtSender: string | undefined
-): [Reply, boolean][] {
-  const res: Array<[Reply, boolean]> = new Array();
+): [ReplyEntity, boolean][] {
+  const res: Array<[ReplyEntity, boolean]> = new Array();
 
   let lastDisplayName = thoughtDisplayName;
   let lastSender = thoughtSender;

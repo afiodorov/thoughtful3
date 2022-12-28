@@ -23,5 +23,5 @@ clean:
 	rm -f $(BUNDLE)
 
 
-$(BUNDLE): $(wildcard src/*.ts)
+$(BUNDLE): $(wildcard src/**/*.ts)
 	yarn run build

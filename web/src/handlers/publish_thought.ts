@@ -1,6 +1,6 @@
 import { MetaMask } from '../meta_mask';
 import { AppManager } from '../app_manager';
-import { ThoughtEntity } from '../entity_store';
+import { ThoughtEntity } from '../entity/entities';
 import { makeThoughtContainer } from '../thought';
 
 let publishThoughtLock = false;
@@ -74,7 +74,9 @@ export async function publishThought(
     numRetweets: 0,
     quoteText: quoteText,
     quoteDisplayName: quoteDisplayName,
-    quoteHashtag: quoteHashtag
+    quoteHashtag: quoteHashtag,
+    retweetOf: quoteID || '0',
+    isReplyRetweet: replyID !== null
   });
 
   appManager.entityStore.thoughts.set(newThought.value, t);
@@ -92,15 +94,15 @@ export async function publishThought(
   document.getElementById('dialogue')!.style.display = 'none';
 
   if (thoughtID) {
-    appManager.entityStore.thoughts.get(thoughtID)!.numRetweets += 1;
+    appManager.entityStore.thoughts.get(thoughtID)!.numQuotes += 1;
     document.getElementById(`thought-${thoughtID}-quotes`)!.textContent = `${
-      appManager.entityStore.thoughts.get(thoughtID)!.numRetweets
+      appManager.entityStore.thoughts.get(thoughtID)!.numQuotes
     }`;
     appManager.queryDispatcher.invalidateCache();
   } else if (replyID) {
-    appManager.entityStore.replies.get(replyID)!.numRetweets += 1;
+    appManager.entityStore.replies.get(replyID)!.numQuotes += 1;
     document.getElementById(`reply-${replyID}-quotes`)!.textContent = `${
-      appManager.entityStore.replies.get(replyID)!.numRetweets
+      appManager.entityStore.replies.get(replyID)!.numQuotes
     }`;
     appManager.queryDispatcher.invalidateCache();
   }

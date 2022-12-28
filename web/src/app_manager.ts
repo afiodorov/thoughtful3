@@ -4,7 +4,7 @@ import { MetaMask } from './meta_mask';
 import { rpcURL, contractAddress, graphURL, ttl } from './config';
 import { QueryDispatcher } from './query';
 import Web3 from 'web3';
-import { EntityStore } from './entity_store';
+import { EntityStore } from './entity/store';
 
 export class AppManager {
   private _ensLooker: EnsLooker;

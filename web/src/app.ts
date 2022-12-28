@@ -4,10 +4,9 @@ import { makeThoughtContainer } from './thought';
 import { AppManager } from './app_manager';
 import { parseCurrentURL } from './params';
 import { allRecentThoughts, thoughtByID, replyByID } from './queries';
-import { ThoughtEntity } from './entity_store';
+import { ThoughtEntity, ReplyEntity } from './entity/entities';
 import { ThoughtParams, ReplyParams } from './params';
 import { init } from './handlers/init';
-import { ReplyEntity } from './entity_store';
 
 const appManager = new AppManager();
 
@@ -26,23 +25,29 @@ if (params instanceof ThoughtParams) {
 
   const thoughts = (await appManager.queryDispatcher.fetch(query))['newTweets'] as Thought[];
 
-  thoughts.forEach((t) => {
-    appManager.entityStore.thoughts.set(t.id, new ThoughtEntity(t));
+  const entities = thoughts.map((t) => {
+    const entity = new ThoughtEntity(t);
+    appManager.entityStore.thoughts.set(t.id, entity);
+    return entity;
   });
 
   const thoughtsContainer = document.getElementById('thoughts-container');
 
-  thoughts.forEach((t) => {
+  entities.forEach((t) => {
     thoughtsContainer!.appendChild(makeThoughtContainer(t, appManager));
   });
 } else if (params instanceof ReplyParams) {
   const query = replyByID(params.replyID);
   const fetchedReplies = (await appManager.queryDispatcher.fetch(query))['newReplies'] as Reply[];
-  fetchedReplies.forEach((r) => appManager.entityStore.replies.set(r.id, new ReplyEntity(r)));
+  const entities = fetchedReplies.map((r) => {
+    const entity = new ReplyEntity(r);
+    appManager.entityStore.replies.set(r.id, entity);
+    return entity;
+  });
 
   const thoughtsContainer = document.getElementById('thoughts-container');
 
-  fetchedReplies
+  entities
     .map((reply) => {
       return makeReplyContainer(reply, true, appManager, true);
     })

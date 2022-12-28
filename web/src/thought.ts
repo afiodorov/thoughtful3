@@ -1,15 +1,14 @@
-import { Thought } from './responses';
 import { formatSingleLineText, formatMultiLineText, formatDate } from './formatters';
 import { AppManager } from './app_manager';
 import { makeQuoteContainer } from './quote';
 import { likeThought } from './handlers/like';
+import { ThoughtEntity } from './entity/entities';
+import { toggleDialogue } from './handlers/toggle_dialogue';
 
-export function makeThoughtContainer(t: Thought, appManager: AppManager): HTMLDivElement {
+export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): HTMLDivElement {
   const text = t.text;
-  // ('fcxgfiqywsmxtcolahkkkjkfnnklqfnwnbjerhmuhgxogjvoxzpgnermdvhiqwcynaffaeqgehgmfyukfozcycujtbjokdysiehmdhfkoqjkorsxcxpmnliddggxwzqmtjlhvpmhevxtwfqaufbdgzzfrzmnqzhasmulcjplxxcuqpxciwpwdbrngnpnyopfguabnzdnucwmgpirgjxqwoozynwhtvuubmbhlwjxdxeritsktoarmlcgtxakfxznietbirivjiperoabnlhaezhednslmffqekcqgdoqpqmh');
   const formattedText = formatMultiLineText(text);
   const author = formatSingleLineText(t.displayName);
-  // const author = "mTkX0zQqZ4kt65r22TCY8nUvCHTGXmTdcbvHpCYk"
 
   const leftQuoteElement = document.createElement('div');
   leftQuoteElement.classList.add('thought-left-quote');
@@ -46,7 +45,6 @@ export function makeThoughtContainer(t: Thought, appManager: AppManager): HTMLDi
   const hashtagElement = document.createElement('div');
   hashtagElement.classList.add('thought-hashtag');
   hashtagElement.textContent = `#${formatSingleLineText(t.hashtag)}`;
-  // hashtagElement.textContent = '#eZTY4sLOz8jSjEi31Q6Nf9q1NXAWU2';
 
   domainContainer.appendChild(domainElement);
   domainContainer.appendChild(hashtagElement);
@@ -131,7 +129,7 @@ export function makeThoughtContainer(t: Thought, appManager: AppManager): HTMLDi
     quoteElementLink.textContent = '🔄';
     quoteElementLink.setAttribute('thought-id', t.id);
     quoteElementLink.addEventListener('click', (event) =>
-      appManager.interactionState.toggleDialogue(event, appManager.metaMask!, appManager)
+      toggleDialogue(event, appManager.metaMask!, appManager)
     );
 
     quoteElement.appendChild(quoteElementLink);
@@ -145,8 +143,8 @@ export function makeThoughtContainer(t: Thought, appManager: AppManager): HTMLDi
   const quoteElementText = document.createElement('div');
   quoteElementText.classList.add('thought-quote-text');
   quoteElementText.id = `thought-${t.id}-quotes`;
-  if (t.numRetweets > 0) {
-    quoteElementText.textContent = `${t.numRetweets}`;
+  if (t.numQuotes > 0) {
+    quoteElementText.textContent = `${t.numQuotes}`;
   }
 
   quoteElement.appendChild(quoteElementText);
@@ -165,7 +163,7 @@ export function makeThoughtContainer(t: Thought, appManager: AppManager): HTMLDi
 
   thoughtContainer.appendChild(authorContainer);
   thoughtContainer.appendChild(textContainer);
-  if (t.quoteText) {
+  if (t.quoteOf !== '0') {
     thoughtContainer!.appendChild(makeQuoteContainer(t));
   }
 
