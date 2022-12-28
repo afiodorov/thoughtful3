@@ -1,10 +1,12 @@
 export class ThoughtParams {
   thoughtID: string | null;
   hashtag: string | null;
+  skip: number;
 
-  constructor(thoughtID: string | null, hashtag: string | null) {
+  constructor(thoughtID: string | null, hashtag: string | null, skip: number) {
     this.thoughtID = thoughtID;
     this.hashtag = hashtag ? decodeURIComponent(hashtag) : null;
+    this.skip = skip;
   }
 }
 
@@ -26,5 +28,14 @@ export function parseCurrentURL(): ThoughtParams | ReplyParams {
     return new ReplyParams(replyID);
   }
 
-  return new ThoughtParams(searchParams.get('thought-id'), searchParams.get('hashtag'));
+  const skipPar = searchParams.get('skip');
+  let skip: number = 0;
+
+  try {
+    if (skipPar) {
+      skip = parseInt(skipPar, 10);
+    }
+  } catch {}
+
+  return new ThoughtParams(searchParams.get('thought-id'), searchParams.get('hashtag'), skip);
 }

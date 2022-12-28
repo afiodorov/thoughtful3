@@ -20,9 +20,9 @@ if (params instanceof ThoughtParams) {
   if (params.thoughtID) {
     query = thoughtByID(params.thoughtID);
   } else if (params.hashtag) {
-    query = thoughtsByHashtag(params.hashtag);
+    query = thoughtsByHashtag(params.hashtag, params.skip);
   } else {
-    query = allRecentThoughts;
+    query = allRecentThoughts(params.skip);
   }
 
   const thoughts = (await appManager.queryDispatcher.fetch(query))['newTweets'] as Thought[];

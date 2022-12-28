@@ -1,6 +1,6 @@
-export const allRecentThoughts = `
+export const allRecentThoughts = (skip: number) => `
 {
-  newTweets(orderBy: id, orderDirection: desc, first: 30) {
+  newTweets(orderBy: id, orderDirection: desc, first: 30, skip: ${skip}) {
     id
     sender
     text
@@ -40,9 +40,9 @@ export const thoughtByID = (id: string) => `
 }
 `;
 
-export const repliesByThought = (thoughtID: string) => `
+export const repliesByThought = (thoughtID: string, skip: number) => `
 {
-  newReplies(first: 30, orderBy: blockNumber, where:{tweet: "${thoughtID}"}) {
+  newReplies(first: 30, orderBy: blockNumber, where:{tweet: "${thoughtID}"}, skip: ${skip}) {
     id
     sender
     text
@@ -80,9 +80,9 @@ export const hashtagByThoughtID = (thoughtID: string) => `
 }
 `;
 
-export const thoughtsByHashtag = (hashtag: string) => `
+export const thoughtsByHashtag = (hashtag: string, skip: number) => `
 {
-  newTweets(orderBy: id, orderDirection: desc, first: 30, where:{hashtag: "${hashtag}"}) {
+  newTweets(orderBy: id, orderDirection: desc, first: 30, where:{hashtag: "${hashtag}"}, skip: ${skip}) {
     id
     sender
     text
