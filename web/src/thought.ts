@@ -5,6 +5,8 @@ import { likeThought } from './handlers/like';
 import { ThoughtEntity } from './entity/entities';
 import { toggleDialogue } from './handlers/toggle_dialogue';
 import { toggleReplies } from './handlers/toggle_replies';
+import { toggleNewReply } from './handlers/toggle_new_reply';
+import { makeNewReplyContainer } from './new_reply';
 
 export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): HTMLDivElement {
   const text = t.text;
@@ -107,20 +109,32 @@ export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): 
 
   const replyElement = document.createElement('div');
   replyElement.classList.add('thought-reply');
-  if (t.numReplies == 0) {
-    replyElement.textContent = `💬`;
+
+  const replyElementIcon = document.createElement('div');
+
+  if (!appManager.metaMask) {
+    replyElementIcon.textContent = '💬';
   } else {
+    const replyElementLink = document.createElement('a');
+    replyElementLink.href = `#new-reply-${t.id}`;
+    replyElementLink.textContent = `💬`;
+    replyElementLink.classList.add('thought-reply-icon');
+    replyElementLink.setAttribute('thought-id', t.id);
+    replyElementLink.addEventListener('click', (event) => toggleNewReply(event, appManager));
+
+    replyElementIcon.appendChild(replyElementLink);
+  }
+
+  replyElement.appendChild(replyElementIcon);
+
+  if (t.numReplies > 0) {
     const replyLink = document.createElement('a');
-    replyLink.href = '#';
+    replyLink.href = `#thought-${t.id}`;
     replyLink.textContent = `${t.numReplies}`;
     replyLink.classList.add('thought-reply-link');
     replyLink.setAttribute('thought-id', t.id);
     replyLink.addEventListener('click', (event) => toggleReplies(event, appManager));
 
-    const replyText = document.createElement('div');
-    replyText.textContent = '💬';
-
-    replyElement.appendChild(replyText);
     replyElement.appendChild(replyLink);
   }
 
@@ -155,10 +169,12 @@ export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): 
 
   const repliesContainer = document.createElement('div');
   repliesContainer.classList.add('thought-replies-container');
-  repliesContainer.id = t.id;
+  repliesContainer.id = `replies-${t.id}`;
+  repliesContainer.appendChild(makeNewReplyContainer(t.id));
 
   const thoughtContainer = document.createElement('div');
   thoughtContainer.classList.add('thought-container');
+  thoughtContainer.id = `thought-${t.id}`;
 
   restContainer.appendChild(replyElement);
   restContainer.appendChild(likeElement);

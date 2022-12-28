@@ -37,7 +37,7 @@ export function init(appManager: AppManager) {
   };
 
   const newThought = document.getElementById('new-thought-text')!;
-  const counter = document.getElementById('counter')!;
+  const counter = document.getElementById('new-thought-counter')!;
 
   newThought.addEventListener('input', () => {
     counter.textContent = `${300 - toUTF8Array(newThought.textContent!).length}`;

@@ -15,19 +15,27 @@ export function toggleReplies(event: Event, appManager: AppManager): void {
   }
 
   toggledLock.set(thoughtID, true);
-  const replyContainer = document.getElementById(thoughtID)!;
+  const replyContainer = document.getElementById(`replies-${thoughtID}`)!;
 
-  if (replyContainer.children.length > 0) {
+  if (replyContainer.children.length > 1) {
+    const newReply = document.getElementById(`new-reply-${thoughtID}`)!;
     replyContainer.innerHTML = '';
+    replyContainer.appendChild(newReply);
+
     toggledLock.set(thoughtID, false);
     return;
   }
 
   fetchReplies(thoughtID, appManager).then((replies) => {
+    const newReply = document.getElementById(`new-reply-${thoughtID}`)!;
+    replyContainer.innerHTML = '';
+
     replies.forEach((reply) => {
       replyContainer.appendChild(reply);
     });
 
-    toggledLock.set(thoughtID, false);
+    replyContainer.appendChild(newReply);
   });
+
+  toggledLock.set(thoughtID, false);
 }
