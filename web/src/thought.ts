@@ -4,7 +4,7 @@ import { makeQuoteContainer } from './quote';
 import { likeThought } from './handlers/like';
 import { ThoughtEntity } from './entity/entities';
 import { toggleDialogue } from './handlers/toggle_dialogue';
-import {toggleReplies} from './handlers/toggle_replies'
+import { toggleReplies } from './handlers/toggle_replies';
 
 export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): HTMLDivElement {
   const text = t.text;
@@ -45,7 +45,12 @@ export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): 
 
   const hashtagElement = document.createElement('div');
   hashtagElement.classList.add('thought-hashtag');
-  hashtagElement.textContent = `#${formatSingleLineText(t.hashtag)}`;
+
+  const hashtagLink = document.createElement('a');
+  hashtagLink.textContent = `#${formatSingleLineText(t.hashtag)}`;
+  hashtagLink.href = `?hashtag=${encodeURIComponent(t.hashtag)}`;
+
+  hashtagElement.appendChild(hashtagLink);
 
   domainContainer.appendChild(domainElement);
   domainContainer.appendChild(hashtagElement);
@@ -110,9 +115,7 @@ export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): 
     replyLink.textContent = `${t.numReplies}`;
     replyLink.classList.add('thought-reply-link');
     replyLink.setAttribute('thought-id', t.id);
-    replyLink.addEventListener('click', (event) =>
-      toggleReplies(event, appManager)
-    );
+    replyLink.addEventListener('click', (event) => toggleReplies(event, appManager));
 
     const replyText = document.createElement('div');
     replyText.textContent = '💬';

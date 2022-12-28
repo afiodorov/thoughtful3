@@ -72,12 +72,31 @@ export const replyByID = (replyID: string) => `
 }
 `;
 
-export const hashtagByThoughtID = (thoughtID: string) => {
-  return `
+export const hashtagByThoughtID = (thoughtID: string) => `
 {
   newTweets(first: 1, where:{id: "${thoughtID}"}) {
     hashtag
   }
 }
 `;
-};
+
+export const thoughtsByHashtag = (hashtag: string) => `
+{
+  newTweets(orderBy: id, orderDirection: desc, first: 30, where:{hashtag: "${hashtag}"}) {
+    id
+    sender
+    text
+    displayName
+    hashtag
+    blockTimestamp
+    numLikes
+    numReplies
+    numRetweets
+    quoteText
+    quoteDisplayName
+    quoteHashtag
+    retweetOf
+    isReplyRetweet
+  }
+}
+`;
