@@ -35,3 +35,19 @@ export const thoughtByID = (id: string) => `
   }
 }
 `;
+
+export const repliesByThought = (thoughtID: string) => `
+{
+  newReplies(first: 30, orderBy: blockNumber, where:{tweet: "${thoughtID}"}) {
+    id
+    sender
+    text
+    displayName
+    tweet
+    blockTimestamp
+    numLikes
+    numRetweets
+    seq_num
+  }
+}
+`;

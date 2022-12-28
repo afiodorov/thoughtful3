@@ -65,6 +65,8 @@
   flex-wrap: nowrap;
   flex-direction: row;
   justify-content: flex-end;
+  text-align: right;
+  padding-right: 5px;
 }
 
 .thought-like {
@@ -87,9 +89,4 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 2fr;
   max-height: 28px;
-}
-
-.thought-date {
-  text-align: right;
-  padding-right: 5px;
 }

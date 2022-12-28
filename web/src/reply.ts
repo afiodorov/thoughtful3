@@ -3,6 +3,7 @@ import { formatSingleLineText, formatDate, formatMultiLineText } from './formatt
 import { AppManager } from './app_manager';
 import { ReplyEntity } from './entity_store';
 import { likeReply } from './handlers/like';
+import { repliesByThought } from './queries';
 
 function makeReplyContainer(
   r: Reply,
@@ -16,7 +17,7 @@ function makeReplyContainer(
 
   const leftQuoteElement = document.createElement('div');
   leftQuoteElement.classList.add('reply-left-quote');
-  leftQuoteElement.innerText = '>';
+  leftQuoteElement.innerHTML = `<a href="?thought-id=${r.tweet}">&gt;</a>`;
 
   const textElement = document.createElement('div');
   textElement.classList.add('reply-text');
@@ -59,7 +60,17 @@ function makeReplyContainer(
 
   const dateElement = document.createElement('div');
   dateElement.classList.add('reply-date');
-  dateElement.textContent = `📅${formatDate(r.blockTimestamp)}`;
+
+  const dateElementText = document.createElement('div');
+  dateElementText.classList.add('reply-date-text');
+  dateElementText.textContent = `${formatDate(r.blockTimestamp)}`;
+
+  const dateElementLink = document.createElement('div');
+  dateElementLink.classList.add('reply-date-link');
+  dateElementLink.innerHTML = `<a href='?reply-id=${r.id}'>📅</a>`;
+
+  dateElement.appendChild(dateElementLink);
+  dateElement.appendChild(dateElementText);
 
   const likeElement = document.createElement('div');
   likeElement.classList.add('reply-like');
@@ -132,14 +143,16 @@ function makeReplyContainer(
 }
 
 export async function fetchReplies(
-  id: string,
-  thoughtDisplayName: string,
-  thoughtSender: string,
+  thoughtID: string,
   appManager: AppManager
 ): Promise<Array<HTMLDivElement>> {
-  const query = `{ newReplies(first: 30, orderBy: blockNumber, where:{tweet: "${id}"}) { id sender text displayName tweet blockTimestamp numLikes numRetweets seq_num } }`;
+  const query = repliesByThought(thoughtID);
   const fetchedReplies = (await appManager.queryDispatcher.fetch(query))['newReplies'] as Reply[];
   fetchedReplies.forEach((r) => appManager.entityStore.replies.set(r.id, new ReplyEntity(r)));
+
+  const thought = appManager.entityStore.thoughts.get(thoughtID);
+  const thoughtDisplayName = thought?.displayName;
+  const thoughtSender = thought?.sender;
 
   const replies = processReplies(fetchedReplies, thoughtDisplayName, thoughtSender);
   return replies.map((reply, i, replies) => {
@@ -149,8 +162,8 @@ export async function fetchReplies(
 
 export function processReplies(
   replies: Array<Reply>,
-  thoughtDisplayName: string,
-  thoughtSender: string
+  thoughtDisplayName: string | undefined,
+  thoughtSender: string | undefined
 ): [Reply, boolean][] {
   const res: Array<[Reply, boolean]> = new Array();
 

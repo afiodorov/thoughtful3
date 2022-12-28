@@ -4,8 +4,6 @@ import { fetchReplies } from './reply';
 import { formatSingleLineText, formatMultiLineText } from './formatters';
 import { defaultHashtag, defaultName, defaultText } from './config';
 import { toUTF8Array } from './utils';
-import { ThoughtEntity } from './entity_store';
-import { makeThoughtContainer } from './thought';
 
 export class InteractionState {
   private toggledLock: Map<string, boolean> = new Map();
@@ -18,8 +16,6 @@ export class InteractionState {
     }
 
     const thoughtID: string = event!.target!.getAttribute('thought-id')!;
-    const thoughtDisplayName = appManager.entityStore.thoughts.get(thoughtID)!.displayName;
-    const thoughtSender = appManager.entityStore.thoughts.get(thoughtID)!.sender;
 
     if (this.toggledLock.has(thoughtID) && this.toggledLock.get(thoughtID)) {
       return;
@@ -34,7 +30,7 @@ export class InteractionState {
       return;
     }
 
-    fetchReplies(thoughtID, thoughtDisplayName, thoughtSender, appManager).then((replies) => {
+    fetchReplies(thoughtID, appManager).then((replies) => {
       replies.forEach((reply) => {
         replyContainer.appendChild(reply);
       });
