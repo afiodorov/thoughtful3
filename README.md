@@ -12,8 +12,6 @@ Supported likes, retweets and threads (replies).
 
 # Reading Thoughtful3
 
-Currently you can query the feed [here](https://thoughtful3.eth.limo/).
+You can see the feed and post your thoughts [here](https://thoughtful3.eth.limo/)
 
-# Broadcasting thoughts
-
-Big todo; this is the last part to complete this toy project.
+![thoughtful3](./thoughtful.png)
