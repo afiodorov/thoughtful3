@@ -1,3 +1,5 @@
+import { EnsLooker } from './ens';
+
 export class ThoughtParams {
   thoughtID: string | null;
   hashtag: string | null;
@@ -28,7 +30,7 @@ export class ReplyParams {
   }
 }
 
-export function parseCurrentURL(): ThoughtParams | ReplyParams {
+export async function parseCurrentURL(ensLooker: EnsLooker): Promise<ThoughtParams | ReplyParams> {
   const currentUrl = new URL(window.location.href);
   const searchParams = new URLSearchParams(currentUrl.search);
 
@@ -47,11 +49,21 @@ export function parseCurrentURL(): ThoughtParams | ReplyParams {
     }
   } catch {}
 
+  var address = searchParams.get('address');
+  var resolved: string | null = null;
+
+  if (address) {
+    const addressRegex = /^0x[a-fA-F0-9]{40}$/;
+    if (!addressRegex.test(address)) {
+      resolved = await ensLooker.lookup(address);
+    }
+  }
+
   return new ThoughtParams(
     searchParams.get('thought-id'),
     searchParams.get('hashtag'),
     skip,
     searchParams.get('displayName'),
-    searchParams.get('address')
+    resolved || address
   );
 }

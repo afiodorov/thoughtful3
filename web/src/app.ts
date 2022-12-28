@@ -19,7 +19,7 @@ const appManager = new AppManager();
 
 init(appManager);
 
-const params = parseCurrentURL();
+const params = await parseCurrentURL(appManager.ensLooker);
 
 if (params instanceof ThoughtParams) {
   let query: string;

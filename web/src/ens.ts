@@ -55,4 +55,15 @@ export class EnsLooker {
 
     return res;
   }
+
+  async lookup(ensName: string): Promise<string | null> {
+    var result: string | null = null;
+    try {
+      result = await this._web3.eth.ens.getAddress(ensName);
+    } catch (err) {
+      console.log(err);
+    }
+
+    return result;
+  }
 }
