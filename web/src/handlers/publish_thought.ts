@@ -19,6 +19,7 @@ export async function publishThought(
   }
 
   publishThoughtLock = true;
+  event.target.textContent = '🕑';
 
   const thoughtID = event!.target!.getAttribute('thought-id');
   const replyID = event!.target!.getAttribute('reply-id');
@@ -57,6 +58,7 @@ export async function publishThought(
 
   if (!newThought) {
     publishThoughtLock = false;
+    event.target.textContent = '📧';
     return;
   }
 
@@ -103,5 +105,6 @@ export async function publishThought(
     appManager.queryDispatcher.invalidateCache();
   }
 
+  event.target.textContent = '📧';
   publishThoughtLock = false;
 }
