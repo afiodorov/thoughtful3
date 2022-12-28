@@ -36,7 +36,10 @@ export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): 
 
   const authorElement = document.createElement('div');
   authorElement.classList.add('thought-author');
-  authorElement.textContent = `${author}`;
+  const authorLink = document.createElement('a');
+  authorLink.href = `?displayName=${encodeURIComponent(t.displayName)}&address=${t.sender}`;
+  authorLink.textContent = `${author}`;
+  authorElement.appendChild(authorLink);
 
   const domainContainer = document.createElement('div');
   domainContainer.classList.add('thought-domain-container');
@@ -184,7 +187,7 @@ export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): 
   thoughtContainer.appendChild(authorContainer);
   thoughtContainer.appendChild(textContainer);
   if (t.quoteOf !== '0') {
-    thoughtContainer!.appendChild(makeQuoteContainer(t));
+    thoughtContainer!.appendChild(makeQuoteContainer(t, appManager));
   }
 
   thoughtContainer.appendChild(restContainer);

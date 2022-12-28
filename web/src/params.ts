@@ -2,10 +2,20 @@ export class ThoughtParams {
   thoughtID: string | null;
   hashtag: string | null;
   skip: number;
+  displayName: string | null;
+  address: string | null;
 
-  constructor(thoughtID: string | null, hashtag: string | null, skip: number) {
+  constructor(
+    thoughtID: string | null,
+    hashtag: string | null,
+    skip: number,
+    displayName: string | null,
+    address: string | null
+  ) {
     this.thoughtID = thoughtID;
     this.hashtag = hashtag ? decodeURIComponent(hashtag) : null;
+    this.displayName = displayName ? decodeURIComponent(displayName) : null;
+    this.address = address;
     this.skip = skip;
   }
 }
@@ -37,5 +47,11 @@ export function parseCurrentURL(): ThoughtParams | ReplyParams {
     }
   } catch {}
 
-  return new ThoughtParams(searchParams.get('thought-id'), searchParams.get('hashtag'), skip);
+  return new ThoughtParams(
+    searchParams.get('thought-id'),
+    searchParams.get('hashtag'),
+    skip,
+    searchParams.get('displayName'),
+    searchParams.get('address')
+  );
 }

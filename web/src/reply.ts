@@ -38,8 +38,11 @@ export function makeReplyContainer(
 
   if (shouldShowName) {
     const authorElement = document.createElement('div');
-    authorElement.classList.add('reply-author');
-    authorElement.textContent = `${author}`;
+    authorElement.classList.add('thought-author');
+    const authorLink = document.createElement('a');
+    authorLink.href = `?displayName=${encodeURIComponent(r.displayName)}&address=${r.sender}`;
+    authorLink.textContent = `${author}`;
+    authorElement.appendChild(authorLink);
 
     const domainElement = document.createElement('div');
     domainElement.classList.add('reply-domain');

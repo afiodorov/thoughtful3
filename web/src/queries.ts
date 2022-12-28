@@ -12,6 +12,7 @@ export const allRecentThoughts = (skip: number) => `
     numRetweets
     quoteText
     quoteDisplayName
+    quoteSender
     quoteHashtag
     retweetOf
     isReplyRetweet
@@ -33,6 +34,7 @@ export const thoughtByID = (id: string) => `
     numRetweets
     quoteText
     quoteDisplayName
+    quoteSender
     quoteHashtag
     retweetOf
     isReplyRetweet
@@ -94,9 +96,49 @@ export const thoughtsByHashtag = (hashtag: string, skip: number) => `
     numRetweets
     quoteText
     quoteDisplayName
+    quoteSender
     quoteHashtag
     retweetOf
     isReplyRetweet
   }
 }
 `;
+
+export const thoughtsByAuthor = (
+  displayName: null | string,
+  address: null | string,
+  skip: number
+) => {
+  let res: Array<string> = new Array();
+
+  if (displayName) {
+    res.push(`displayName: "${displayName}"`);
+  }
+
+  if (address) {
+    res.push(`sender: "${address}"`);
+  }
+
+  const filter = res.join(', ');
+
+  return `{
+  newTweets(orderBy: id, orderDirection: desc, first: 30, where:{${filter}}, skip: ${skip}) {
+    id
+    sender
+    text
+    displayName
+    hashtag
+    blockTimestamp
+    numLikes
+    numReplies
+    numRetweets
+    quoteText
+    quoteDisplayName
+    quoteSender
+    quoteHashtag
+    retweetOf
+    isReplyRetweet
+  }
+}
+`;
+};

@@ -1,7 +1,8 @@
+import { AppManager } from './app_manager';
 import { QuoteEntity } from './entity/entities';
 import { formatSingleLineText, formatMultiLineText } from './formatters';
 
-export function makeQuoteContainer(q: QuoteEntity): HTMLDivElement {
+export function makeQuoteContainer(q: QuoteEntity, appManager: AppManager): HTMLDivElement {
   const quoteContainer = document.createElement('div');
   quoteContainer.classList.add('quote-container');
 
@@ -27,6 +28,14 @@ export function makeQuoteContainer(q: QuoteEntity): HTMLDivElement {
 
   const quoteDomain = document.createElement('div');
   quoteDomain.classList.add('quote-domain');
+  quoteDomain.textContent = `${q.quoteSender}`;
+  appManager.ensLooker.reverseLookup(q.quoteSender).then((result) => {
+    if (result === null) {
+      return;
+    }
+
+    quoteDomain.textContent = `@${result}`;
+  });
 
   const quoteTextContainer = document.createElement('div');
   quoteTextContainer.classList.add('quote-text-container');

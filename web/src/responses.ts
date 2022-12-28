@@ -10,6 +10,7 @@ export interface Thought {
   readonly numRetweets: number;
   readonly quoteText: string;
   readonly quoteDisplayName: string;
+  readonly quoteSender: string;
   readonly quoteHashtag: string;
   readonly retweetOf: string;
   readonly isReplyRetweet: boolean;

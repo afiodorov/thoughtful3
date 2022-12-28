@@ -31,6 +31,7 @@ export async function publishThought(
   let quoteText = '';
   let quoteDisplayName = '';
   let quoteHashtag = '';
+  let quoteSender = '';
 
   let quoteID: string | null;
 
@@ -39,11 +40,13 @@ export async function publishThought(
     quoteHashtag = hashtag;
     quoteText = appManager.entityStore.thoughts.get(thoughtID)!.text;
     quoteDisplayName = appManager.entityStore.thoughts.get(thoughtID)!.displayName;
+    quoteSender = appManager.entityStore.thoughts.get(thoughtID)!.sender;
   } else if (replyID) {
     quoteID = replyID;
     quoteHashtag = hashtag;
     quoteText = appManager.entityStore.replies.get(replyID)!.text;
     quoteDisplayName = appManager.entityStore.replies.get(replyID)!.displayName;
+    quoteSender = appManager.entityStore.replies.get(replyID)!.sender;
   } else {
     quoteID = null;
   }
@@ -74,6 +77,7 @@ export async function publishThought(
     numRetweets: 0,
     quoteText: quoteText,
     quoteDisplayName: quoteDisplayName,
+    quoteSender: quoteSender,
     quoteHashtag: quoteHashtag,
     retweetOf: quoteID || '0',
     isReplyRetweet: replyID !== null

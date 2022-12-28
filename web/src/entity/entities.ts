@@ -12,6 +12,7 @@ export class ThoughtEntity {
   numQuotes: number;
   quoteText: string;
   quoteDisplayName: string;
+  quoteSender: string;
   quoteHashtag: string;
   quoteOf: string;
   isReplyQuote: boolean;
@@ -28,6 +29,7 @@ export class ThoughtEntity {
     numRetweets,
     quoteText,
     quoteDisplayName,
+    quoteSender,
     quoteHashtag,
     retweetOf,
     isReplyRetweet
@@ -43,6 +45,7 @@ export class ThoughtEntity {
     this.numQuotes = numRetweets;
     this.quoteText = quoteText;
     this.quoteDisplayName = quoteDisplayName;
+    this.quoteSender = quoteSender;
     this.quoteHashtag = quoteHashtag;
     this.quoteOf = retweetOf;
     this.isReplyQuote = isReplyRetweet;
@@ -85,13 +88,22 @@ export class ReplyEntity {
 export class QuoteEntity {
   quoteText: string;
   quoteDisplayName: string;
+  quoteSender: string;
   quoteHashtag: string;
   quoteOf: string;
   isReplyQuote: boolean;
 
-  constructor({ quoteText, quoteDisplayName, quoteHashtag, retweetOf, isReplyRetweet }: Thought) {
+  constructor({
+    quoteText,
+    quoteDisplayName,
+    quoteSender,
+    quoteHashtag,
+    retweetOf,
+    isReplyRetweet
+  }: Thought) {
     this.quoteText = quoteText;
     this.quoteDisplayName = quoteDisplayName;
+    this.quoteSender = quoteSender;
     this.quoteHashtag = quoteHashtag;
     this.quoteOf = retweetOf;
     this.isReplyQuote = isReplyRetweet;

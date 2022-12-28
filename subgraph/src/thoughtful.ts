@@ -6,7 +6,7 @@ import {
   NewReplyLike as NewReplyLikeEvent,
 } from "../generated/Thoughtful/Thoughtful";
 import { NewTweet, NewReply, NewLike, NewReplyLike } from "../generated/schema";
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 
 function incrementReplies(pk: BigInt): void {
   let entity = NewTweet.load(pk.toString());
@@ -69,17 +69,20 @@ export function handleNewTweet(event: NewTweetEvent): void {
       entity.quoteText = quote.text;
       entity.quoteDisplayName = quote.displayName;
       entity.quoteHashtag = quoteOf.hashtag;
+      entity.quoteSender = quote.sender;
     } else {
       const quote = contract.tweets(event.params.retweetOf);
 
       entity.quoteText = quote.text;
       entity.quoteDisplayName = quote.displayName;
       entity.quoteHashtag = quote.hashtag;
+      entity.quoteSender = quote.sender;
     }
   } else {
     entity.quoteText = "";
     entity.quoteDisplayName = "";
     entity.quoteHashtag = "";
+    entity.quoteSender = Bytes.fromUTF8("");
   }
 
   entity.save();

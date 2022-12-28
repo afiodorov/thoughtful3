@@ -3,7 +3,13 @@ import { makeReplyContainer } from './reply';
 import { makeThoughtContainer } from './thought';
 import { AppManager } from './app_manager';
 import { parseCurrentURL } from './params';
-import { allRecentThoughts, thoughtByID, replyByID, thoughtsByHashtag } from './queries';
+import {
+  allRecentThoughts,
+  thoughtByID,
+  replyByID,
+  thoughtsByHashtag,
+  thoughtsByAuthor
+} from './queries';
 import { ThoughtEntity, ReplyEntity } from './entity/entities';
 import { ThoughtParams, ReplyParams } from './params';
 import { init } from './handlers/init';
@@ -22,6 +28,8 @@ if (params instanceof ThoughtParams) {
     query = thoughtByID(params.thoughtID);
   } else if (params.hashtag) {
     query = thoughtsByHashtag(params.hashtag, params.skip);
+  } else if (params.displayName || params.address) {
+    query = thoughtsByAuthor(params.displayName, params.address, params.skip);
   } else {
     query = allRecentThoughts(params.skip);
   }

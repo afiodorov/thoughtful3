@@ -100,6 +100,10 @@ export class NewTweet extends Entity {
     return value!.toString();
   }
 
+  set quoteText(value: string) {
+    this.set("quoteText", Value.fromString(value));
+  }
+
   get quoteDisplayName(): string {
     let value = this.get("quoteDisplayName");
     return value!.toString();
@@ -109,8 +113,13 @@ export class NewTweet extends Entity {
     this.set("quoteDisplayName", Value.fromString(value));
   }
 
-  set quoteText(value: string) {
-    this.set("quoteText", Value.fromString(value));
+  get quoteSender(): Bytes {
+    let value = this.get("quoteSender");
+    return value!.toBytes();
+  }
+
+  set quoteSender(value: Bytes) {
+    this.set("quoteSender", Value.fromBytes(value));
   }
 
   get isReplyRetweet(): boolean {
