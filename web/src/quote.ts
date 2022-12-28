@@ -18,7 +18,12 @@ export function makeQuoteContainer(q: QuoteEntity, appManager: AppManager): HTML
 
   const quoteAuthorText = document.createElement('div');
   quoteAuthorText.classList.add('quote-author-text');
-  quoteAuthorText.textContent = formatSingleLineText(q.quoteDisplayName);
+  const quoteAuthorFeed = document.createElement('a');
+  quoteAuthorFeed.href = `?displayName=${encodeURIComponent(q.quoteDisplayName)}&address=${
+    q.quoteSender
+  }`;
+  quoteAuthorFeed.textContent = formatSingleLineText(q.quoteDisplayName);
+  quoteAuthorText.appendChild(quoteAuthorFeed);
 
   quoteAuthor.appendChild(quoteAuthorLink);
   quoteAuthor.appendChild(quoteAuthorText);
