@@ -4,6 +4,7 @@ import { makeQuoteContainer } from './quote';
 import { likeThought } from './handlers/like';
 import { ThoughtEntity } from './entity/entities';
 import { toggleDialogue } from './handlers/toggle_dialogue';
+import {toggleReplies} from './handlers/toggle_replies'
 
 export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): HTMLDivElement {
   const text = t.text;
@@ -110,7 +111,7 @@ export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): 
     replyLink.classList.add('thought-reply-link');
     replyLink.setAttribute('thought-id', t.id);
     replyLink.addEventListener('click', (event) =>
-      appManager.interactionState.toggleReplies(event, appManager)
+      toggleReplies(event, appManager)
     );
 
     const replyText = document.createElement('div');

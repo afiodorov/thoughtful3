@@ -5,6 +5,7 @@ import { rpcURL, contractAddress, graphURL, ttl } from './config';
 import { QueryDispatcher } from './query';
 import Web3 from 'web3';
 import { EntityStore } from './entity/store';
+import { toggleAccounts } from './handlers/toggle_accounts';
 
 export class AppManager {
   private _ensLooker: EnsLooker;
@@ -24,7 +25,7 @@ export class AppManager {
     if (typeof (window as any).ethereum !== 'undefined') {
       this._metaMask = new MetaMask(this._web3, contractAddress);
       this._metaMask.registerAccountChangeListener((accounts) => {
-        this._intereractionState.toggleAccounts(accounts, this);
+        toggleAccounts(accounts, this);
       });
 
       document.getElementById('instruction')!.style.display = 'none';
