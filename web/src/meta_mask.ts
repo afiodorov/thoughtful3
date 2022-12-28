@@ -166,7 +166,6 @@ export class MetaMask {
       to: this._deployedContract,
       from: this._ethereum.selectedAddress,
       data: txData,
-      gas: '0x7CADE',
       chainId: chainID
     };
 
@@ -204,7 +203,6 @@ export class MetaMask {
     var blockTimestamp: number | null = null;
 
     try {
-      // blockTimestamp = await this.getBlockTimestamp(parseInt(blockNumber.slice(2), 16));
       blockTimestamp = await this.getBlockTimestamp(blockNumber);
     } catch (error) {
       console.log(error);
@@ -240,11 +238,20 @@ export class MetaMask {
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
 
+    if (!receipt) {
+      console.log("couldn't get the receipt");
+    }
+
     if (receipt.status !== '0x1') {
       console.log('receipt not successfull');
       console.log(receipt);
 
       return null;
+    }
+
+    if (receipt.logs.length === 0) {
+      console.log('receipt missing logs');
+      console.log(receipt);
     }
 
     const decodedLogs = this._web3.eth.abi.decodeLog(
@@ -273,5 +280,131 @@ export class MetaMask {
     }
 
     return timestamp;
+  }
+
+  async newReply(
+    text: string,
+    displayName: string,
+    thoughtID: string,
+    seq_num: number
+  ): Promise<Success<string> | null> {
+    try {
+      await this._ethereum.request({ method: 'eth_requestAccounts' });
+    } catch (error) {
+      console.log(error);
+
+      return null;
+    }
+
+    const txData = this._web3.eth.abi.encodeFunctionCall(this._abi.get('reply')!, [
+      text,
+      displayName,
+      thoughtID,
+      `${seq_num}`
+    ]);
+
+    console.log(`calling reply(${text},${displayName},${thoughtID},${seq_num})`);
+    const transactionParameters = {
+      to: this._deployedContract,
+      from: this._ethereum.selectedAddress,
+      data: txData,
+      chainId: chainID
+    };
+
+    let txHash: string | null = null;
+
+    try {
+      txHash = await this._ethereum.request({
+        method: 'eth_sendTransaction',
+        params: [transactionParameters]
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (!txHash) {
+      return null;
+    }
+
+    console.log(`submitted ${txHash}`);
+
+    let newReply: [string, string] | null = null;
+
+    try {
+      newReply = await this.getNewReplyID(txHash);
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (!newReply) {
+      return null;
+    }
+
+    const [newReplyID, blockNumber] = newReply;
+
+    var blockTimestamp: number | null = null;
+
+    try {
+      blockTimestamp = await this.getBlockTimestamp(blockNumber);
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (!blockTimestamp) {
+      return null;
+    }
+
+    return new Success<string>(newReplyID, this._ethereum.selectedAddress, blockTimestamp);
+  }
+
+  async getNewReplyID(txHash: string): Promise<[string, string] | null> {
+    const myAbi = abi[1]['inputs'] as AbiInput[];
+
+    let receipt: any = null;
+
+    while (true) {
+      try {
+        receipt = await this._ethereum.request({
+          method: 'eth_getTransactionReceipt',
+          params: [txHash]
+        });
+      } catch (error) {
+        console.log(error);
+        break;
+      }
+
+      if (receipt) {
+        break;
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+
+    if (!receipt) {
+      console.log("couldn't get the receipt");
+    }
+
+    if (receipt.status !== '0x1') {
+      console.log('receipt not successfull');
+      console.log(receipt);
+
+      return null;
+    }
+
+    if (receipt.logs.length === 0) {
+      console.log('receipt missing logs');
+      console.log(receipt);
+    }
+
+    const decodedLogs = this._web3.eth.abi.decodeLog(
+      myAbi,
+      receipt.logs[0].data,
+      receipt.logs[0].topics.slice(1)
+    );
+
+    const decoded = decodedLogs[0] as string;
+    const blockNumber = receipt['blockNumber'] as string;
+
+    return [decoded, blockNumber];
   }
 }

@@ -7,6 +7,7 @@ import { allRecentThoughts, thoughtByID, replyByID, thoughtsByHashtag } from './
 import { ThoughtEntity, ReplyEntity } from './entity/entities';
 import { ThoughtParams, ReplyParams } from './params';
 import { init } from './handlers/init';
+import { makeNewReplyContainer } from './new_reply';
 
 const appManager = new AppManager();
 
@@ -49,12 +50,20 @@ if (params instanceof ThoughtParams) {
 
   const thoughtsContainer = document.getElementById('thoughts-container');
 
+  let thought: string | null = null;
+
   entities
     .map((reply) => {
+      thought = reply.tweet;
       return makeReplyContainer(reply, true, appManager, true);
     })
     .forEach((reply) => {
-      thoughtsContainer!.appendChild(reply);
+      const repliesContainer = document.createElement('div');
+      repliesContainer.classList.add('thought-replies-container');
+      repliesContainer.id = `replies-${thought}`;
+      repliesContainer!.appendChild(reply);
+      repliesContainer.appendChild(makeNewReplyContainer(thought!, appManager));
+      thoughtsContainer!.appendChild(repliesContainer);
     });
 }
 

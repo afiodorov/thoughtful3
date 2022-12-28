@@ -1,6 +1,7 @@
 import { AppManager } from './app_manager';
 import { defaultName, defaultText } from './config';
 import { toUTF8Array } from './utils';
+import { publishReply } from './handlers/publish_reply';
 
 export function makeNewReplyContainer(thoughtID: string, appManager: AppManager) {
   const newReplyContainer = document.createElement('div');
@@ -72,9 +73,12 @@ export function makeNewReplyContainer(thoughtID: string, appManager: AppManager)
 
   const publish = document.createElement('a');
   publish.classList.add('new-reply-publish');
-  publish.href = '#';
+  publish.href = `#new-reply-${thoughtID}`;
   publish.textContent = '📧';
   publish.id = `new-reply-publish-${thoughtID}`;
+  publish.addEventListener('click', (event) =>
+    publishReply(event, thoughtID, appManager.metaMask!, appManager)
+  );
 
   publishContainer.appendChild(publish);
 
