@@ -1,5 +1,4 @@
 .quote-container {
-  width: 580px;
   display: flex;
   flex-direction: column;
   margin-left: 20px;
@@ -7,6 +6,7 @@
   color: #383838;
   background-color: #e8e8e8;
   margin-top: 6px;
+  margin-right: 1px;
 }
 
 .quote-domain-container {
@@ -29,8 +29,6 @@
 }
 
 .quote-domain {
-  width: 100%;
-  max-width: 400px;
   text-align: left;
   margin-right: 10px;
 }
@@ -56,7 +54,8 @@
 }
 
 .quote-text {
-  width: 550px;
+  width: 100%;
+  max-width: 550px;
   white-space: pre-wrap;
   overflow-wrap: break-word;
   word-wrap: break-word;
