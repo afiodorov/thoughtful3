@@ -1,6 +1,6 @@
 import { Reply } from './responses';
 import { ReplyEntity } from './entity/entities';
-import { formatSingleLineText, formatDate, formatMultiLineText } from './formatters';
+import { formatSingleLineText, formatDate, formatMultiLineText, cropAddress } from './formatters';
 import { AppManager } from './app_manager';
 import { likeReply } from './handlers/like';
 import { repliesByThought } from './queries';
@@ -46,7 +46,7 @@ export function makeReplyContainer(
 
     const domainElement = document.createElement('a');
     domainElement.classList.add('reply-domain');
-    domainElement.textContent = `@${r.sender}`;
+    domainElement.textContent = `@${cropAddress(r.sender)}`;
     domainElement.href = `?address=${r.sender}`;
 
     const authorContainer = document.createElement('div');

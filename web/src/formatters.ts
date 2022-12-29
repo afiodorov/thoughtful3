@@ -15,3 +15,11 @@ export function formatDate(timestampSeconds: number): string {
 
   return dateString;
 }
+
+export function cropAddress(str: string): string {
+  if (window.matchMedia('(max-width: 767px)').matches) {
+    return str.substring(0, 10) + '...' + str.substring(str.length - 2);
+  }
+
+  return str;
+}

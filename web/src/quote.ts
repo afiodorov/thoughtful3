@@ -1,6 +1,6 @@
 import { AppManager } from './app_manager';
 import { QuoteEntity } from './entity/entities';
-import { formatSingleLineText, formatMultiLineText } from './formatters';
+import { formatSingleLineText, formatMultiLineText, cropAddress } from './formatters';
 
 export function makeQuoteContainer(q: QuoteEntity, appManager: AppManager): HTMLDivElement {
   const quoteContainer = document.createElement('div');
@@ -33,7 +33,7 @@ export function makeQuoteContainer(q: QuoteEntity, appManager: AppManager): HTML
 
   const quoteDomain = document.createElement('a');
   quoteDomain.classList.add('quote-domain');
-  quoteDomain.textContent = `${q.quoteSender}`;
+  quoteDomain.textContent = `@${cropAddress(q.quoteSender)}`;
   quoteDomain.href = `?address=${q.quoteSender}`;
   appManager.ensLooker.reverseLookup(q.quoteSender).then((result) => {
     if (result === null) {

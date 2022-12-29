@@ -1,4 +1,4 @@
-import { formatSingleLineText, formatMultiLineText, formatDate } from './formatters';
+import { formatSingleLineText, formatMultiLineText, formatDate, cropAddress } from './formatters';
 import { AppManager } from './app_manager';
 import { makeQuoteContainer } from './quote';
 import { likeThought } from './handlers/like';
@@ -46,7 +46,7 @@ export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): 
 
   const domainElement = document.createElement('a');
   domainElement.classList.add('thought-domain');
-  domainElement.textContent = `@${t.sender}`;
+  domainElement.textContent = `@${cropAddress(t.sender)}`;
   domainElement.href = `?address=${t.sender}`;
 
   const hashtagElement = document.createElement('div');
