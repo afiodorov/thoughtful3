@@ -46,7 +46,14 @@ class AbiThought implements Thought {
   retweetOf: string;
   isReplyRetweet: boolean;
 
-  constructor(tweetRPC: RPCTweet, numReplies: number) {
+  constructor(
+    tweetRPC: RPCTweet,
+    numReplies: number,
+    quoteText = '',
+    quoteSender = '',
+    quoteDisplayName = '',
+    quoteHashtag = ''
+  ) {
     this.id = tweetRPC.pk;
     this.sender = tweetRPC.sender;
     this.text = tweetRPC.text;
@@ -56,10 +63,10 @@ class AbiThought implements Thought {
     this.numLikes = parseInt(tweetRPC.likes, 10);
     this.numReplies = numReplies;
     this.numRetweets = parseInt(tweetRPC.retweets, 10);
-    this.quoteText = '';
-    this.quoteDisplayName = '';
-    this.quoteSender = '';
-    this.quoteHashtag = '';
+    this.quoteText = quoteText;
+    this.quoteDisplayName = quoteDisplayName;
+    this.quoteSender = quoteSender;
+    this.quoteHashtag = quoteHashtag;
     this.retweetOf = tweetRPC.retweet_of;
     this.isReplyRetweet = tweetRPC.is_reply_retweet;
   }
@@ -103,7 +110,7 @@ export class RPCFetcher implements Fetcher {
 
     const thoughts: Thought[] = new Array();
 
-    for (let tweet = Math.max(1, numTweets - 30 + 1); tweet <= numTweets; tweet++) {
+    for (let tweet = numTweets - skip; tweet > Math.max(0, numTweets - 30 - skip); tweet--) {
       var tweetAny: any = null;
 
       try {
@@ -112,8 +119,8 @@ export class RPCFetcher implements Fetcher {
         console.log(error);
       }
 
-      if (!tweetAny) {
-        return null;
+      if (!tweetAny || tweetAny.sender === '0x0000000000000000000000000000000000000000') {
+        continue;
       }
 
       const tweetRPC: RPCTweet = tweetAny;
@@ -129,7 +136,61 @@ export class RPCFetcher implements Fetcher {
 
       const numReplies: number = numRepliesAny;
 
-      thoughts.push(new AbiThought(tweetRPC, numReplies));
+      if (tweetRPC.retweet_of !== '0' && !tweetRPC.is_reply_retweet) {
+        let quoteTweetAny: any;
+
+        try {
+          quoteTweetAny = await this._contract.methods.tweets(tweetRPC.retweet_of).call();
+        } catch (error) {
+          console.log(error);
+          continue;
+        }
+
+        if (!quoteTweetAny) {
+          continue;
+        }
+
+        const quoteTweetRPC: RPCTweet = quoteTweetAny;
+
+        thoughts.push(
+          new AbiThought(
+            tweetRPC,
+            numReplies,
+            quoteTweetRPC.text,
+            quoteTweetRPC.sender,
+            quoteTweetRPC.display_name,
+            quoteTweetRPC.hashtag
+          )
+        );
+      } else if (tweetRPC.retweet_of !== '0' && tweetRPC.is_reply_retweet) {
+        let quoteReplyAny: any;
+
+        try {
+          quoteReplyAny = await this._contract.methods.replies(tweetRPC.retweet_of).call();
+        } catch (error) {
+          console.log(error);
+          continue;
+        }
+
+        if (!quoteReplyAny) {
+          continue;
+        }
+
+        const quoteReplyRPC: RPCReply = quoteReplyAny;
+
+        thoughts.push(
+          new AbiThought(
+            tweetRPC,
+            numReplies,
+            quoteReplyRPC.text,
+            quoteReplyRPC.sender,
+            quoteReplyRPC.display_name,
+            ''
+          )
+        );
+      } else {
+        thoughts.push(new AbiThought(tweetRPC, numReplies));
+      }
     }
 
     return thoughts;
