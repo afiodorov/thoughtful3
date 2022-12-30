@@ -54,6 +54,16 @@ export async function publishReply(
   allReplies.insertBefore(container, newReplyElement);
   newReplyElement.style.display = 'none';
 
+  const thoughtEntity = appManager.entityStore.thoughts.get(thoughtID);
+
+  if (thoughtEntity) {
+    thoughtEntity.numReplies += 1;
+
+    const replyLink = document.getElementById(`thought-${thoughtID}-new-reply`)!;
+    replyLink.textContent = `${thoughtEntity.numReplies}`;
+    replyLink.style.display = 'inline';
+  }
+
   appManager.queryDispatcher.invalidateCache();
 
   lock.set(thoughtID, false);

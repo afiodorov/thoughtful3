@@ -131,16 +131,18 @@ export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): 
 
   replyElement.appendChild(replyElementIcon);
 
-  if (t.numReplies > 0) {
-    const replyLink = document.createElement('a');
-    replyLink.href = `#thought-${t.id}`;
-    replyLink.textContent = `${t.numReplies}`;
-    replyLink.classList.add('thought-reply-link');
-    replyLink.setAttribute('thought-id', t.id);
-    replyLink.addEventListener('click', (event) => toggleReplies(event, appManager));
-
-    replyElement.appendChild(replyLink);
+  const replyLink = document.createElement('a');
+  replyLink.href = `#thought-${t.id}`;
+  replyLink.textContent = `${t.numReplies}`;
+  replyLink.id = `thought-${t.id}-new-reply`;
+  replyLink.classList.add('thought-reply-link');
+  replyLink.setAttribute('thought-id', t.id);
+  replyLink.addEventListener('click', (event) => toggleReplies(event, appManager));
+  if (!t.numReplies) {
+    replyLink.style.display = 'none';
   }
+
+  replyElement.appendChild(replyLink);
 
   const quoteElement = document.createElement('div');
   quoteElement.classList.add('thought-quote');
