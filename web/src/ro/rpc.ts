@@ -4,6 +4,30 @@ import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
 import abi from '../../../contracts/abi.json';
+import { RPCReply } from './rpc_responses';
+
+class AbiReply implements Reply {
+  id: string;
+  sender: string;
+  text: string;
+  displayName: string;
+  blockTimestamp: number;
+  numLikes: number;
+  numRetweets: number;
+  seq_num: number;
+  tweet: string;
+
+  constructor({ text, display_name, pk, sender, likes, retweets, seq_num, tweet }: RPCReply) {
+    this.id = pk;
+    this.sender = sender;
+    this.text = text;
+    this.displayName = display_name;
+    this.numLikes = parseInt(likes, 10);
+    this.numRetweets = parseInt(retweets, 10);
+    this.seq_num = parseInt(seq_num, 10);
+    this.tweet = tweet;
+  }
+}
 
 export class RPCFetcher implements Fetcher {
   private _contract: Contract;
@@ -49,30 +73,7 @@ export class RPCFetcher implements Fetcher {
       return null;
     }
 
-    class R implements Reply {
-      id: string;
-      sender: string;
-      text: string;
-      displayName: string;
-      blockTimestamp: number;
-      numLikes: number;
-      numRetweets: number;
-      seq_num: number;
-      tweet: string;
-
-      constructor({ text, display_name, pk, sender, likes, retweets, seq_num, tweet }: any) {
-        this.id = pk;
-        this.sender = sender;
-        this.text = text;
-        this.displayName = display_name;
-        this.numLikes = likes;
-        this.numRetweets = retweets;
-        this.seq_num = seq_num;
-        this.tweet = tweet;
-      }
-    }
-
-    const res = new R(r);
+    const res = new AbiReply(r);
     res.blockTimestamp = 0;
 
     return res;
