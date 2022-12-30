@@ -1,6 +1,6 @@
 import { EntityStore } from '../entity/store';
 import { MetaMask } from '../meta_mask';
-import { QueryDispatcher } from '../query';
+import { Fetcher } from '../ro/fetcher';
 
 const likeThoughtLock: Map<string, boolean> = new Map();
 const likeReplyLock: Map<string, boolean> = new Map();
@@ -9,7 +9,7 @@ export async function likeThought(
   event: Event,
   metaMask: MetaMask,
   entityStore: EntityStore,
-  queryDispatcher: QueryDispatcher
+  fetcher: Fetcher
 ): Promise<void> {
   if (!(event.target instanceof Element)) {
     return;
@@ -33,7 +33,7 @@ export async function likeThought(
   entityStore.thoughts.get(thoughtID)!.numLikes += 1;
   const curLikesElement = document.getElementById(`thought-${thoughtID}-likes`)!;
   curLikesElement.textContent = `${entityStore.thoughts.get(thoughtID)!.numLikes}`;
-  queryDispatcher.invalidateCache();
+  fetcher.invalidateCache();
 
   likeThoughtLock.set(thoughtID, false);
 }
@@ -42,7 +42,7 @@ export async function likeReply(
   event: Event,
   metaMask: MetaMask,
   entityStore: EntityStore,
-  queryDispatcher: QueryDispatcher
+  fetcher: Fetcher
 ): Promise<void> {
   if (!(event.target instanceof Element)) {
     return;
@@ -66,7 +66,7 @@ export async function likeReply(
   entityStore.replies.get(replyID)!.numLikes += 1;
   const curLikesElement = document.getElementById(`reply-${replyID}-likes`)!;
   curLikesElement.textContent = `${entityStore.replies.get(replyID)!.numLikes}`;
-  queryDispatcher.invalidateCache();
+  fetcher.invalidateCache();
 
   likeReplyLock.set(replyID, false);
 }

@@ -2,7 +2,6 @@ import { AppManager } from '../app_manager';
 import { MetaMask } from '../meta_mask';
 import { formatSingleLineText, formatMultiLineText } from '../formatters';
 import { setDomain } from '../utils';
-import { getHashtag } from '../utils';
 
 let dialogueVisibleLock = false;
 
@@ -82,17 +81,19 @@ export async function toggleDialogue(
     newHashtagElement.removeAttribute('contenteditable');
 
     const quotedTweet = appManager.entityStore.thoughts.get(
-      appManager.entityStore.replies.get(replyID)!.tweet
+      appManager.entityStore.replies.get(replyID)!.thought
     );
 
     if (quotedTweet) {
       newHashtagElement.textContent = formatSingleLineText(quotedTweet.hashtag);
     } else {
-      getHashtag(appManager.entityStore.replies.get(replyID)!.tweet, appManager).then((res) => {
-        if (res) {
-          newHashtagElement.textContent = res;
-        }
-      });
+      appManager.fetcher
+        .getHashtagByThoughtID(appManager.entityStore.replies.get(replyID)!.thought)
+        .then((res) => {
+          if (res) {
+            newHashtagElement.textContent = res;
+          }
+        });
     }
 
     const publishButton = document.getElementById('new-thought-publish')!;

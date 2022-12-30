@@ -142,3 +142,26 @@ export const thoughtsByAuthor = (
 }
 `;
 };
+
+export const latestNameByAddress = (address: string) => `
+{
+  newTweets(
+    first: 1
+    orderBy: blockNumber
+    orderDirection: desc
+    where: {sender: "${address.toLowerCase()}"}
+  ) {
+    displayName
+    blockNumber
+  }
+  newReplies(
+    first: 1
+    orderBy: blockNumber
+    orderDirection: desc
+    where: {sender: "${address.toLowerCase()}"}
+  ) {
+    displayName
+    blockNumber
+  }
+}
+`;

@@ -19,7 +19,7 @@ export function makeReplyContainer(
 
   const leftQuoteElement = document.createElement('div');
   leftQuoteElement.classList.add('reply-left-quote');
-  leftQuoteElement.innerHTML = `<a href="?thought-id=${r.tweet}">&gt;</a>`;
+  leftQuoteElement.innerHTML = `<a href="?thought-id=${r.thought}">&gt;</a>`;
 
   const textElement = document.createElement('div');
   textElement.classList.add('reply-text');
@@ -89,7 +89,7 @@ export function makeReplyContainer(
     likeElementLink.classList.add('reply-like-link');
     likeElementLink.setAttribute('reply-id', r.id);
     likeElementLink.addEventListener('click', (event) =>
-      likeReply(event, appManager.metaMask!, appManager.entityStore, appManager.queryDispatcher)
+      likeReply(event, appManager.metaMask!, appManager.entityStore, appManager.fetcher)
     );
 
     likeElement.appendChild(likeElementLink);
@@ -138,10 +138,10 @@ export function makeReplyContainer(
       replyElement.textContent = `💬`;
     } else {
       const replyElementLink = document.createElement('a');
-      replyElementLink.href = `#new-reply-${r.tweet}`;
+      replyElementLink.href = `#new-reply-${r.thought}`;
       replyElementLink.textContent = `💬`;
       replyElementLink.classList.add('thought-reply-icon');
-      replyElementLink.setAttribute('thought-id', r.tweet);
+      replyElementLink.setAttribute('thought-id', r.thought);
       replyElementLink.addEventListener('click', (event) => toggleNewReply(event, appManager));
 
       replyElement.appendChild(replyElementLink);
@@ -163,8 +163,9 @@ export async function fetchReplies(
   thoughtID: string,
   appManager: AppManager
 ): Promise<Array<HTMLDivElement>> {
-  const query = repliesByThought(thoughtID, 0); // TODO: figure out pagination
-  const fetchedReplies = (await appManager.queryDispatcher.fetch(query))['newReplies'] as Reply[];
+  const fetchedReplies: Reply[] =
+    (await appManager.fetcher.getRecentReplies(thoughtID, 0)) || new Array();
+
   const entities = fetchedReplies.map((r) => {
     const entity = new ReplyEntity(r);
     appManager.entityStore.replies.set(r.id, entity);

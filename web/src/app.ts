@@ -3,13 +3,7 @@ import { makeReplyContainer } from './reply';
 import { makeThoughtContainer } from './thought';
 import { AppManager } from './app_manager';
 import { parseCurrentURL } from './params';
-import {
-  allRecentThoughts,
-  thoughtByID,
-  replyByID,
-  thoughtsByHashtag,
-  thoughtsByAuthor
-} from './queries';
+import { replyByID } from './queries';
 import { ThoughtEntity, ReplyEntity } from './entity/entities';
 import { ThoughtParams, ReplyParams } from './params';
 import { init } from './handlers/init';
@@ -22,19 +16,33 @@ init(appManager);
 const params = await parseCurrentURL(appManager.ensLooker);
 
 if (params instanceof ThoughtParams) {
-  let query: string;
+  let thoughts: Thought[] = new Array();
 
   if (params.thoughtID) {
-    query = thoughtByID(params.thoughtID);
+    const thought = await appManager.fetcher.getThoughtByID(params.thoughtID);
+    if (thought) {
+      thoughts = new Array(thought);
+    }
   } else if (params.hashtag) {
-    query = thoughtsByHashtag(params.hashtag, params.skip);
+    const data = await appManager.fetcher.getThoughtsByHashtag(params.hashtag, params.skip);
+    if (data) {
+      thoughts = data;
+    }
   } else if (params.displayName || params.address) {
-    query = thoughtsByAuthor(params.displayName, params.address, params.skip);
+    const data = await appManager.fetcher.getThoughtsByAuthor(
+      params.displayName,
+      params.address,
+      params.skip
+    );
+    if (data) {
+      thoughts = data;
+    }
   } else {
-    query = allRecentThoughts(params.skip);
+    const data = await appManager.fetcher.getRecentThoughts(params.skip);
+    if (data) {
+      thoughts = data;
+    }
   }
-
-  const thoughts = (await appManager.queryDispatcher.fetch(query))['newTweets'] as Thought[];
 
   const entities = thoughts.map((t) => {
     const entity = new ThoughtEntity(t);
@@ -48,31 +56,22 @@ if (params instanceof ThoughtParams) {
     thoughtsContainer!.appendChild(makeThoughtContainer(t, appManager));
   });
 } else if (params instanceof ReplyParams) {
-  const query = replyByID(params.replyID);
-  const fetchedReplies = (await appManager.queryDispatcher.fetch(query))['newReplies'] as Reply[];
-  const entities = fetchedReplies.map((r) => {
-    const entity = new ReplyEntity(r);
-    appManager.entityStore.replies.set(r.id, entity);
-    return entity;
-  });
+  const fetchedReply = await appManager.fetcher.getReplyByID(params.replyID);
+  if (fetchedReply) {
+    const entity = new ReplyEntity(fetchedReply);
+    appManager.entityStore.replies.set(fetchedReply.id, entity);
 
-  const thoughtsContainer = document.getElementById('thoughts-container');
+    const thoughtsContainer = document.getElementById('thoughts-container');
+    const thought = entity.thought;
+    const container = makeReplyContainer(entity, true, appManager, true);
 
-  let thought: string | null = null;
-
-  entities
-    .map((reply) => {
-      thought = reply.tweet;
-      return makeReplyContainer(reply, true, appManager, true);
-    })
-    .forEach((reply) => {
-      const repliesContainer = document.createElement('div');
-      repliesContainer.classList.add('thought-replies-container');
-      repliesContainer.id = `replies-${thought}`;
-      repliesContainer!.appendChild(reply);
-      repliesContainer.appendChild(makeNewReplyContainer(thought!, appManager));
-      thoughtsContainer!.appendChild(repliesContainer);
-    });
+    const repliesContainer = document.createElement('div');
+    repliesContainer.classList.add('thought-replies-container');
+    repliesContainer.id = `replies-${thought}`;
+    repliesContainer!.appendChild(container);
+    repliesContainer.appendChild(makeNewReplyContainer(thought, appManager));
+    thoughtsContainer!.appendChild(repliesContainer);
+  }
 }
 
 if (window.matchMedia('(max-width: 767px)').matches) {

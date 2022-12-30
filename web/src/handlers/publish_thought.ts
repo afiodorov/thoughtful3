@@ -102,13 +102,13 @@ export async function publishThought(
     document.getElementById(`thought-${thoughtID}-quotes`)!.textContent = `${
       appManager.entityStore.thoughts.get(thoughtID)!.numQuotes
     }`;
-    appManager.queryDispatcher.invalidateCache();
+    appManager.fetcher.invalidateCache();
   } else if (replyID) {
     appManager.entityStore.replies.get(replyID)!.numQuotes += 1;
     document.getElementById(`reply-${replyID}-quotes`)!.textContent = `${
       appManager.entityStore.replies.get(replyID)!.numQuotes
     }`;
-    appManager.queryDispatcher.invalidateCache();
+    appManager.fetcher.invalidateCache();
   }
 
   event.target.textContent = '📧';

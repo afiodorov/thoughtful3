@@ -98,7 +98,7 @@ export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): 
     likeElementLink.classList.add('thought-like-link');
     likeElementLink.setAttribute('thought-id', t.id);
     likeElementLink.addEventListener('click', (event) =>
-      likeThought(event, appManager.metaMask!, appManager.entityStore, appManager.queryDispatcher)
+      likeThought(event, appManager.metaMask!, appManager.entityStore, appManager.fetcher)
     );
 
     likeElement.appendChild(likeElementLink);

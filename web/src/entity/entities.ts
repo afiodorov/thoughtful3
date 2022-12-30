@@ -61,7 +61,7 @@ export class ReplyEntity {
   numLikes: number;
   numQuotes: number;
   seq_num: number;
-  tweet: string;
+  thought: string;
   constructor({
     id,
     sender,
@@ -81,7 +81,7 @@ export class ReplyEntity {
     this.numLikes = numLikes;
     this.numQuotes = numRetweets;
     this.seq_num = seq_num;
-    this.tweet = tweet;
+    this.thought = tweet;
   }
 }
 

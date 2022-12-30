@@ -64,7 +64,7 @@ export async function publishReply(
     replyLink.style.display = 'inline';
   }
 
-  appManager.queryDispatcher.invalidateCache();
+  appManager.fetcher.invalidateCache();
 
   lock.set(thoughtID, false);
   event.target.textContent = '📧';
