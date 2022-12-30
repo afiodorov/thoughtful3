@@ -3,7 +3,6 @@ import { Fetcher } from './fetcher';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
-// import Contract from 'web3';
 import abi from '../../../contracts/abi.json';
 
 export class RPCFetcher implements Fetcher {
@@ -37,6 +36,7 @@ export class RPCFetcher implements Fetcher {
   async getLatestName(address: string): Promise<string | null> {
     return null;
   }
+
   async getReplyByID(replyID: string): Promise<Reply | null> {
     let r: any = null;
     try {
@@ -45,7 +45,7 @@ export class RPCFetcher implements Fetcher {
       console.log(error);
     }
 
-    if (!r) {
+    if (!r || r.sender === '0x0000000000000000000000000000000000000000') {
       return null;
     }
 
