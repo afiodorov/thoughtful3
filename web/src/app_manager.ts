@@ -8,6 +8,7 @@ import { EntityStore } from './entity/store';
 import { toggleAccounts } from './handlers/toggle_accounts';
 import { Fetcher } from './ro/fetcher';
 import { GraphFetcher } from './ro/graph';
+import { RPCFetcher } from './ro/rpc';
 
 export class AppManager {
   private _ensLooker: EnsLooker;
@@ -22,8 +23,11 @@ export class AppManager {
     this._ensLooker = new EnsLooker(this._web3);
     this._intereractionState = new InteractionState();
     this._entityStore = new EntityStore();
-
-    this._fetcher = new GraphFetcher(new QueryDispatcher(graphURL, ttl));
+    if (graphURL) {
+      this._fetcher = new GraphFetcher(new QueryDispatcher(graphURL, ttl));
+    } else {
+      this._fetcher = new RPCFetcher(this._web3, contractAddress);
+    }
 
     if (typeof (window as any).ethereum !== 'undefined') {
       this._metaMask = new MetaMask(this._web3, contractAddress);

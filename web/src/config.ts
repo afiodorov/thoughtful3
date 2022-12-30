@@ -1,7 +1,7 @@
 const env = process.env.THOUGHTFUL_ENV || 'production';
 
 interface Env {
-  graphURL: string;
+  graphURL: string | null;
   rpcURL: string;
   contractAddress: string;
   chainID: string;
@@ -17,7 +17,7 @@ values.set('production', {
 });
 
 values.set('development', {
-  graphURL: 'https://api.thegraph.com/subgraphs/name/afiodorov/thoughtful3',
+  graphURL: null,
   rpcURL: 'http://127.0.0.1:8545',
   contractAddress: '0x9f718CE6E91616d27F51959F940ee3230e48f929',
   chainID: '0x2A'
