@@ -47,28 +47,28 @@ class AbiThought implements Thought {
   isReplyRetweet: boolean;
 
   constructor(
-    tweetRPC: RPCTweet,
+    tweet: RPCTweet,
     numReplies: number,
     quoteText = '',
     quoteSender = '',
     quoteDisplayName = '',
     quoteHashtag = ''
   ) {
-    this.id = tweetRPC.pk;
-    this.sender = tweetRPC.sender;
-    this.text = tweetRPC.text;
-    this.displayName = tweetRPC.display_name;
-    this.hashtag = tweetRPC.hashtag;
+    this.id = tweet.pk;
+    this.sender = tweet.sender;
+    this.text = tweet.text;
+    this.displayName = tweet.display_name;
+    this.hashtag = tweet.hashtag;
     this.blockTimestamp = 0;
-    this.numLikes = parseInt(tweetRPC.likes, 10);
+    this.numLikes = parseInt(tweet.likes, 10);
     this.numReplies = numReplies;
-    this.numRetweets = parseInt(tweetRPC.retweets, 10);
+    this.numRetweets = parseInt(tweet.retweets, 10);
     this.quoteText = quoteText;
     this.quoteDisplayName = quoteDisplayName;
     this.quoteSender = quoteSender;
     this.quoteHashtag = quoteHashtag;
-    this.retweetOf = tweetRPC.retweet_of;
-    this.isReplyRetweet = tweetRPC.is_reply_retweet;
+    this.retweetOf = tweet.retweet_of;
+    this.isReplyRetweet = tweet.is_reply_retweet;
   }
 }
 
@@ -94,102 +94,101 @@ export class RPCFetcher implements Fetcher {
   }
 
   async getRecentThoughts(skip: number): Promise<Thought[] | null> {
-    var numTweetsAny: any = null;
+    var numTweets: number | null = null;
 
     try {
-      numTweetsAny = await this._contract.methods.num_tweets().call();
+      numTweets = await this._contract.methods.num_tweets().call();
     } catch (error) {
       console.log(error);
     }
 
-    if (!numTweetsAny) {
+    if (numTweets === null) {
       return null;
     }
 
-    const numTweets: number = numTweetsAny;
-
     const thoughts: Thought[] = new Array();
 
-    for (let tweet = numTweets - skip; tweet > Math.max(0, numTweets - 30 - skip); tweet--) {
-      var tweetAny: any = null;
+    for (
+      let tweetNum = numTweets - skip;
+      tweetNum > Math.max(0, numTweets - 30 - skip);
+      tweetNum--
+    ) {
+      var tweet: RPCTweet | null = null;
 
       try {
-        tweetAny = await this._contract.methods.tweets(tweet).call();
+        tweet = await this._contract.methods.tweets(tweetNum).call();
       } catch (error) {
         console.log(error);
       }
 
-      if (!tweetAny || tweetAny.sender === '0x0000000000000000000000000000000000000000') {
+      if (!tweet || tweet.sender === '0x0000000000000000000000000000000000000000') {
         continue;
       }
 
-      const tweetRPC: RPCTweet = tweetAny;
-
-      let numRepliesAny: any = null;
+      let numReplies: number | null = null;
 
       try {
-        numRepliesAny = await this._contract.methods.num_replies_per_tweet(tweet).call();
+        numReplies = await this._contract.methods.num_replies_per_tweet(tweetNum).call();
       } catch (error) {
         console.log(error);
+      }
+
+      if (numReplies === null) {
         continue;
       }
 
-      const numReplies: number = numRepliesAny;
-
-      if (tweetRPC.retweet_of !== '0' && !tweetRPC.is_reply_retweet) {
-        let quoteTweetAny: any;
+      if (tweet.retweet_of !== '0' && !tweet.is_reply_retweet) {
+        let quoteTweet: RPCTweet | null = null;
 
         try {
-          quoteTweetAny = await this._contract.methods.tweets(tweetRPC.retweet_of).call();
+          quoteTweet = await this._contract.methods.tweets(tweet.retweet_of).call();
         } catch (error) {
           console.log(error);
           continue;
         }
 
-        if (!quoteTweetAny) {
+        if (!quoteTweet || quoteTweet.sender === '0x0000000000000000000000000000000000000000') {
           continue;
         }
 
-        const quoteTweetRPC: RPCTweet = quoteTweetAny;
-
         thoughts.push(
           new AbiThought(
-            tweetRPC,
+            tweet,
             numReplies,
-            quoteTweetRPC.text,
-            quoteTweetRPC.sender,
-            quoteTweetRPC.display_name,
-            quoteTweetRPC.hashtag
+            quoteTweet.text,
+            quoteTweet.sender,
+            quoteTweet.display_name,
+            quoteTweet.hashtag
           )
         );
-      } else if (tweetRPC.retweet_of !== '0' && tweetRPC.is_reply_retweet) {
-        let quoteReplyAny: any;
+      } else if (tweet.retweet_of !== '0' && tweet.is_reply_retweet) {
+        let quoteReply: RPCReply | null = null;
 
         try {
-          quoteReplyAny = await this._contract.methods.replies(tweetRPC.retweet_of).call();
+          quoteReply = await this._contract.methods.replies(tweet.retweet_of).call();
         } catch (error) {
           console.log(error);
           continue;
         }
 
-        if (!quoteReplyAny) {
+        if (!quoteReply || quoteReply.sender === '0x0000000000000000000000000000000000000000') {
           continue;
         }
 
-        const quoteReplyRPC: RPCReply = quoteReplyAny;
+        const hashtag = (await this.getHashtagByThoughtID(quoteReply.tweet)) || '';
 
         thoughts.push(
           new AbiThought(
-            tweetRPC,
+            tweet,
             numReplies,
-            quoteReplyRPC.text,
-            quoteReplyRPC.sender,
-            quoteReplyRPC.display_name,
-            ''
+            quoteReply.text,
+            quoteReply.sender,
+            quoteReply.display_name,
+            hashtag
           )
         );
       } else {
-        thoughts.push(new AbiThought(tweetRPC, numReplies));
+        thoughts.push(new AbiThought(tweet, numReplies));
       }
     }
 
@@ -197,14 +196,28 @@ export class RPCFetcher implements Fetcher {
   }
 
   async getHashtagByThoughtID(thoughtID: string): Promise<string | null> {
-    return null;
+    var tweet: RPCTweet | null = null;
+
+    try {
+      tweet = await this._contract.methods.tweets(thoughtID).call();
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (!tweet || tweet.sender === '0x0000000000000000000000000000000000000000') {
+      return null;
+    }
+
+    return tweet.hashtag;
   }
+
   async getLatestName(address: string): Promise<string | null> {
     return null;
   }
 
   async getReplyByID(replyID: string): Promise<Reply | null> {
-    let r: any = null;
+    let r: RPCReply | null = null;
+
     try {
       r = await this._contract.methods.replies(replyID).call();
     } catch (error) {
