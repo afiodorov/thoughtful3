@@ -20,7 +20,7 @@ export class GraphFetcher implements Fetcher {
     try {
       data = await this._queryDispatcher.fetch(thoughtByID(thoughtID));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!data) {
@@ -41,7 +41,7 @@ export class GraphFetcher implements Fetcher {
     try {
       data = await this._queryDispatcher.fetch(thoughtsByHashtag(hashtag, skip));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!data) {
@@ -62,7 +62,7 @@ export class GraphFetcher implements Fetcher {
     try {
       data = await this._queryDispatcher.fetch(thoughtsByAuthor(displayName, adress, skip));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!data) {
@@ -79,7 +79,7 @@ export class GraphFetcher implements Fetcher {
     try {
       data = await this._queryDispatcher.fetch(allRecentThoughts(skip));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!data) {
@@ -96,7 +96,7 @@ export class GraphFetcher implements Fetcher {
     try {
       data = await this._queryDispatcher.fetch(hashtagByThoughtID(thoughtID));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!data) {
@@ -121,7 +121,7 @@ export class GraphFetcher implements Fetcher {
     try {
       data = await this._queryDispatcher.fetch(latestNameByAddress(address));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!data) {
@@ -168,7 +168,7 @@ export class GraphFetcher implements Fetcher {
     try {
       data = await this._queryDispatcher.fetch(replyByID(replyID));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!data) {
@@ -189,7 +189,7 @@ export class GraphFetcher implements Fetcher {
     try {
       data = await this._queryDispatcher.fetch(repliesByThought(thoughtID, skip));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!data) {

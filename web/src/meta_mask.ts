@@ -42,7 +42,7 @@ export class MetaMask {
     try {
       await this._ethereum.request({ method: 'eth_requestAccounts' });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
 
@@ -63,7 +63,7 @@ export class MetaMask {
         params: [transactionParameters]
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!txHash) {
@@ -79,7 +79,7 @@ export class MetaMask {
           params: [txHash]
         });
       } catch (error) {
-        console.log(error);
+        console.error(error);
         break;
       }
 
@@ -108,7 +108,7 @@ export class MetaMask {
     try {
       await this._ethereum.request({ method: 'eth_requestAccounts' });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return null;
     }
 
@@ -129,7 +129,7 @@ export class MetaMask {
     try {
       await this._ethereum.request({ method: 'eth_requestAccounts' });
     } catch (error) {
-      console.log(error);
+      console.error(error);
 
       return null;
     }
@@ -177,7 +177,7 @@ export class MetaMask {
         params: [transactionParameters]
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!txHash) {
@@ -191,7 +191,7 @@ export class MetaMask {
     try {
       newThought = await this.getNewThoughtID(txHash);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!newThought) {
@@ -205,7 +205,7 @@ export class MetaMask {
     try {
       blockTimestamp = await this.getBlockTimestamp(blockNumber);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!blockTimestamp) {
@@ -227,7 +227,7 @@ export class MetaMask {
           params: [txHash]
         });
       } catch (error) {
-        console.log(error);
+        console.error(error);
         break;
       }
 
@@ -276,7 +276,7 @@ export class MetaMask {
       });
       timestamp = parseInt(block.timestamp.slice(2), 16);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     return timestamp;
@@ -291,7 +291,7 @@ export class MetaMask {
     try {
       await this._ethereum.request({ method: 'eth_requestAccounts' });
     } catch (error) {
-      console.log(error);
+      console.error(error);
 
       return null;
     }
@@ -319,7 +319,7 @@ export class MetaMask {
         params: [transactionParameters]
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!txHash) {
@@ -333,7 +333,7 @@ export class MetaMask {
     try {
       newReply = await this.getNewReplyID(txHash);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!newReply) {
@@ -347,7 +347,7 @@ export class MetaMask {
     try {
       blockTimestamp = await this.getBlockTimestamp(blockNumber);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!blockTimestamp) {
@@ -369,7 +369,7 @@ export class MetaMask {
           params: [txHash]
         });
       } catch (error) {
-        console.log(error);
+        console.error(error);
         break;
       }
 

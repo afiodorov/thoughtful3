@@ -93,7 +93,7 @@ export class RPCFetcher implements Fetcher {
     try {
       tweet = await this._contract.methods.tweets(thoughtID).call();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!tweet || tweet.sender === '0x0000000000000000000000000000000000000000') {
@@ -105,7 +105,7 @@ export class RPCFetcher implements Fetcher {
     try {
       numReplies = await this._contract.methods.num_replies_per_tweet(thoughtID).call();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!numReplies) {
@@ -118,7 +118,7 @@ export class RPCFetcher implements Fetcher {
       try {
         quoteTweet = await this._contract.methods.tweets(tweet.retweet_of).call();
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
 
       if (!quoteTweet || quoteTweet.sender === '0x0000000000000000000000000000000000000000') {
@@ -139,7 +139,7 @@ export class RPCFetcher implements Fetcher {
       try {
         quoteReply = await this._contract.methods.replies(tweet.retweet_of).call();
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
 
       if (!quoteReply || quoteReply.sender === '0x0000000000000000000000000000000000000000') {
@@ -167,7 +167,7 @@ export class RPCFetcher implements Fetcher {
     try {
       numTweets = BigInt(await this._contract.methods.num_tweets_per_hashtag(hashtag).call());
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!numTweets) {
@@ -188,7 +188,7 @@ export class RPCFetcher implements Fetcher {
           .tweets_per_hashtag(hashtag, tweetNum.toString())
           .call();
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
 
       if (!tweetID || tweetID === '0') {
@@ -221,7 +221,7 @@ export class RPCFetcher implements Fetcher {
     try {
       numTweets = await this._contract.methods.num_tweets().call();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (numTweets === null) {
@@ -252,7 +252,7 @@ export class RPCFetcher implements Fetcher {
     try {
       tweet = await this._contract.methods.tweets(thoughtID).call();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!tweet || tweet.sender === '0x0000000000000000000000000000000000000000') {
@@ -268,7 +268,7 @@ export class RPCFetcher implements Fetcher {
     try {
       numTweets = await this._contract.methods.num_tweets_per_sender(address).call();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!numTweets) {
@@ -280,7 +280,7 @@ export class RPCFetcher implements Fetcher {
     try {
       tweetID = await this._contract.methods.tweets_per_sender(address, numTweets).call();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!tweetID || tweetID === '0') {
@@ -292,7 +292,7 @@ export class RPCFetcher implements Fetcher {
     try {
       tweet = await this._contract.methods.tweets(tweetID).call();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!tweet || tweet.sender === '0x0000000000000000000000000000000000000000') {
@@ -308,7 +308,7 @@ export class RPCFetcher implements Fetcher {
     try {
       r = await this._contract.methods.replies(replyID).call();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!r || r.sender === '0x0000000000000000000000000000000000000000') {
@@ -327,7 +327,7 @@ export class RPCFetcher implements Fetcher {
     try {
       numReplies = await this._contract.methods.num_replies_per_tweet(thoughtID).call();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
 
     if (!numReplies) {
@@ -348,7 +348,7 @@ export class RPCFetcher implements Fetcher {
           .replies_per_tweet(thoughtID, replyNum.toString())
           .call();
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
 
       if (!replyID) {
