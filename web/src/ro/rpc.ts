@@ -197,9 +197,11 @@ export class RPCFetcher implements Fetcher {
 
       const tweet = await this.getThoughtByID(tweetID);
 
-      if (tweet) {
-        tweets.push(tweet);
+      if (!tweet || tweet.sender == '0x0000000000000000000000000000000000000000') {
+        continue;
       }
+
+      tweets.push(tweet);
     }
 
     return tweets;
@@ -234,9 +236,11 @@ export class RPCFetcher implements Fetcher {
       tweetNum--
     ) {
       const tweet = await this.getThoughtByID(`${tweetNum}`);
-      if (tweet) {
-        thoughts.push(tweet);
+      if (!tweet || tweet.sender === '0x0000000000000000000000000000000000000000') {
+        continue;
       }
+
+      thoughts.push(tweet);
     }
 
     return thoughts;
