@@ -1,6 +1,8 @@
+import { pageSize } from './config';
+
 export const allRecentThoughts = (skip: number) => `
 {
-  newTweets(orderBy: id, orderDirection: desc, first: 30, skip: ${skip}) {
+  newTweets(orderBy: id, orderDirection: desc, first: ${pageSize}, skip: ${skip}) {
     id
     sender
     text
@@ -44,7 +46,7 @@ export const thoughtByID = (id: string) => `
 
 export const repliesByThought = (thoughtID: string, skip: number) => `
 {
-  newReplies(first: 30, orderBy: blockNumber, where:{tweet: "${thoughtID}"}, skip: ${skip}) {
+  newReplies(first: ${pageSize}, orderBy: blockNumber, where:{tweet: "${thoughtID}"}, skip: ${skip}) {
     id
     sender
     text
@@ -84,7 +86,7 @@ export const hashtagByThoughtID = (thoughtID: string) => `
 
 export const thoughtsByHashtag = (hashtag: string, skip: number) => `
 {
-  newTweets(orderBy: id, orderDirection: desc, first: 30, where:{hashtag: "${hashtag}"}, skip: ${skip}) {
+  newTweets(orderBy: id, orderDirection: desc, first: ${pageSize}, where:{hashtag: "${hashtag}"}, skip: ${skip}) {
     id
     sender
     text
@@ -122,7 +124,7 @@ export const thoughtsByAuthor = (
   const filter = res.join(', ');
 
   return `{
-  newTweets(orderBy: id, orderDirection: desc, first: 30, where:{${filter}}, skip: ${skip}) {
+  newTweets(orderBy: id, orderDirection: desc, first: ${pageSize}, where:{${filter}}, skip: ${skip}) {
     id
     sender
     text

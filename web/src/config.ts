@@ -29,3 +29,4 @@ export const ttl = 5 * 60;
 export const defaultName = 'Your Name';
 export const defaultHashtag = 'hashtag';
 export const defaultText = 'Make Every Word Count';
+export const pageSize = 30;

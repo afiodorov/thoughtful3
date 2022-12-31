@@ -5,7 +5,7 @@ export interface Fetcher {
   getThoughtsByHashtag(hashtag: string, skip: number): Promise<Thought[] | null>;
   getThoughtsByAuthor(
     displayName: string | null,
-    adress: string | null,
+    address: string | null,
     skip: number
   ): Promise<Thought[] | null>;
   getRecentThoughts(skip: number): Promise<Thought[] | null>;

@@ -5,6 +5,9 @@ import { Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
 import abi from '../../../contracts/abi.json';
 import { RPCReply, RPCTweet } from './rpc_responses';
+import { pageSize } from '../config';
+
+const invalidAddress = '0x0000000000000000000000000000000000000000';
 
 const max = (a: bigint, b: bigint): bigint => {
   if (a > b) {
@@ -96,7 +99,7 @@ export class RPCFetcher implements Fetcher {
       console.error(error);
     }
 
-    if (!tweet || tweet.sender === '0x0000000000000000000000000000000000000000') {
+    if (!tweet || tweet.sender === invalidAddress) {
       return null;
     }
 
@@ -121,7 +124,7 @@ export class RPCFetcher implements Fetcher {
         console.error(error);
       }
 
-      if (!quoteTweet || quoteTweet.sender === '0x0000000000000000000000000000000000000000') {
+      if (!quoteTweet || quoteTweet.sender === invalidAddress) {
         return null;
       }
 
@@ -142,7 +145,7 @@ export class RPCFetcher implements Fetcher {
         console.error(error);
       }
 
-      if (!quoteReply || quoteReply.sender === '0x0000000000000000000000000000000000000000') {
+      if (!quoteReply || quoteReply.sender === invalidAddress) {
         return null;
       }
 
@@ -178,7 +181,7 @@ export class RPCFetcher implements Fetcher {
 
     for (
       let tweetNum = numTweets - BigInt(skip);
-      tweetNum > max(BigInt(0), numTweets - BigInt(skip) - BigInt(30));
+      tweetNum > max(BigInt(0), numTweets - BigInt(skip) - BigInt(pageSize));
       tweetNum--
     ) {
       let tweetID: string | null = null;
@@ -197,7 +200,7 @@ export class RPCFetcher implements Fetcher {
 
       const tweet = await this.getThoughtByID(tweetID);
 
-      if (!tweet || tweet.sender == '0x0000000000000000000000000000000000000000') {
+      if (!tweet || tweet.sender == invalidAddress) {
         continue;
       }
 
@@ -209,10 +212,56 @@ export class RPCFetcher implements Fetcher {
 
   async getThoughtsByAuthor(
     displayName: string | null,
-    adress: string | null,
+    address: string | null,
     skip: number
   ): Promise<Thought[] | null> {
-    return null;
+    let numTweets: bigint | null = null;
+
+    try {
+      numTweets = BigInt(await this._contract.methods.num_tweets_per_sender(address).call());
+    } catch (error) {
+      console.error(error);
+    }
+
+    if (!numTweets) {
+      return null;
+    }
+
+    const tweets: Thought[] = new Array();
+
+    for (let tweetNum = numTweets - BigInt(skip); tweetNum > BigInt(0); tweetNum--) {
+      let tweetID: string | null = null;
+
+      try {
+        tweetID = await this._contract.methods
+          .tweets_per_sender(address, tweetNum.toString())
+          .call();
+      } catch (error) {
+        console.error(error);
+      }
+
+      if (!tweetID || tweetID === '0') {
+        continue;
+      }
+
+      const tweet = await this.getThoughtByID(tweetID);
+
+      if (!tweet || tweet.sender == invalidAddress) {
+        continue;
+      }
+
+      if (displayName && tweet.displayName !== displayName) {
+        continue;
+      }
+
+      tweets.push(tweet);
+
+      if (tweets.length === pageSize) {
+        break;
+      }
+    }
+
+    return tweets;
   }
 
   async getRecentThoughts(skip: number): Promise<Thought[] | null> {
@@ -232,11 +281,11 @@ export class RPCFetcher implements Fetcher {
 
     for (
       let tweetNum = BigInt(numTweets) - BigInt(skip);
-      tweetNum > max(BigInt(0), BigInt(numTweets) - BigInt(skip) - BigInt(30));
+      tweetNum > max(BigInt(0), BigInt(numTweets) - BigInt(skip) - BigInt(pageSize));
       tweetNum--
     ) {
       const tweet = await this.getThoughtByID(`${tweetNum}`);
-      if (!tweet || tweet.sender === '0x0000000000000000000000000000000000000000') {
+      if (!tweet || tweet.sender === invalidAddress) {
         continue;
       }
 
@@ -255,7 +304,7 @@ export class RPCFetcher implements Fetcher {
       console.error(error);
     }
 
-    if (!tweet || tweet.sender === '0x0000000000000000000000000000000000000000') {
+    if (!tweet || tweet.sender === invalidAddress) {
       return null;
     }
 
@@ -295,7 +344,7 @@ export class RPCFetcher implements Fetcher {
       console.error(error);
     }
 
-    if (!tweet || tweet.sender === '0x0000000000000000000000000000000000000000') {
+    if (!tweet || tweet.sender === invalidAddress) {
       return null;
     }
 
@@ -311,7 +360,7 @@ export class RPCFetcher implements Fetcher {
       console.error(error);
     }
 
-    if (!r || r.sender === '0x0000000000000000000000000000000000000000') {
+    if (!r || r.sender === invalidAddress) {
       return null;
     }
 
@@ -337,7 +386,7 @@ export class RPCFetcher implements Fetcher {
     const replies: Reply[] = new Array();
 
     for (
-      let replyNum = max(BigInt(1), BigInt(numReplies) - BigInt(skip) - BigInt(30 - 1));
+      let replyNum = max(BigInt(1), BigInt(numReplies) - BigInt(skip) - BigInt(pageSize - 1));
       replyNum <= BigInt(numReplies) - BigInt(skip);
       replyNum++
     ) {

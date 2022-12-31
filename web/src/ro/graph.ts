@@ -55,12 +55,12 @@ export class GraphFetcher implements Fetcher {
 
   async getThoughtsByAuthor(
     displayName: string | null,
-    adress: string | null,
+    address: string | null,
     skip: number
   ): Promise<Thought[] | null> {
     let data: any = null;
     try {
-      data = await this._queryDispatcher.fetch(thoughtsByAuthor(displayName, adress, skip));
+      data = await this._queryDispatcher.fetch(thoughtsByAuthor(displayName, address, skip));
     } catch (error) {
       console.error(error);
     }
