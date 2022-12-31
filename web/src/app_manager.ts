@@ -37,7 +37,7 @@ export class AppManager {
     }
 
     if (typeof (window as any).ethereum !== 'undefined') {
-      this._metaMask = new MetaMask(this._web3, contractAddress, '0x1');
+      this._metaMask = new MetaMask(this._web3, contractAddress, chainID);
       this._metaMask.registerAccountChangeListener((accounts) => {
         toggleAccounts(accounts, this);
       });
