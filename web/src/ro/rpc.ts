@@ -210,7 +210,43 @@ export class RPCFetcher implements Fetcher {
   }
 
   async getLatestName(address: string): Promise<string | null> {
-    return null;
+    var numTweets: string | null = null;
+
+    try {
+      numTweets = await this._contract.methods.num_tweets_per_sender(address).call();
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (!numTweets) {
+      return null;
+    }
+
+    var tweetID: string | null = null;
+
+    try {
+      tweetID = await this._contract.methods.tweets_per_sender(address, numTweets).call();
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (!tweetID || tweetID === '0') {
+      return null;
+    }
+
+    var tweet: RPCTweet | null = null;
+
+    try {
+      tweet = await this._contract.methods.tweets(tweetID).call();
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (!tweet) {
+      return null;
+    }
+
+    return tweet.display_name;
   }
 
   async getReplyByID(replyID: string): Promise<Reply | null> {
@@ -233,7 +269,47 @@ export class RPCFetcher implements Fetcher {
   }
 
   async getRecentReplies(thoughtID: string, skip: number): Promise<Reply[] | null> {
-    return null;
+    let numReplies: null | number = null;
+
+    try {
+      numReplies = await this._contract.methods.num_replies_per_tweet(thoughtID).call();
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (numReplies === null) {
+      return null;
+    }
+
+    const replies: Reply[] = new Array();
+
+    for (
+      let replyNum = Math.max(1, numReplies - skip - (30 - 1));
+      replyNum <= numReplies - skip;
+      replyNum++
+    ) {
+      let replyID: string | null = null;
+
+      try {
+        replyID = await this._contract.methods.replies_per_tweet(thoughtID, replyNum).call();
+      } catch (error) {
+        console.log(error);
+      }
+
+      if (!replyID) {
+        continue;
+      }
+
+      let reply = await this.getReplyByID(replyID);
+
+      if (!reply) {
+        continue;
+      }
+
+      replies.push(reply);
+    }
+
+    return replies;
   }
 
   invalidateCache(): void {}
