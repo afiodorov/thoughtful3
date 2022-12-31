@@ -242,7 +242,7 @@ export class RPCFetcher implements Fetcher {
       console.log(error);
     }
 
-    if (!tweet) {
+    if (!tweet || tweet.sender === '0x0000000000000000000000000000000000000000') {
       return null;
     }
 
