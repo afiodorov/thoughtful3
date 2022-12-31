@@ -1,7 +1,6 @@
 import { AbiItem, AbiInput } from 'web3-utils';
 import Web3 from 'web3';
 import abi from '../../contracts/abi.json';
-import { chainID } from './config';
 
 interface Ethereum {
   request(t: object): Promise<any | null>;
@@ -26,11 +25,13 @@ export class MetaMask {
   private _ethereum: Ethereum;
   private _web3: Web3;
   private _abi: Map<string, AbiItem> = new Map();
+  private _chainID: string;
 
-  constructor(web3: Web3, contractAddress: string) {
+  constructor(web3: Web3, contractAddress: string, chainID: string) {
     this._deployedContract = contractAddress;
     this._ethereum = (window as any).ethereum;
     this._web3 = web3;
+    this._chainID = chainID;
 
     abi.forEach((rawAbiItem) => {
       const item = rawAbiItem as AbiItem;
@@ -52,7 +53,7 @@ export class MetaMask {
       to: this._deployedContract,
       from: this._ethereum.selectedAddress,
       data: txData,
-      chainId: chainID
+      chainId: this._chainID
     };
 
     let txHash: string | null = null;
@@ -119,6 +120,10 @@ export class MetaMask {
     this._ethereum.on('accountsChanged', f);
   }
 
+  registerChainChangeListener(f: (chainID: string) => void) {
+    this._ethereum.on('chainChanged', f);
+  }
+
   async newThought(
     text: string,
     displayName: string,
@@ -166,7 +171,7 @@ export class MetaMask {
       to: this._deployedContract,
       from: this._ethereum.selectedAddress,
       data: txData,
-      chainId: chainID
+      chainId: this._chainID
     };
 
     let txHash: string | null = null;
@@ -308,7 +313,7 @@ export class MetaMask {
       to: this._deployedContract,
       from: this._ethereum.selectedAddress,
       data: txData,
-      chainId: chainID
+      chainId: this._chainID
     };
 
     let txHash: string | null = null;

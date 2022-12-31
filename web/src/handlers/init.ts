@@ -4,7 +4,7 @@ import { defaultName, defaultText, defaultHashtag } from '../config';
 import { publishThought } from './publish_thought';
 import { toggleDialogue } from './toggle_dialogue';
 
-export function init(appManager: AppManager) {
+export function registerHandlers(appManager: AppManager) {
   const overlay = document.getElementById('overlay')!;
   const dialogue = document.getElementById('dialogue')!;
 
