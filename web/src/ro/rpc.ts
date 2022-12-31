@@ -162,7 +162,47 @@ export class RPCFetcher implements Fetcher {
   }
 
   async getThoughtsByHashtag(hashtag: string, skip: number): Promise<Thought[] | null> {
-    return null;
+    let numTweets: bigint | null = null;
+
+    try {
+      numTweets = BigInt(await this._contract.methods.num_tweets_per_hashtag(hashtag).call());
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (!numTweets) {
+      return null;
+    }
+
+    const tweets: Thought[] = new Array();
+
+    for (
+      let tweetNum = numTweets - BigInt(skip);
+      tweetNum > max(BigInt(0), numTweets - BigInt(skip) - BigInt(30));
+      tweetNum--
+    ) {
+      let tweetID: string | null = null;
+
+      try {
+        tweetID = await this._contract.methods
+          .tweets_per_hashtag(hashtag, tweetNum.toString())
+          .call();
+      } catch (error) {
+        console.log(error);
+      }
+
+      if (!tweetID || tweetID === '0') {
+        continue;
+      }
+
+      const tweet = await this.getThoughtByID(tweetID);
+
+      if (tweet) {
+        tweets.push(tweet);
+      }
+    }
+
+    return tweets;
   }
 
   async getThoughtsByAuthor(
