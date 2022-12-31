@@ -80,8 +80,79 @@ export class RPCFetcher implements Fetcher {
   }
 
   async getThoughtByID(thoughtID: string): Promise<Thought | null> {
-    return null;
+    var tweet: RPCTweet | null = null;
+
+    try {
+      tweet = await this._contract.methods.tweets(thoughtID).call();
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (!tweet || tweet.sender === '0x0000000000000000000000000000000000000000') {
+      return null;
+    }
+
+    let numReplies: number | null = null;
+
+    try {
+      numReplies = await this._contract.methods.num_replies_per_tweet(thoughtID).call();
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (numReplies === null) {
+      return null;
+    }
+
+    if (tweet.retweet_of !== '0' && !tweet.is_reply_retweet) {
+      let quoteTweet: RPCTweet | null = null;
+
+      try {
+        quoteTweet = await this._contract.methods.tweets(tweet.retweet_of).call();
+      } catch (error) {
+        console.log(error);
+      }
+
+      if (!quoteTweet || quoteTweet.sender === '0x0000000000000000000000000000000000000000') {
+        return null;
+      }
+
+      return new AbiThought(
+        tweet,
+        numReplies,
+        quoteTweet.text,
+        quoteTweet.sender,
+        quoteTweet.display_name,
+        quoteTweet.hashtag
+      );
+    } else if (tweet.retweet_of !== '0' && tweet.is_reply_retweet) {
+      let quoteReply: RPCReply | null = null;
+
+      try {
+        quoteReply = await this._contract.methods.replies(tweet.retweet_of).call();
+      } catch (error) {
+        console.log(error);
+      }
+
+      if (!quoteReply || quoteReply.sender === '0x0000000000000000000000000000000000000000') {
+        return null;
+      }
+
+      const hashtag = (await this.getHashtagByThoughtID(quoteReply.tweet)) || '';
+
+      return new AbiThought(
+        tweet,
+        numReplies,
+        quoteReply.text,
+        quoteReply.sender,
+        quoteReply.display_name,
+        hashtag
+      );
+    }
+
+    return new AbiThought(tweet, numReplies);
   }
+
   async getThoughtsByHashtag(hashtag: string, skip: number): Promise<Thought[] | null> {
     return null;
   }
@@ -113,82 +184,9 @@ export class RPCFetcher implements Fetcher {
       tweetNum > Math.max(0, numTweets - 30 - skip);
       tweetNum--
     ) {
-      var tweet: RPCTweet | null = null;
-
-      try {
-        tweet = await this._contract.methods.tweets(tweetNum).call();
-      } catch (error) {
-        console.log(error);
-      }
-
-      if (!tweet || tweet.sender === '0x0000000000000000000000000000000000000000') {
-        continue;
-      }
-
-      let numReplies: number | null = null;
-
-      try {
-        numReplies = await this._contract.methods.num_replies_per_tweet(tweetNum).call();
-      } catch (error) {
-        console.log(error);
-      }
-
-      if (numReplies === null) {
-        continue;
-      }
-
-      if (tweet.retweet_of !== '0' && !tweet.is_reply_retweet) {
-        let quoteTweet: RPCTweet | null = null;
-
-        try {
-          quoteTweet = await this._contract.methods.tweets(tweet.retweet_of).call();
-        } catch (error) {
-          console.log(error);
-          continue;
-        }
-
-        if (!quoteTweet || quoteTweet.sender === '0x0000000000000000000000000000000000000000') {
-          continue;
-        }
-
-        thoughts.push(
-          new AbiThought(
-            tweet,
-            numReplies,
-            quoteTweet.text,
-            quoteTweet.sender,
-            quoteTweet.display_name,
-            quoteTweet.hashtag
-          )
-        );
-      } else if (tweet.retweet_of !== '0' && tweet.is_reply_retweet) {
-        let quoteReply: RPCReply | null = null;
-
-        try {
-          quoteReply = await this._contract.methods.replies(tweet.retweet_of).call();
-        } catch (error) {
-          console.log(error);
-          continue;
-        }
-
-        if (!quoteReply || quoteReply.sender === '0x0000000000000000000000000000000000000000') {
-          continue;
-        }
-
-        const hashtag = (await this.getHashtagByThoughtID(quoteReply.tweet)) || '';
-
-        thoughts.push(
-          new AbiThought(
-            tweet,
-            numReplies,
-            quoteReply.text,
-            quoteReply.sender,
-            quoteReply.display_name,
-            hashtag
-          )
-        );
-      } else {
-        thoughts.push(new AbiThought(tweet, numReplies));
+      const tweet = await this.getThoughtByID(`${tweetNum}`);
+      if (tweet) {
+        thoughts.push(tweet);
       }
     }
 
