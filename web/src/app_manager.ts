@@ -26,7 +26,7 @@ export class AppManager {
     const contractAddress: string = chainValues.get(chainID)!.contractAddress;
 
     this._web3 = new Web3(rpcURL);
-    this._ensLooker = new EnsLooker(this._web3);
+    this._ensLooker = new EnsLooker(new Web3(chainValues.get('0x1')!.rpcURL));
     this._intereractionState = new InteractionState();
     this._entityStore = new EntityStore();
 
