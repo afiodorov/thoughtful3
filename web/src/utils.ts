@@ -1,4 +1,4 @@
-import { formatSingleLineText } from './formatters';
+import { formatSingleLineText, cropAddress } from './formatters';
 import { AppManager } from './app_manager';
 import { defaultName } from './config';
 
@@ -43,7 +43,7 @@ export async function setDomain(account: string, appManager: AppManager, thought
   if (domain) {
     domainElement.textContent = `@${domain}`;
   } else {
-    domainElement.textContent = `@${account}`;
+    domainElement.textContent = `@${cropAddress(account)}`;
   }
 
   if (

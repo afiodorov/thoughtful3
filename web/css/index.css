@@ -1,7 +1,12 @@
 .all-container {
   width: 95vw;
-  max-width: 640px;
+  max-width: 600px;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
   display: flex;
   flex-direction: row;
 }
@@ -84,6 +89,7 @@ body {
 }
 
 .instruction {
+  width: 100%;
   text-align: right;
   margin: 5px 5px;
 }

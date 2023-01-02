@@ -68,8 +68,4 @@ export async function startingDraw(appManager: AppManager) {
       thoughtsContainer!.appendChild(repliesContainer);
     }
   }
-
-  if (window.matchMedia('(max-width: 767px)').matches) {
-    document.getElementById('logo')!.style.display = 'none';
-  }
 }
