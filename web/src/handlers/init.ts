@@ -31,12 +31,12 @@ export function registerHandlers(appManager: AppManager) {
     counter.textContent = `${300 - toUTF8Array(newThought.textContent!).length}`;
   });
 
-  newThought.addEventListener('keydown', appManager.interactionState.disableEnterAllowShift);
+  newThought.addEventListener('keydown', (event) => {
+    appManager.interactionState.maxLength(300, event);
+    appManager.interactionState.disableEnterAllowShift(event);
+  });
   newThought.addEventListener('focus', (event) =>
     appManager.interactionState.focusNewThoughtText(event)
-  );
-  newThought.addEventListener('keydown', (event) =>
-    appManager.interactionState.maxLength(300, event)
   );
 
   const newAuthor = document.getElementById('new-thought-author')!;
