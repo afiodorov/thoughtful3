@@ -79,6 +79,8 @@ export class InteractionState {
   disableEnterAllowShift(event: KeyboardEvent) {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
+
+      document.execCommand('insertHTML', true, '\n');
     }
   }
 
