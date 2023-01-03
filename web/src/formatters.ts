@@ -11,7 +11,7 @@ export function formatDate(timestampSeconds: number): string {
   const dateString = `${date.getDate()}/${date.getMonth() + 1}/${date
     .getFullYear()
     .toString()
-    .slice(-2)} ${date.getHours()}:${date.getMinutes()}`;
+    .slice(-2)} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
 
   return dateString;
 }

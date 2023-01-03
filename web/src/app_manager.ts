@@ -24,6 +24,7 @@ export class AppManager {
     const graphURL: string | null = chainValues.get(chainID)!.graphURL;
     const rpcURL: string = chainValues.get(chainID)!.rpcURL;
     const contractAddress: string = chainValues.get(chainID)!.contractAddress;
+    const contractVersion: string = chainValues.get(chainID)!.contractVersion;
 
     this._web3 = new Web3(rpcURL);
     this._ensLooker = new EnsLooker(new Web3(chainValues.get('0x1')!.rpcURL));
@@ -37,7 +38,7 @@ export class AppManager {
     }
 
     if (typeof (window as any).ethereum !== 'undefined') {
-      this._metaMask = new MetaMask(this._web3, contractAddress, chainID);
+      this._metaMask = new MetaMask(this._web3, contractAddress, chainID, contractVersion);
       this._metaMask.registerAccountChangeListener((accounts) => {
         toggleAccounts(accounts, this);
       });

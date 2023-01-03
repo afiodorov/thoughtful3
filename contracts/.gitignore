@@ -1,3 +1,5 @@
-abi.json
-bytecode
+v1/abi.json
+v1/bytecode
+v2/abi.json
+v2/bytecode
 .venv/

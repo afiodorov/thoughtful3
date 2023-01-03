@@ -3,7 +3,7 @@ import { Fetcher } from './fetcher';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
-import abi from '../../../contracts/abi.json';
+import abi from '../../../contracts/v2/abi.json';
 import { RPCReply, RPCTweet } from './rpc_responses';
 import { pageSize } from '../config';
 
@@ -28,7 +28,17 @@ class AbiReply implements Reply {
   seq_num: number;
   tweet: string;
 
-  constructor({ text, display_name, pk, sender, likes, retweets, seq_num, tweet }: RPCReply) {
+  constructor({
+    text,
+    display_name,
+    pk,
+    sender,
+    likes,
+    retweets,
+    seq_num,
+    tweet,
+    block_timestamp
+  }: RPCReply) {
     this.id = pk;
     this.sender = sender;
     this.text = text;
@@ -37,6 +47,7 @@ class AbiReply implements Reply {
     this.numRetweets = parseInt(retweets, 10);
     this.seq_num = parseInt(seq_num, 10);
     this.tweet = tweet;
+    this.blockTimestamp = block_timestamp ? parseInt(block_timestamp, 10) : 0;
   }
 }
 
@@ -70,7 +81,6 @@ class AbiThought implements Thought {
     this.text = tweet.text;
     this.displayName = tweet.display_name;
     this.hashtag = tweet.hashtag;
-    this.blockTimestamp = 0;
     this.numLikes = parseInt(tweet.likes, 10);
     this.numReplies = parseInt(numReplies, 10);
     this.numRetweets = parseInt(tweet.retweets, 10);
@@ -80,6 +90,7 @@ class AbiThought implements Thought {
     this.quoteHashtag = quoteHashtag;
     this.retweetOf = tweet.retweet_of;
     this.isReplyRetweet = tweet.is_reply_retweet;
+    this.blockTimestamp = tweet.block_timestamp ? parseInt(tweet.block_timestamp, 10) : 0;
   }
 }
 
@@ -365,7 +376,6 @@ export class RPCFetcher implements Fetcher {
     }
 
     const res = new AbiReply(r);
-    res.blockTimestamp = 0;
 
     return res;
   }

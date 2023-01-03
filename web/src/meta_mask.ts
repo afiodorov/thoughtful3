@@ -1,6 +1,7 @@
 import { AbiItem, AbiInput } from 'web3-utils';
 import Web3 from 'web3';
-import abi from '../../contracts/abi.json';
+import abi_v1 from '../../contracts/v1/abi.json';
+import abi_v2 from '../../contracts/v2/abi.json';
 
 interface Ethereum {
   request(t: object): Promise<any | null>;
@@ -27,16 +28,23 @@ export class MetaMask {
   private _abi: Map<string, AbiItem> = new Map();
   private _chainID: string;
 
-  constructor(web3: Web3, contractAddress: string, chainID: string) {
+  constructor(web3: Web3, contractAddress: string, chainID: string, version: string) {
     this._deployedContract = contractAddress;
     this._ethereum = (window as any).ethereum;
     this._web3 = web3;
     this._chainID = chainID;
 
-    abi.forEach((rawAbiItem) => {
-      const item = rawAbiItem as AbiItem;
-      this._abi.set(item.name!, item);
-    });
+    if (version == 'v1') {
+      abi_v1.forEach((rawAbiItem) => {
+        const item = rawAbiItem as AbiItem;
+        this._abi.set(item.name!, item);
+      });
+    } else if (version == 'v2') {
+      abi_v2.forEach((rawAbiItem) => {
+        const item = rawAbiItem as AbiItem;
+        this._abi.set(item.name!, item);
+      });
+    }
   }
 
   async newLike(id: string, isReplyLike: boolean): Promise<string | null> {
@@ -221,7 +229,7 @@ export class MetaMask {
   }
 
   async getNewThoughtID(txHash: string): Promise<[string, string] | null> {
-    const myAbi = abi[0]['inputs'] as AbiInput[];
+    const myAbi = this._abi.get('NewTweet')!['inputs'] as AbiInput[];
 
     let receipt: any = null;
 
@@ -363,7 +371,7 @@ export class MetaMask {
   }
 
   async getNewReplyID(txHash: string): Promise<[string, string] | null> {
-    const myAbi = abi[1]['inputs'] as AbiInput[];
+    const myAbi = this._abi.get('NewReply')!['inputs'] as AbiInput[];
 
     let receipt: any = null;
 

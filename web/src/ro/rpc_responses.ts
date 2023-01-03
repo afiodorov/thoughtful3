@@ -7,6 +7,7 @@ export interface RPCReply {
   seq_num: string;
   text: string;
   tweet: string;
+  block_timestamp?: string;
 }
 
 export interface RPCTweet {
@@ -19,4 +20,5 @@ export interface RPCTweet {
   retweets: string;
   sender: string;
   text: string;
+  block_timestamp?: string;
 }
