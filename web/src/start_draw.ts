@@ -1,4 +1,5 @@
 import { AppManager } from './app_manager';
+import { fetchReplies } from './reply';
 import { Thought } from './responses';
 import { makeReplyContainer } from './reply';
 import { makeThoughtContainer } from './thought';
@@ -50,6 +51,21 @@ export async function startingDraw(appManager: AppManager) {
     entities.forEach((t) => {
       thoughtsContainer!.appendChild(makeThoughtContainer(t, appManager));
     });
+
+    if (params.thoughtID) {
+      const replyContainer = document.getElementById(`replies-${params.thoughtID}`)!;
+
+      fetchReplies(params.thoughtID, appManager).then((replies) => {
+        const newReply = document.getElementById(`new-reply-${params.thoughtID}`)!;
+        replyContainer.innerHTML = '';
+
+        replies.forEach((reply) => {
+          replyContainer.appendChild(reply);
+        });
+
+        replyContainer.appendChild(newReply);
+      });
+    }
   } else if (params instanceof ReplyParams) {
     const fetchedReply = await appManager.fetcher.getReplyByID(params.replyID);
     if (fetchedReply) {
