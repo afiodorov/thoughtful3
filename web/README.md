@@ -1,3 +1,8 @@
+# Development
+
+You need to have `yarn` installed, see:
+https://classic.yarnpkg.com/lang/en/docs/install
+
 # Some basic web interface
 
 I am still hoping for some kind of one page UI that I can post at IPFS and forget about it.
