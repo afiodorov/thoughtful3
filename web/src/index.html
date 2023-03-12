@@ -1,70 +1,80 @@
 <html>
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Thoughtful3</title>
-<style>
-{{ range $index, $value := .Css }}
-{{ $value }}
-{{ end }}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thoughtful3</title>
+  <style>
+    {{ range $index, $value := .Css }}
+    {{ $value }}
+    {{ end }}
+  </style>
 </head>
+
 <body>
-<div class="overlay" id="overlay">
-  <div class="dialogue" id="dialogue">
-    <button class="close-button" id="close-button">X</button>
-    <div class="dialogue-text">
-      <div class="thoughts-container" id='new-thought-container'>
-       <div class="thought-container">
-         <div class="thought-author-container">
-          <div contenteditable="true" class="thought-author" id='new-thought-author'></div>
-          <div class="thought-domain-container">
-            <div class="thought-domain" id='new-thought-domain'></div>
-            #<div class="thought-hashtag" id='new-thought-hashtag' contenteditable="true"></div>
-          </div>
-         </div>
-         <div class="thought-text-container">
-           <div class="thought-left-quote">❝</div>
-            <div class="thought-text" contenteditable="true" id="new-thought-text"></div>
-            <div class="thought-right-quote">❞</div>
-         </div>
-       </div>
-       <div class="quote-container" id='quote-container'>
-           <div class="quote-author-container">
-             <div class="quote-author">
-               <a href='#' id='quote-author-link'>&gt;</a>
-               <div class="quote-author-text" id='quote-author'></div>
-             </div>
-            <div class="quote-domain-container">
-              <div class="quote-domain" id='quote-domain'></div>
+  <div class="overlay" id="overlay">
+    <div class="dialogue" id="dialogue">
+      <button class="close-button" id="close-button">X</button>
+      <div class="dialogue-text">
+        <div class="thoughts-container" id='new-thought-container'>
+          <div class="thought-container">
+            <div class="thought-author-container">
+              <div contenteditable="true" class="thought-author" id='new-thought-author'></div>
+              <div class="thought-domain-container">
+                <div class="thought-domain" id='new-thought-domain'></div>
+                #<div class="thought-hashtag" id='new-thought-hashtag' contenteditable="true"></div>
+              </div>
             </div>
-           </div>
-           <div class="quote-text-container">
-             <div class="quote-text" id="quote-text"></div>
-           </div>
-       </div>
-       <div class='new-thought-rest-container'>
-       <div class="new-thought-counter" id="new-thought-counter">300</div>
-       <div class='new-thought-publish-link'>
-       <a class="new-thought-publish" id="new-thought-publish" href='#'>📧</a>
-       </div>
-       </div>
+            <div class="thought-text-container">
+              <div class="thought-left-quote">❝</div>
+              <div class="thought-text" contenteditable="true" id="new-thought-text"></div>
+              <div class="thought-right-quote">❞</div>
+            </div>
+          </div>
+          <div class="quote-container" id='quote-container'>
+            <div class="quote-author-container">
+              <div class="quote-author">
+                <a href='#' id='quote-author-link'>&gt;</a>
+                <div class="quote-author-text" id='quote-author'></div>
+              </div>
+              <div class="quote-domain-container">
+                <div class="quote-domain" id='quote-domain'></div>
+              </div>
+            </div>
+            <div class="quote-text-container">
+              <div class="quote-text" id="quote-text"></div>
+            </div>
+          </div>
+          <div class='new-thought-rest-container'>
+            <div class="new-thought-counter" id="new-thought-counter">300</div>
+            <div class='new-thought-publish-link'>
+              <a class="new-thought-publish" id="new-thought-publish" href='#'>📧</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="all-container">
-  <div class ="header">
-  <img src="data:image/png;base64,{{.Logo}}" width="40px" height="40px" id="logo">
-  <p class='instruction'>
-  <span id='instruction' class='instruction-text'>Install <a href='https://metamask.io/' target="_blank">MetaMask</a> to share your Thoughts.</span>
-  <a href="./">🏠</a>
-  </p>
+  <div class="all-container">
+    <div class="header">
+      <img src="data:image/png;base64,{{.Logo}}" width="40px" height="40px" id="logo">
+      <p class='instruction'>
+        <span id='instruction' class='instruction-text'>Install <a href='https://metamask.io/'
+            target="_blank">MetaMask</a> to share your Thoughts.</span>
+        <a class="home-icon-link" href="./"> 
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" >
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </a>
+      </p>
+    </div>
+    <div class="thoughts-container" id="thoughts-container"></div>
   </div>
-  <div class="thoughts-container" id="thoughts-container"></div>
-</div>
-<script>
-{{.Script}}
-</script>
+  <script>
+     {{.Script}} 
+  </script>
 </body>
+
 </html>

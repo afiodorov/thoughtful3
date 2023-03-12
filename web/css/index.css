@@ -1,18 +1,46 @@
+/* 
+
+Colors  
+#b9d7d9
+#1c2130
+#2b2b2b
+
+*/
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
 body {
-  background-color: #65bad4;
+  background-color: #fafafa;
+  color: #2b2b2b;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
 }
 
 .all-container {
   width: 95vw;
-  max-width: 600px;
+  max-width: 700px;
   margin: auto;
   display: flex;
   flex-direction: column;
+  background-color: rgba(185, 215, 217, 0.1);
 }
 
 .header {
   display: flex;
-  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(185, 215, 217, 0.3);
+  box-shadow: 0 25px 50px -12px #3b82f620;
+  padding: 20px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .thoughts-container {
@@ -37,40 +65,59 @@ a:hover {
   text-decoration: underline;
 }
 
-body {
-  font-size: 16px;
-}
-
 .dialogue {
-  position: fixed; /* position the element in a fixed position on the page */
-  top: 50%; /* position the element 50% down from the top of the page */
-  left: 50%; /* position the element 50% in from the left of the page */
-  transform: translate(-50%, -50%); /* center the element by shifting it 50% to the left and up */
-  display: none; /* make the element a flex container */
-  flex-direction: column; /* arrange the elements inside the container in a column */
-  align-items: center; /* align the elements inside the container horizontally */
-  justify-content: center; /* align the elements inside the container vertically */
-  background-color: white; /* give the element a white background */
-  border: 1px solid black; /* add a black border */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* add a drop shadow to give the element a raised appearance */
-  z-index: 100; /* set the z-index to a high value to make the element appear in front of other elements */
-  display: none; /* initially hide the element */
+  position: fixed;
+  /* position the element in a fixed position on the page */
+  top: 50%;
+  /* position the element 50% down from the top of the page */
+  left: 50%;
+  /* position the element 50% in from the left of the page */
+  transform: translate(-50%, -50%);
+  /* center the element by shifting it 50% to the left and up */
+  display: none;
+  /* make the element a flex container */
+  flex-direction: column;
+  /* arrange the elements inside the container in a column */
+  align-items: center;
+  /* align the elements inside the container horizontally */
+  justify-content: center;
+  /* align the elements inside the container vertically */
+  background-color: white;
+  /* give the element a white background */
+  border: 1px solid black;
+  /* add a black border */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  /* add a drop shadow to give the element a raised appearance */
+  z-index: 100;
+  /* set the z-index to a high value to make the element appear in front of other elements */
+  display: none;
+  /* initially hide the element */
 }
 
 .close-button {
-  position: absolute; /* position the button in an absolute position relative to the dialogue window */
-  top: 0; /* position the button at the top of the window */
-  right: 0; /* position the button at the right of the window */
-  margin: 5px; /* add some space around the button */
-  background-color: transparent; /* make the button's background transparent */
-  border: none; /* remove the border from the button */
-  color: black; /* set the text color to black */
-  font-size: 20px; /* increase the font size for the "X" character */
-  cursor: pointer; /* change the cursor to a pointer when hovering over the button */
+  position: absolute;
+  /* position the button in an absolute position relative to the dialogue window */
+  top: 0;
+  /* position the button at the top of the window */
+  right: 0;
+  /* position the button at the right of the window */
+  margin: 5px;
+  /* add some space around the button */
+  background-color: transparent;
+  /* make the button's background transparent */
+  border: none;
+  /* remove the border from the button */
+  color: black;
+  /* set the text color to black */
+  font-size: 20px;
+  /* increase the font size for the "X" character */
+  cursor: pointer;
+  /* change the cursor to a pointer when hovering over the button */
 }
 
 .close-button:hover {
-  color: red; /* change the text color to red when hovering over the button */
+  color: red;
+  /* change the text color to red when hovering over the button */
 }
 
 .dialogue-text {
@@ -78,31 +125,58 @@ body {
 }
 
 .overlay {
-  position: fixed; /* position the element in a fixed position on the page */
-  top: 0; /* position the element at the top of the page */
-  right: 0; /* position the element at the right of the page */
-  bottom: 0; /* position the element at the bottom of the page */
-  left: 0; /* position the element at the left of the page */
-  background-color: rgba(0, 0, 0, 0.5); /* give the element a semi-transparent black background */
-  z-index: 99; /* set the z-index to a high value to make the element appear in front of other elements */
-  display: none; /* initially hide the element */
+  position: fixed;
+  /* position the element in a fixed position on the page */
+  top: 0;
+  /* position the element at the top of the page */
+  right: 0;
+  /* position the element at the right of the page */
+  bottom: 0;
+  /* position the element at the bottom of the page */
+  left: 0;
+  /* position the element at the left of the page */
+  background-color: rgba(0, 0, 0, 0.5);
+  /* give the element a semi-transparent black background */
+  z-index: 99;
+  /* set the z-index to a high value to make the element appear in front of other elements */
+  display: none;
+  /* initially hide the element */
 }
 
 .link {
-  cursor: pointer; /* change the cursor to a pointer when hovering over the image */
+  cursor: pointer;
+  /* change the cursor to a pointer when hovering over the image */
 }
 
-.instruction {
-  width: 100%;
-  text-align: right;
-  margin: 5px 5px;
+.header .instruction {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.instruction-text {
-  font-style: italic;
+.instruction-text>a {
+  text-decoration: underline;
+  font-weight: 500;
 }
+
+.instruction-text>a:hover {
+  color: #005bc5;
+} 
 
 .top-panel {
   display: flex;
   flex-direction: row;
+}
+
+.home-icon-link {
+  text-decoration: none;
+  display: block;
+}
+
+.home-icon-link svg {
+  stroke: #2b2b2b;
+}
+
+.home-icon-link:hover svg {
+  stroke: #005bc5;
 }
