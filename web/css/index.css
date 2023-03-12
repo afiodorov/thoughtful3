@@ -14,6 +14,10 @@ Colors
 * {
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
+}
+a{
+  text-decoration: none;
 }
 
 body {
@@ -28,8 +32,7 @@ body {
   max-width: 700px;
   margin: auto;
   display: flex;
-  flex-direction: column;
-  background-color: rgba(185, 215, 217, 0.1);
+  flex-direction: column; 
 }
 
 .header {
@@ -37,16 +40,16 @@ body {
   align-items: center;
   justify-content: space-between;
   background-color: rgba(185, 215, 217, 0.3);
-  box-shadow: 0 25px 50px -12px #3b82f620;
+  box-shadow: 0 15px 40px -12px rgba(59, 130, 246, 0.1);
   padding: 20px;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .thoughts-container {
   display: flex;
   flex-direction: column;
-  max-width: 600px;
+  max-width: 700px;
   width: 90vw;
 }
 
@@ -157,6 +160,7 @@ a:hover {
 .instruction-text>a {
   text-decoration: underline;
   font-weight: 500;
+  transition: all .3s ease-in-out;
 }
 
 .instruction-text>a:hover {
@@ -171,6 +175,7 @@ a:hover {
 .home-icon-link {
   text-decoration: none;
   display: block;
+  transition: all .3s cubic-bezier(0.895, 0.03, 0.685, 0.22);
 }
 
 .home-icon-link svg {
