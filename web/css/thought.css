@@ -107,7 +107,7 @@
   stroke: #2b2b2b;
 }
 
-.thought-quote svg:hover {
+.thought-quote:hover svg {
   stroke: #005bc5;
 }
 
