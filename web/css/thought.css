@@ -71,6 +71,19 @@
   display: flex;
   flex-wrap: nowrap;
   flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  transition: all .3s ease-in-out;
+}
+.thought-reply:hover{
+  color: #005bc5;
+}
+.thought-reply svg{
+  stroke: #2b2b2b;
+}
+.thought-reply:hover svg{
+  stroke: #005bc5;
 }
 
 .thought-quote {
@@ -87,12 +100,39 @@
   text-align: right;
   padding-right: 5px;
   margin-left: auto;
+  gap: 10px;
 }
+
+.thought-date:hover {
+  color: #005bc5;
+}
+
+.thought-date-link {
+  display: block;
+}
+
+.thought-date-link a svg {
+  stroke: #2b2b2b;
+}
+
+.thought-date-link:hover a svg {
+  stroke: #005bc5;
+}
+
 
 .thought-like {
   display: flex;
   flex-wrap: nowrap;
   flex-direction: row;
+}
+
+.thought-like svg{
+  stroke: #2b2b2b;
+  fill: #2b2b2b;
+}
+.thought-like:hover svg{
+  stroke: #005bc5;
+  fill: #005bc5;
 }
 
 .thought-left-quote {
@@ -109,5 +149,5 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 20px; 
+  padding: 20px;
 }
