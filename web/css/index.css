@@ -19,6 +19,9 @@ Colors
 a{
   text-decoration: none;
 }
+a:hover{
+  text-decoration: none;
+}
 
 body {
   background-color: #fafafa;
