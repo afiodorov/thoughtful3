@@ -17,7 +17,7 @@
 }
 
 .thought-text {
-  width: 570px;
+  width: 90%;
   white-space: pre-wrap;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -115,6 +115,9 @@
 
 .thought-date:hover {
   color: #005bc5;
+}
+.thought-date:hover a svg{
+  stroke: #005bc5
 }
 
 .thought-date-link {
