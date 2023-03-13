@@ -195,6 +195,14 @@ a:hover {
   stroke: #005bc5;
 }
 
+.dialogue-text{
+  width:100%
+}
+.dialogue-text .thought-container{
+  width:100%;
+}
+
+
 @media(max-width:450px) {
   .header {
     padding: 20px 15px;
