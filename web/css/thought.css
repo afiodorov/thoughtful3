@@ -226,19 +226,22 @@
 
   .thought-domain-container {
     display: flex;
-    justify-content: start; 
+    justify-content: start;
     align-items: start;
     margin-bottom: 20px;
     color: rgba(43, 43, 43, 0.8);
     flex-wrap: wrap;
   }
+
   .thought-domain {
     font-size: 12px;
   }
-  .dialogue{
+
+  .dialogue {
     padding: 20px 10px 0;
   }
-  .dialogue-text .thought-domain { 
+
+  .dialogue-text .thought-domain {
     word-break: break-all;
-}
+  }
 }
