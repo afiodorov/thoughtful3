@@ -218,4 +218,7 @@
   .thought-text {
     width: 100%;
   }
+  .thought-container { 
+    margin: 15px 0 0; 
+  }
 }
