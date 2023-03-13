@@ -244,4 +244,7 @@
   .dialogue-text .thought-domain {
     word-break: break-all;
   }
+  .thought-author {
+    font-size: 1.3em;  
+  }
 }
