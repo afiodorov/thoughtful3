@@ -6,14 +6,11 @@ import { setDomain } from '../utils';
 let dialogueVisibleLock = false;
 
 export async function toggleDialogue(
-  event: Event,
+  thoughtID: string | null,
+  replyID: string | null,
   metaMask: MetaMask,
   appManager: AppManager
 ): Promise<void> {
-  if (!(event.target instanceof Element)) {
-    return;
-  }
-
   if (dialogueVisibleLock) {
     return;
   }
@@ -39,9 +36,6 @@ export async function toggleDialogue(
     dialogue.style.display = 'none';
     overlay.style.display = 'none';
   }
-
-  const thoughtID = event!.target!.getAttribute('thought-id');
-  const replyID = event!.target!.getAttribute('reply-id');
 
   if (thoughtID) {
     const newHashtagElement = document.getElementById('new-thought-hashtag')!;

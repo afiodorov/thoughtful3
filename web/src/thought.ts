@@ -98,9 +98,8 @@ export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): 
     likeElementLink.href = '#';
     likeElementLink.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"   stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>`;
     likeElementLink.classList.add('thought-like-link');
-    likeElementLink.setAttribute('thought-id', t.id);
-    likeElementLink.addEventListener('click', (event) =>
-      likeThought(event, appManager.metaMask!, appManager.entityStore, appManager.fetcher)
+    likeElementLink.addEventListener('click', (_) =>
+      likeThought(t.id, appManager.metaMask!, appManager.entityStore, appManager.fetcher)
     );
 
     likeElement.appendChild(likeElementLink);
@@ -119,14 +118,14 @@ export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): 
   const replyElementIcon = document.createElement('div');
 
   if (!appManager.metaMask) {
-    replyElementIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>';
+    replyElementIcon.innerHTML =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>';
   } else {
     const replyElementLink = document.createElement('a');
     replyElementLink.href = `#new-reply-${t.id}`;
     replyElementLink.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>`;
     replyElementLink.classList.add('thought-reply-icon');
-    replyElementLink.setAttribute('thought-id', t.id);
-    replyElementLink.addEventListener('click', (event) => toggleNewReply(event, appManager));
+    replyElementLink.addEventListener('click', (_) => toggleNewReply(t.id, appManager));
 
     replyElementIcon.appendChild(replyElementLink);
   }
@@ -138,8 +137,7 @@ export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): 
   replyLink.textContent = `${t.numReplies}`;
   replyLink.id = `thought-${t.id}-new-reply`;
   replyLink.classList.add('thought-reply-link');
-  replyLink.setAttribute('thought-id', t.id);
-  replyLink.addEventListener('click', (event) => toggleReplies(event, appManager));
+  replyLink.addEventListener('click', (_) => toggleReplies(t.id, appManager));
   if (!t.numReplies) {
     replyLink.style.display = 'none';
   }
@@ -152,16 +150,17 @@ export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): 
   if (appManager.metaMask) {
     const quoteElementLink = document.createElement('a');
     quoteElementLink.href = '#';
-    quoteElementLink.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>';
-    quoteElementLink.setAttribute('thought-id', t.id);
-    quoteElementLink.addEventListener('click', (event) =>
-      toggleDialogue(event, appManager.metaMask!, appManager)
+    quoteElementLink.innerHTML =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>';
+    quoteElementLink.addEventListener('click', (_) =>
+      toggleDialogue(t.id, null, appManager.metaMask!, appManager)
     );
 
     quoteElement.appendChild(quoteElementLink);
   } else {
     const quoteElementNoLink = document.createElement('div');
-    quoteElementNoLink.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>';
+    quoteElementNoLink.innerHTML =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>';
 
     quoteElement.appendChild(quoteElementNoLink);
   }
