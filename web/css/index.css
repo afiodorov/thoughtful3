@@ -244,6 +244,7 @@ a:hover {
 @media(max-width:390px){
   .header .instruction {
     font-size: 12px;
+    gap:5px;
   }
     .home-icon-link svg { 
     height: 18px;
