@@ -241,3 +241,12 @@ a:hover {
     width: 100%; 
   }
 }
+@media(max-width:390px){
+  .header .instruction {
+    font-size: 12px;
+  }
+    .home-icon-link svg { 
+    height: 18px;
+    width: 18px;
+  }
+ }
