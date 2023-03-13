@@ -111,12 +111,11 @@ a:hover {
 .close-button {
   position: absolute;
   /* position the button in an absolute position relative to the dialogue window */
-  top: 0;
+  top: 10px;
   /* position the button at the top of the window */
-  right: 0;
+  right: 10px;
   /* position the button at the right of the window */
-  margin: 5px;
-  /* add some space around the button */
+ 
   background-color: transparent;
   /* make the button's background transparent */
   border: none;
