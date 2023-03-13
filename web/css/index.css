@@ -97,14 +97,15 @@ a:hover {
   /* align the elements inside the container vertically */
   background-color: white;
   /* give the element a white background */
-  border: 1px solid black;
-  /* add a black border */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  /* add a drop shadow to give the element a raised appearance */
   z-index: 100;
   /* set the z-index to a high value to make the element appear in front of other elements */
   display: none;
   /* initially hide the element */
+  border-radius: 10px;
+  max-width: 700px;
+  width: 100%;
+  padding: 30px 20px;
+  box-shadow: 0 15px 40px -12px rgba(59, 130, 246, 0.1);
 }
 
 .close-button {
@@ -128,15 +129,11 @@ a:hover {
   /* change the cursor to a pointer when hovering over the button */
 }
 
-.close-button:hover {
-  color: red;
-  /* change the text color to red when hovering over the button */
+.close-button svg {
+  height: 24px;
+  width: 24px;
 }
-
-.dialogue-text {
-  margin: 30px;
-}
-
+ 
 .overlay {
   position: fixed;
   /* position the element in a fixed position on the page */
@@ -225,7 +222,7 @@ a:hover {
   .thought-author {
     font-size: 1.3em;
   }
- 
+
   .thought-domain-container {
     margin-bottom: 15px;
   }
@@ -235,19 +232,22 @@ a:hover {
   }
 
   .thought-hashtag {
-    font-size: 12px; 
+    font-size: 12px;
   }
-  .thought-text{
-    width: 100%; 
+
+  .thought-text {
+    width: 100%;
   }
 }
-@media(max-width:390px){
+
+@media(max-width:390px) {
   .header .instruction {
     font-size: 12px;
-    gap:5px;
+    gap: 5px;
   }
-    .home-icon-link svg { 
+
+  .home-icon-link svg {
     height: 18px;
     width: 18px;
   }
- }
+}
