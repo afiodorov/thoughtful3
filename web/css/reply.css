@@ -91,6 +91,9 @@
 .reply-date a svg{
   stroke: #2b2b2b;
 }
+.reply-date:hover {
+  color: #005bc5;
+}
 .reply-date:hover a svg{
   stroke: #005bc5;
 }
