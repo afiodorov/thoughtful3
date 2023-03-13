@@ -6,17 +6,11 @@ const likeThoughtLock: Map<string, boolean> = new Map();
 const likeReplyLock: Map<string, boolean> = new Map();
 
 export async function likeThought(
-  event: Event,
+  thoughtID: string,
   metaMask: MetaMask,
   entityStore: EntityStore,
   fetcher: Fetcher
 ): Promise<void> {
-  if (!(event.target instanceof Element)) {
-    return;
-  }
-
-  const thoughtID: string = event!.target!.getAttribute('thought-id')!;
-
   if (likeThoughtLock.get(thoughtID)) {
     return;
   }
@@ -39,17 +33,11 @@ export async function likeThought(
 }
 
 export async function likeReply(
-  event: Event,
+  replyID: string,
   metaMask: MetaMask,
   entityStore: EntityStore,
   fetcher: Fetcher
 ): Promise<void> {
-  if (!(event.target instanceof Element)) {
-    return;
-  }
-
-  const replyID: string = event!.target!.getAttribute('reply-id')!;
-
   if (likeReplyLock.get(replyID)) {
     return;
   }

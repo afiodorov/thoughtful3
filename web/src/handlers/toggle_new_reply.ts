@@ -3,13 +3,7 @@ import { setDomain } from '../utils';
 
 const toggledLock: Map<string, boolean> = new Map();
 
-export async function toggleNewReply(event: Event, appManager: AppManager): Promise<void> {
-  if (!(event.target instanceof Element)) {
-    return;
-  }
-
-  const thoughtID: string = event!.target!.getAttribute('thought-id')!;
-
+export async function toggleNewReply(thoughtID: string, appManager: AppManager): Promise<void> {
   if (toggledLock.get(thoughtID)) {
     return;
   }

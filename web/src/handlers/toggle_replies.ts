@@ -3,13 +3,7 @@ import { AppManager } from '../app_manager';
 
 const toggledLock: Map<string, boolean> = new Map();
 
-export function toggleReplies(event: Event, appManager: AppManager): void {
-  if (!(event.target instanceof Element)) {
-    return;
-  }
-
-  const thoughtID: string = event!.target!.getAttribute('thought-id')!;
-
+export function toggleReplies(thoughtID: string, appManager: AppManager): void {
   if (toggledLock.get(thoughtID)) {
     return;
   }

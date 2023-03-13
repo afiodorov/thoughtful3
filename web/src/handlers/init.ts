@@ -63,13 +63,13 @@ export function registerHandlers(appManager: AppManager) {
 
   if (appManager.metaMask !== null) {
     const closeButton = document.getElementById('close-button');
-    closeButton!.addEventListener('click', (event) =>
-      toggleDialogue(event, appManager.metaMask!, appManager)
+    closeButton!.addEventListener('click', (_) =>
+      toggleDialogue(null, null, appManager.metaMask!, appManager)
     );
 
     const logo = document.getElementById('logo')!;
-    logo.addEventListener('click', (event) =>
-      toggleDialogue(event, appManager.metaMask!, appManager)
+    logo.addEventListener('click', (_) =>
+      toggleDialogue(null, null, appManager.metaMask!, appManager)
     );
     logo.classList.add('link');
 
