@@ -103,7 +103,7 @@ a:hover {
   /* initially hide the element */
   border-radius: 10px;
   max-width: 700px;
-  width: 100%;
+  width: 95%;
   padding: 30px 20px;
   box-shadow: 0 15px 40px -12px rgba(59, 130, 246, 0.1);
 }
@@ -241,11 +241,7 @@ a:hover {
 
   .thought-domain-container {
     margin-bottom: 15px;
-  }
-
-  .thought-domain {
-    font-size: 12px;
-  }
+  } 
 
   .thought-hashtag {
     font-size: 12px;
@@ -254,6 +250,10 @@ a:hover {
   .thought-text {
     width: 100%;
   }
+
+  .thought-author {
+    font-size: 1.3em; 
+}
 }
 
 @media(max-width:390px) {

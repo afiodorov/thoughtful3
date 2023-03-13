@@ -218,9 +218,27 @@
   .thought-text {
     width: 100%;
   }
-  .thought-container { 
-    margin: 15px 0 0; 
+
+  .thought-container {
+    margin: 15px 0 0;
     padding: 20px 10px;
   }
-}
 
+  .thought-domain-container {
+    display: flex;
+    justify-content: start; 
+    align-items: start;
+    margin-bottom: 20px;
+    color: rgba(43, 43, 43, 0.8);
+    flex-wrap: wrap;
+  }
+  .thought-domain {
+    font-size: 12px;
+  }
+  .dialogue{
+    padding: 20px 10px 0;
+  }
+  .dialogue-text .thought-domain { 
+    word-break: break-all;
+}
+}
