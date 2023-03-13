@@ -198,8 +198,8 @@ a:hover {
 .dialogue-text{
   width:100%
 }
-.dialogue-text .thought-container{
-  width:100%;
+.dialogue-text .thoughts-container{
+  max-width:100%;
 }
 
 
