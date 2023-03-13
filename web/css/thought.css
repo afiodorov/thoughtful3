@@ -82,6 +82,8 @@
 
 .thought-reply svg {
   stroke: #2b2b2b;
+  height: 24px;
+  width: 24px;
 }
 
 .thought-reply:hover svg {
@@ -105,6 +107,8 @@
 
 .thought-quote svg {
   stroke: #2b2b2b;
+  height: 24px;
+  width: 24px;
 }
 
 .thought-quote:hover svg {
@@ -137,6 +141,8 @@
 
 .thought-date-link a svg {
   stroke: #2b2b2b;
+  height: 24px;
+  width: 24px;
 }
 
 .thought-date-link:hover a svg {
@@ -156,6 +162,8 @@
 .thought-like svg {
   stroke: #2b2b2b;
   fill: #2b2b2b;
+  height: 24px;
+  width: 24px;
 }
 
 .thought-like:hover svg {
@@ -178,4 +186,26 @@
   align-items: center;
   gap: 20px;
   padding: 20px;
+}
+
+@media(max-width:450px) {
+
+  .thought-reply,
+  .thought-like,
+  .thought-quote,
+  .thought-date  {
+    font-size: 16px;
+  }
+
+  .thought-reply svg,
+  .thought-like svg,
+  .thought-quote svg,
+  .thought-date-link a svg  {
+    height: 18px;
+    width: 18px;
+  } 
+  .thought-rest-container { 
+  gap: 15px;
+  padding: 15px;
+}
 }

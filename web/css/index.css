@@ -16,10 +16,12 @@ Colors
   margin: 0;
   box-sizing: border-box;
 }
-a{
+
+a {
   text-decoration: none;
 }
-a:hover{
+
+a:hover {
   text-decoration: none;
 }
 
@@ -35,7 +37,7 @@ body {
   max-width: 700px;
   margin: auto;
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
 }
 
 .header {
@@ -47,6 +49,11 @@ body {
   padding: 20px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+}
+
+#logo {
+  height: 40px;
+  width: 40px;
 }
 
 .thoughts-container {
@@ -168,7 +175,7 @@ a:hover {
 
 .instruction-text>a:hover {
   color: #005bc5;
-} 
+}
 
 .top-panel {
   display: flex;
@@ -183,8 +190,63 @@ a:hover {
 
 .home-icon-link svg {
   stroke: #2b2b2b;
+  height: 22px;
+  width: 22px;
 }
 
 .home-icon-link:hover svg {
   stroke: #005bc5;
+}
+
+@media(max-width:450px) {
+  .header {
+    padding: 20px 15px;
+  }
+
+  .header .instruction {
+    font-size: 13px;
+  }
+
+  #logo {
+    height: 30px;
+    width: 30px;
+  }
+
+  .home-icon-link svg {
+    stroke: #2b2b2b;
+    height: 20px;
+    width: 20px;
+  }
+
+  .thoughts-container {
+    width: 100%;
+  }
+
+  .thought-author {
+    font-size: 1.3em;
+  }
+
+  .thought-container {
+    width: 100%;
+  }
+
+  .thought-text-container {
+    font-size: 1em;
+    padding: 10px 10px;
+  }
+
+  .thought-domain-container {
+    margin-bottom: 15px;
+  }
+
+  .thought-domain {
+    font-size: 12px;
+  }
+
+  .thought-hashtag {
+    font-size: 12px; 
+  }
+  .thought-text{
+    width: 100%; 
+  }
 }

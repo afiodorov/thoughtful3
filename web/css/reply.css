@@ -2,13 +2,15 @@
   display: flex;
   flex-wrap: nowrap;
   flex-direction: row;
-  gap:5px;
+  gap: 5px;
 }
-.reply-like svg{
+
+.reply-like svg {
   stroke: #2b2b2b;
   fill: #2b2b2b;
 }
-.reply-like:hover svg{
+
+.reply-like:hover svg {
   stroke: #005bc5;
   fill: #005bc5;
 }
@@ -42,8 +44,9 @@
   gap: 20px;
   margin-top: 20px;
 }
-.reply-date-text{
-  margin-left:5px
+
+.reply-date-text {
+  margin-left: 5px
 }
 
 .reply-author {
@@ -57,14 +60,17 @@
   display: flex;
   flex-wrap: nowrap;
   flex-direction: row;
-  gap:5px;
+  gap: 5px;
 }
-.reply-quote svg{
+
+.reply-quote svg {
   stroke: #2b2b2b;
 }
-.reply-quote:hover svg{
+
+.reply-quote:hover svg {
   stroke: #005bc5;
 }
+
 .reply-domain {
   text-align: left;
 }
@@ -88,17 +94,35 @@
   padding-right: 5px;
   margin-left: auto;
 }
-.reply-date a svg{
+
+.reply-date a svg {
   stroke: #2b2b2b;
 }
+
 .reply-date:hover {
   color: #005bc5;
 }
-.reply-date:hover a svg{
+
+.reply-date:hover a svg {
   stroke: #005bc5;
 }
 
-.reply-date-link{
+.reply-date-link {
   display: flex;
-  gap:5px;
+  gap: 5px;
+}
+
+@media(max-width:450px){
+  .reply-container { 
+    padding: 15px 10px; 
+    margin: 10px; 
+  }
+  .reply-text-container {
+    font-size: 1em; 
+  }
+  
+.reply-rest-container { 
+  gap: 15px;
+  margin-top: 15px;
+}
 }
