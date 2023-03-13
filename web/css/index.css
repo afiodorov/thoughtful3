@@ -228,13 +228,7 @@ a:hover {
 
   .thought-container {
     width: 100%;
-  }
-
-  .thought-text-container {
-    font-size: 1em;
-    padding: 10px 10px;
-  }
-
+  } 
   .thought-domain-container {
     margin-bottom: 15px;
   }

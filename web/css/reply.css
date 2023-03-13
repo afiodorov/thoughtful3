@@ -8,6 +8,8 @@
 .reply-like svg {
   stroke: #2b2b2b;
   fill: #2b2b2b;
+  height: 24px;
+  width: 24px;
 }
 
 .reply-like:hover svg {
@@ -65,6 +67,8 @@
 
 .reply-quote svg {
   stroke: #2b2b2b;
+  height: 24px;
+  width: 24px;
 }
 
 .reply-quote:hover svg {
@@ -97,6 +101,8 @@
 
 .reply-date a svg {
   stroke: #2b2b2b;
+  height: 24px;
+  width: 24px;
 }
 
 .reply-date:hover {
@@ -112,17 +118,27 @@
   gap: 5px;
 }
 
-@media(max-width:450px){
-  .reply-container { 
-    padding: 15px 10px; 
-    margin: 10px; 
+@media(max-width:450px) {
+  .reply-container {
+    padding: 15px 10px;
+    margin: 10px;
   }
+
   .reply-text-container {
-    font-size: 1em; 
+    font-size: 1em;
   }
-  
-.reply-rest-container { 
-  gap: 15px;
-  margin-top: 15px;
-}
+
+  .reply-rest-container {
+    gap: 15px;
+    margin-top: 15px;
+    font-size: 1em;
+  }
+
+  .reply-like svg,
+  .reply-quote svg,
+  .reply-date a svg {
+    height: 18px;
+    width: 18px;
+  }
+
 }

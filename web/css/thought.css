@@ -193,19 +193,29 @@
   .thought-reply,
   .thought-like,
   .thought-quote,
-  .thought-date  {
+  .thought-date {
     font-size: 16px;
   }
 
   .thought-reply svg,
   .thought-like svg,
   .thought-quote svg,
-  .thought-date-link a svg  {
+  .thought-date-link a svg {
     height: 18px;
     width: 18px;
-  } 
-  .thought-rest-container { 
-  gap: 15px;
-  padding: 15px;
-}
+  }
+
+  .thought-rest-container {
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .thought-text-container {
+    padding: 10px 15px;
+    font-size: 1em;
+  }
+
+  .thought-text {
+    width: 100%;
+  }
 }
