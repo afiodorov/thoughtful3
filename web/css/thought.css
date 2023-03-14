@@ -223,16 +223,7 @@
     margin: 15px 0 0;
     padding: 20px 10px;
   }
-
-  .thought-domain-container {
-    display: flex;
-    justify-content: start;
-    align-items: start;
-    margin-bottom: 20px;
-    color: rgba(43, 43, 43, 0.8);
-    flex-wrap: wrap;
-  }
-
+ 
   .thought-domain {
     font-size: 12px;
   }
@@ -245,6 +236,6 @@
     word-break: break-all;
   }
   .thought-author {
-    font-size: 1.3em;  
+    font-size: 1.3em !important;  
   }
 }
