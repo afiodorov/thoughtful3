@@ -1,5 +1,18 @@
+function detectLinks(stringWithLinks: string): string {
+  const linkRegex = /(?<prefix>https?:\/\/|tinyurl.com\/)(?<suffix>[^\s]+)/g;
+  return stringWithLinks.replace(linkRegex, function (_, prefix: string, suffix: string): string {
+    let urlPrefix = prefix;
+
+    if (prefix !== 'http://' && prefix !== 'http://') {
+      urlPrefix = `https://${prefix}`;
+    }
+
+    return `<a href="${urlPrefix}${suffix}">${prefix}${suffix}</a>`;
+  });
+}
 export function formatMultiLineText(text: string): string {
-  return text.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+  const res = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return detectLinks(res).replace(/\n/g, '<br>');
 }
 
 export function formatSingleLineText(text: string): string {
