@@ -213,6 +213,7 @@ a:hover {
 
 .dialogue .thought-container{
   background-color: transparent !important;
+  box-shadow: none;
 }
 
 
