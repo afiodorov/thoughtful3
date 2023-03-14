@@ -80,7 +80,7 @@
 .reply-domain { 
   text-align: left;
   background-color: rgba(43, 43, 43, 0.05);
-  padding: 5px 10px;
+  padding: 5px 10px; 
   border-radius: 50px;
   margin-top: 5px;
   font-size: 14px;
@@ -88,6 +88,12 @@
   margin-bottom: 20px;
   display: inline-block
   
+}
+
+.thought-replies-container{
+  background-color: rgba(185, 215, 217, 0.3);
+  margin: 20px 0;
+  border-radius: 10px;
 }
 
 .reply-container {
