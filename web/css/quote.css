@@ -77,3 +77,10 @@
   text-align: left;
   padding: 20px;
 }
+
+@media(max-width:450px){
+  .dialogue-text .quote-container {
+    margin: 15px 25px 0;
+  }
+  
+}
