@@ -2,6 +2,7 @@ import { MetaMask } from '../meta_mask';
 import { AppManager } from '../app_manager';
 import { ReplyEntity } from '../entity/entities';
 import { makeReplyContainer } from '../reply';
+import { publishButton } from './publish_thought';
 
 let lock: Map<string, boolean> = new Map();
 
@@ -19,17 +20,19 @@ export async function publishReply(
     return;
   }
 
+  const parent = event.target.parentElement!;
+
   const text = document.getElementById(`new-reply-text-${thoughtID}`)!.textContent!;
   const displayName = document.getElementById(`new-reply-author-${thoughtID}`)!.textContent!;
 
   lock.set(thoughtID, true);
-  event.target.textContent = '🕑';
+  parent.textContent = '🕑';
 
   const newReply = await metaMask.newReply(text, displayName, thoughtID, 0);
 
   if (!newReply) {
     lock.set(thoughtID, false);
-    event.target.textContent = '📧';
+    parent.innerHTML = publishButton;
     return;
   }
 
@@ -67,5 +70,5 @@ export async function publishReply(
   appManager.fetcher.invalidateCache();
 
   lock.set(thoughtID, false);
-  event.target.textContent = '📧';
+  parent.innerHTML = publishButton;
 }

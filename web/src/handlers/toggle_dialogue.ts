@@ -2,6 +2,7 @@ import { AppManager } from '../app_manager';
 import { MetaMask } from '../meta_mask';
 import { formatSingleLineText, formatMultiLineText } from '../formatters';
 import { setDomain } from '../utils';
+import { publishThought } from './publish_thought';
 
 let dialogueVisibleLock = false;
 
@@ -45,8 +46,11 @@ export async function toggleDialogue(
     );
 
     const publishButton = document.getElementById('new-thought-publish')!;
-    publishButton.setAttribute('thought-id', thoughtID);
-    publishButton.removeAttribute('reply-id');
+    const clone = publishButton.cloneNode(true);
+    publishButton.replaceWith(clone);
+    clone.addEventListener('click', (event) =>
+      publishThought(event, thoughtID, null, appManager.metaMask!, appManager)
+    );
 
     document.getElementById('quote-author')!.textContent = formatSingleLineText(
       appManager.entityStore.thoughts.get(thoughtID)!.displayName
@@ -91,8 +95,11 @@ export async function toggleDialogue(
     }
 
     const publishButton = document.getElementById('new-thought-publish')!;
-    publishButton.setAttribute('reply-id', replyID);
-    publishButton.removeAttribute('thought-id');
+    const clone = publishButton.cloneNode(true);
+    publishButton.replaceWith(clone);
+    clone.addEventListener('click', (event) =>
+      publishThought(event, null, replyID, appManager.metaMask!, appManager)
+    );
 
     document.getElementById('quote-author')!.textContent = formatSingleLineText(
       appManager.entityStore.replies.get(replyID)!.displayName

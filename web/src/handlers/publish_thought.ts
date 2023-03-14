@@ -5,8 +5,14 @@ import { makeThoughtContainer } from '../thought';
 
 let publishThoughtLock = false;
 
+export const publishButton = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2b2b2b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+`;
+
 export async function publishThought(
   event: Event,
+  thoughtID: string | null,
+  replyID: string | null,
   metaMask: MetaMask,
   appManager: AppManager
 ): Promise<void> {
@@ -18,11 +24,10 @@ export async function publishThought(
     return;
   }
 
-  publishThoughtLock = true;
-  event.target.textContent = '🕑';
+  const parent = event.target.parentElement!;
 
-  const thoughtID = event!.target!.getAttribute('thought-id');
-  const replyID = event!.target!.getAttribute('reply-id');
+  publishThoughtLock = true;
+  parent.textContent = '🕑';
 
   const text = document.getElementById('new-thought-text')!.textContent!;
   const hashtag = document.getElementById('new-thought-hashtag')!.textContent!;
@@ -61,7 +66,7 @@ export async function publishThought(
 
   if (!newThought) {
     publishThoughtLock = false;
-    event.target.textContent = '📧';
+    parent.innerHTML = publishButton;
     return;
   }
 
@@ -111,6 +116,6 @@ export async function publishThought(
     appManager.fetcher.invalidateCache();
   }
 
-  event.target.textContent = '📧';
+  parent.innerHTML = publishButton;
   publishThoughtLock = false;
 }

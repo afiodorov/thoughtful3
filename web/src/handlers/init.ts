@@ -75,7 +75,7 @@ export function registerHandlers(appManager: AppManager) {
 
     const newThoughtPublish = document.getElementById('new-thought-publish')!;
     newThoughtPublish.addEventListener('click', (event) =>
-      publishThought(event, appManager.metaMask!, appManager)
+      publishThought(event, null, null, appManager.metaMask!, appManager)
     );
   }
 }
