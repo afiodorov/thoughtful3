@@ -84,8 +84,10 @@
   border-radius: 50px;
   margin-top: 5px;
   font-size: 14px;
-  width:max-content;
-  margin-bottom: 15px;
+  width: max-content;
+  margin-bottom: 20px;
+  display: inline-block
+  
 }
 
 .reply-container {
