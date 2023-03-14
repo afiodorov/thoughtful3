@@ -11,9 +11,7 @@
 }
 
 .dialogue-text .quote-container {
-  margin-left: 0px;
-  margin-top: 15px;
-  margin-right: 0px;
+  margin: 15px 40px 0;
 }
 
 .quote-domain-container {

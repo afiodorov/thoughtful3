@@ -95,8 +95,7 @@ a:hover {
   /* align the elements inside the container horizontally */
   justify-content: center;
   /* align the elements inside the container vertically */
-  background-color: white;
-  /* give the element a white background */
+  background-color: #E7F0F1; 
   z-index: 100;
   /* set the z-index to a high value to make the element appear in front of other elements */
   display: none;
@@ -107,6 +106,8 @@ a:hover {
   padding: 30px 20px;
   box-shadow: 0 15px 40px -12px rgba(59, 130, 246, 0.1);
 }
+
+
 
 .close-button {
   position: absolute;
@@ -208,6 +209,10 @@ a:hover {
 .dialogue-text  .thought-text{
   outline: 1px solid #2b2b2b;
   border-radius: 5px;
+}
+
+.dialogue .thought-container{
+  background-color: transparent !important;
 }
 
 
