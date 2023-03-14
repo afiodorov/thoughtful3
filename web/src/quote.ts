@@ -12,10 +12,6 @@ export function makeQuoteContainer(q: QuoteEntity, appManager: AppManager): HTML
   const quoteAuthor = document.createElement('div');
   quoteAuthor.classList.add('quote-author');
 
-  const quoteAuthorLink = document.createElement('a');
-  quoteAuthorLink.textContent = '>';
-  quoteAuthorLink.href = q.isReplyQuote ? `?reply-id=${q.quoteOf}` : `?thought-id=${q.quoteOf}`;
-
   const quoteAuthorText = document.createElement('div');
   quoteAuthorText.classList.add('quote-author-text');
   const quoteAuthorFeed = document.createElement('a');
@@ -23,7 +19,6 @@ export function makeQuoteContainer(q: QuoteEntity, appManager: AppManager): HTML
   quoteAuthorFeed.textContent = formatSingleLineText(q.quoteDisplayName);
   quoteAuthorText.appendChild(quoteAuthorFeed);
 
-  quoteAuthor.appendChild(quoteAuthorLink);
   quoteAuthor.appendChild(quoteAuthorText);
 
   const quoteDomainContainer = document.createElement('div');
