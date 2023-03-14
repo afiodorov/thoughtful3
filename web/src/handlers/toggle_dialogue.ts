@@ -128,8 +128,11 @@ export async function toggleDialogue(
     newHashtagElement.setAttribute('contenteditable', 'true');
 
     const publishButton = document.getElementById('new-thought-publish')!;
-    publishButton.removeAttribute('reply-id');
-    publishButton.removeAttribute('thought-id');
+    const clone = publishButton.cloneNode(true);
+    publishButton.replaceWith(clone);
+    clone.addEventListener('click', (event) =>
+      publishThought(event, null, null, appManager.metaMask!, appManager)
+    );
 
     document.getElementById('quote-container')!.style.display = 'none';
   }
