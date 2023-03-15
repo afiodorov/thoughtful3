@@ -3,7 +3,7 @@ function detectLinks(stringWithLinks: string): string {
   return stringWithLinks.replace(linkRegex, function (_, prefix: string, suffix: string): string {
     let urlPrefix = prefix;
 
-    if (prefix !== 'http://' && prefix !== 'http://') {
+    if (prefix !== 'https://' && prefix !== 'http://') {
       urlPrefix = `https://${prefix}`;
     }
 
