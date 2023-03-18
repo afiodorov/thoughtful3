@@ -167,7 +167,7 @@ export async function fetchReplies(
   appManager: AppManager
 ): Promise<Array<HTMLDivElement>> {
   const fetchedReplies: Reply[] =
-    (await appManager.fetcher.getRecentReplies(thoughtID, 0)) || new Array();
+    (await appManager.fetcher.getRecentReplies(thoughtID, BigInt(0))) || new Array();
 
   const entities = fetchedReplies.map((r) => {
     const entity = new ReplyEntity(r);

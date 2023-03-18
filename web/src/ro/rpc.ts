@@ -175,13 +175,15 @@ export class RPCFetcher implements Fetcher {
     return new AbiThought(tweet, numReplies);
   }
 
-  async getThoughtsByHashtag(hashtag: string, skip: number): Promise<Thought[] | null> {
-    let numTweets: bigint | null = null;
+  async getThoughtsByHashtag(hashtag: string, from: bigint | null): Promise<Thought[] | null> {
+    let numTweets: bigint | null = from;
 
-    try {
-      numTweets = BigInt(await this._contract.methods.num_tweets_per_hashtag(hashtag).call());
-    } catch (error) {
-      console.error(error);
+    if (!numTweets) {
+      try {
+        numTweets = BigInt(await this._contract.methods.num_tweets_per_hashtag(hashtag).call());
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     if (!numTweets) {
@@ -191,8 +193,8 @@ export class RPCFetcher implements Fetcher {
     const tweets: Thought[] = new Array();
 
     for (
-      let tweetNum = numTweets - BigInt(skip);
-      tweetNum > max(BigInt(0), numTweets - BigInt(skip) - BigInt(pageSize));
+      let tweetNum = numTweets;
+      tweetNum > max(BigInt(0), numTweets - BigInt(pageSize));
       tweetNum--
     ) {
       let tweetID: string | null = null;
@@ -224,14 +226,16 @@ export class RPCFetcher implements Fetcher {
   async getThoughtsByAuthor(
     displayName: string | null,
     address: string | null,
-    skip: number
+    from: bigint | null
   ): Promise<Thought[] | null> {
-    let numTweets: bigint | null = null;
+    let numTweets: bigint | null = from;
 
-    try {
-      numTweets = BigInt(await this._contract.methods.num_tweets_per_sender(address).call());
-    } catch (error) {
-      console.error(error);
+    if (!numTweets) {
+      try {
+        numTweets = BigInt(await this._contract.methods.num_tweets_per_sender(address).call());
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     if (!numTweets) {
@@ -240,7 +244,7 @@ export class RPCFetcher implements Fetcher {
 
     const tweets: Thought[] = new Array();
 
-    for (let tweetNum = numTweets - BigInt(skip); tweetNum > BigInt(0); tweetNum--) {
+    for (let tweetNum = numTweets; tweetNum > BigInt(0); tweetNum--) {
       let tweetID: string | null = null;
 
       try {
@@ -275,13 +279,15 @@ export class RPCFetcher implements Fetcher {
     return tweets;
   }
 
-  async getRecentThoughts(skip: number): Promise<Thought[] | null> {
-    var numTweets: string | null = null;
+  async getRecentThoughts(from: bigint | null): Promise<Thought[] | null> {
+    var numTweets: bigint | null = from;
 
-    try {
-      numTweets = await this._contract.methods.num_tweets().call();
-    } catch (error) {
-      console.error(error);
+    if (!numTweets) {
+      try {
+        numTweets = BigInt(await this._contract.methods.num_tweets().call());
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     if (numTweets === null) {
@@ -291,8 +297,8 @@ export class RPCFetcher implements Fetcher {
     const thoughts: Thought[] = new Array();
 
     for (
-      let tweetNum = BigInt(numTweets) - BigInt(skip);
-      tweetNum > max(BigInt(0), BigInt(numTweets) - BigInt(skip) - BigInt(pageSize));
+      let tweetNum = numTweets;
+      tweetNum > max(BigInt(0), numTweets - BigInt(pageSize));
       tweetNum--
     ) {
       const tweet = await this.getThoughtByID(`${tweetNum}`);
@@ -380,13 +386,15 @@ export class RPCFetcher implements Fetcher {
     return res;
   }
 
-  async getRecentReplies(thoughtID: string, skip: number): Promise<Reply[] | null> {
-    let numReplies: null | string = null;
+  async getRecentReplies(thoughtID: string, from: bigint | null): Promise<Reply[] | null> {
+    let numReplies: bigint | null = from;
 
-    try {
-      numReplies = await this._contract.methods.num_replies_per_tweet(thoughtID).call();
-    } catch (error) {
-      console.error(error);
+    if (!numReplies) {
+      try {
+        numReplies = BigInt(await this._contract.methods.num_replies_per_tweet(thoughtID).call());
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     if (!numReplies) {
@@ -396,8 +404,8 @@ export class RPCFetcher implements Fetcher {
     const replies: Reply[] = new Array();
 
     for (
-      let replyNum = max(BigInt(1), BigInt(numReplies) - BigInt(skip) - BigInt(pageSize - 1));
-      replyNum <= BigInt(numReplies) - BigInt(skip);
+      let replyNum = max(BigInt(1), numReplies - BigInt(pageSize - 1));
+      replyNum <= numReplies;
       replyNum++
     ) {
       let replyID: string | null = null;

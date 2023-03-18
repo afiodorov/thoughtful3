@@ -20,7 +20,7 @@ export async function startingDraw(appManager: AppManager) {
         thoughts = new Array(thought);
       }
     } else if (params.hashtag) {
-      const data = await appManager.fetcher.getThoughtsByHashtag(params.hashtag, params.skip);
+      const data = await appManager.fetcher.getThoughtsByHashtag(params.hashtag, params.from);
       if (data) {
         thoughts = data;
       }
@@ -28,13 +28,13 @@ export async function startingDraw(appManager: AppManager) {
       const data = await appManager.fetcher.getThoughtsByAuthor(
         params.displayName,
         params.address,
-        params.skip
+        params.from
       );
       if (data) {
         thoughts = data;
       }
     } else {
-      const data = await appManager.fetcher.getRecentThoughts(params.skip);
+      const data = await appManager.fetcher.getRecentThoughts(params.from);
       if (data) {
         thoughts = data;
       }

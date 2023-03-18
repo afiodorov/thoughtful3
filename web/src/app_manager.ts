@@ -1,13 +1,11 @@
 import { InteractionState } from './handlers';
 import { EnsLooker } from './ens';
 import { MetaMask } from './meta_mask';
-import { ttl, chainValues } from './config';
-import { QueryDispatcher } from './query';
+import { chainValues } from './config';
 import Web3 from 'web3';
 import { EntityStore } from './entity/store';
 import { toggleAccounts } from './handlers/toggle_accounts';
 import { Fetcher } from './ro/fetcher';
-import { GraphFetcher } from './ro/graph';
 import { RPCFetcher } from './ro/rpc';
 import { registerHandlers } from './handlers/init';
 import { startingDraw } from './start_draw';
@@ -21,7 +19,6 @@ export class AppManager {
   private _fetcher: Fetcher;
 
   constructor(chainID: string) {
-    const graphURL: string | null = chainValues.get(chainID)!.graphURL;
     const rpcURL: string = chainValues.get(chainID)!.rpcURL;
     const contractAddress: string = chainValues.get(chainID)!.contractAddress;
     const contractVersion: string = chainValues.get(chainID)!.contractVersion;
@@ -30,12 +27,7 @@ export class AppManager {
     this._ensLooker = new EnsLooker(new Web3(chainValues.get('0x1')!.rpcURL));
     this._intereractionState = new InteractionState();
     this._entityStore = new EntityStore();
-
-    if (graphURL) {
-      this._fetcher = new GraphFetcher(new QueryDispatcher(graphURL, ttl));
-    } else {
-      this._fetcher = new RPCFetcher(this._web3, contractAddress);
-    }
+    this._fetcher = new RPCFetcher(this._web3, contractAddress);
 
     if (typeof (window as any).ethereum !== 'undefined') {
       this._metaMask = new MetaMask(this._web3, contractAddress, chainID, contractVersion);
