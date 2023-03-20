@@ -82,7 +82,7 @@ export async function startingDraw(appManager: AppManager) {
         const prev = document.createElement('a');
         prev.classList.add('prev-page');
         prev.href = `?${params.shiftFrom(prevFrom).url()}`;
-        prev.innerHTML = '<span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2b2b2b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"></polyline></svg> <span>Prev</span></span>';
+        prev.innerHTML = '<span class="icon-pagination"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2b2b2b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"></polyline></svg> <span>Prev</span></span>';
 
         pagesContainer.appendChild(prev);
       }
@@ -91,7 +91,7 @@ export async function startingDraw(appManager: AppManager) {
         const next = document.createElement('a');
         next.classList.add('next-page');
         next.href = `?${params.shiftFrom(from + BigInt(pageSize)).url()}`;
-        next.innerHTML = '<span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2b2b2b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg> <span>Next</span></span>';
+        next.innerHTML = '<span class="icon-pagination" > <span>Next</span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2b2b2b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg> </span>';
 
         pagesContainer.appendChild(next);
       }

@@ -286,11 +286,8 @@ a:hover {
 .pages-container a {
   background-color: rgba(185, 215, 217, 0.4);
   padding: 10px 15px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 18px;
+  border-radius: 4px; 
+  font-size: 16px;
   color: #2b2b2b;
   transition: all .3s ease-in-out;
   text-decoration: none;
@@ -298,4 +295,10 @@ a:hover {
 
 .pages-container a:hover {
   background-color: rgba(185, 215, 217, 0.6);
+}
+
+.icon-pagination{
+  display: flex;
+  align-items: center;
+  gap:5px;
 }
