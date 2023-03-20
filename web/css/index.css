@@ -298,7 +298,15 @@ a:hover {
 }
 
 .icon-pagination{
-  display: flex;
-  align-items: center;
-  gap:5px;
+    display: flex;
+    align-items: center;
+    gap: 0px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.icon-p{
+  transition: all .3s ease-in-out;
+}
+.pages-container a:hover .icon-p{
+  transform: translateX(5px);
 }
