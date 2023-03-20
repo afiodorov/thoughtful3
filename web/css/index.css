@@ -58,7 +58,7 @@ body {
 
 .thoughts-container {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   width: 100%;
 }
 
@@ -94,7 +94,7 @@ a:hover {
   /* align the elements inside the container horizontally */
   justify-content: center;
   /* align the elements inside the container vertically */
-  background-color: #E7F0F1; 
+  background-color: #E7F0F1;
   z-index: 100;
   /* set the z-index to a high value to make the element appear in front of other elements */
   display: none;
@@ -115,7 +115,7 @@ a:hover {
   /* position the button at the top of the window */
   right: 10px;
   /* position the button at the right of the window */
- 
+
   background-color: transparent;
   /* make the button's background transparent */
   border: none;
@@ -132,7 +132,7 @@ a:hover {
   height: 24px;
   width: 24px;
 }
- 
+
 .overlay {
   position: fixed;
   /* position the element in a fixed position on the page */
@@ -194,23 +194,25 @@ a:hover {
   stroke: #005bc5;
 }
 
-.dialogue-text{
-  width:100%
-}
-.dialogue-text .thoughts-container{
-  max-width:100%;
+.dialogue-text {
+  width: 100%
 }
 
-.dialogue-text .thought-domain{
+.dialogue-text .thoughts-container {
+  max-width: 100%;
+}
+
+.dialogue-text .thought-domain {
   margin-right: auto;
 }
+
 .dialogue-text .thought-author:focus,
-.dialogue-text  .thought-text{
+.dialogue-text .thought-text {
   outline: 1px solid #2b2b2b;
   border-radius: 5px;
 }
 
-.dialogue .thought-container{
+.dialogue .thought-container {
   background-color: transparent !important;
   box-shadow: none;
 }
@@ -246,7 +248,7 @@ a:hover {
 
   .thought-domain-container {
     margin-bottom: 15px;
-  } 
+  }
 
   .thought-hashtag {
     font-size: 12px;
@@ -257,8 +259,8 @@ a:hover {
   }
 
   .thought-author {
-    font-size: 1.3em; 
-}
+    font-size: 1.3em;
+  }
 }
 
 @media(max-width:390px) {
@@ -271,4 +273,29 @@ a:hover {
     height: 18px;
     width: 18px;
   }
+}
+
+.pages-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  gap: 20px;
+}
+
+.pages-container a {
+  background-color: rgba(185, 215, 217, 0.4);
+  padding: 10px 15px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 18px;
+  color: #2b2b2b;
+  transition: all .3s ease-in-out;
+  text-decoration: none;
+}
+
+.pages-container a:hover {
+  background-color: rgba(185, 215, 217, 0.6);
 }
