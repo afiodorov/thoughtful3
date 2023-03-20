@@ -284,18 +284,19 @@ a:hover {
 }
 
 .pages-container a {
-  background-color: rgba(185, 215, 217, 0.4); 
-  border-radius: 4px; 
+  background-color: rgba(185, 215, 217, 0.4);
+  border-radius: 4px;
   font-size: 17px;
   color: #2b2b2b;
   transition: all .3s ease-in-out;
   text-decoration: none;
 }
 
-.prev-page{
+.prev-page {
   padding: 10px 20px 10px 10px;
 }
-.next-page{
+
+.next-page {
   padding: 10px 15px 10px 20px;
 }
 
@@ -303,19 +304,22 @@ a:hover {
   background-color: rgba(185, 215, 217, 0.6);
 }
 
-.icon-pagination{
-    display: flex;
-    align-items: center;
-    gap: 0px;
-    text-transform: uppercase;
-    font-weight: bold;
+.icon-pagination {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+  text-transform: uppercase;
+  font-weight: bold;
 }
-.icon-p{
+
+.feather {
   transition: all .3s ease-in-out;
 }
-.pages-container a:hover .feather-chevron-left{
+
+.pages-container a:hover .feather-chevron-left {
   transform: translateX(-5px);
 }
-.pages-container a:hover .feather-chevron-right{
+
+.pages-container a:hover .feather-chevron-right {
   transform: translateX(5px);
 }
