@@ -3,14 +3,14 @@ import { EnsLooker } from './ens';
 export class ThoughtParams {
   thoughtID: string | null;
   hashtag: string | null;
-  skip: number;
+  from: bigint | null;
   displayName: string | null;
   address: string | null;
 
   constructor(
     thoughtID: string | null,
     hashtag: string | null,
-    skip: number,
+    from: bigint | null,
     displayName: string | null,
     address: string | null
   ) {
@@ -18,7 +18,33 @@ export class ThoughtParams {
     this.hashtag = hashtag ? decodeURIComponent(hashtag) : null;
     this.displayName = displayName ? decodeURIComponent(displayName) : null;
     this.address = address;
-    this.skip = skip;
+    this.from = from;
+  }
+
+  url(): string {
+    const params = new URLSearchParams();
+
+    if (this.hashtag) {
+      params.append('hashtag', encodeURIComponent(this.hashtag));
+    }
+
+    if (this.displayName) {
+      params.append('displayName', encodeURIComponent(this.displayName));
+    }
+
+    if (this.address) {
+      params.append('address', this.address);
+    }
+
+    if (this.from) {
+      params.append('from', this.from.toString());
+    }
+
+    return params.toString();
+  }
+
+  shiftFrom(newFrom: bigint): ThoughtParams {
+    return new ThoughtParams(this.thoughtID, this.hashtag, newFrom, this.displayName, this.address);
   }
 }
 
@@ -40,12 +66,12 @@ export async function parseCurrentURL(ensLooker: EnsLooker): Promise<ThoughtPara
     return new ReplyParams(replyID);
   }
 
-  const skipPar = searchParams.get('skip');
-  let skip: number = 0;
+  const fromPar = searchParams.get('from');
+  let from: bigint | null = null;
 
   try {
-    if (skipPar) {
-      skip = parseInt(skipPar, 10);
+    if (fromPar) {
+      from = BigInt(fromPar);
     }
   } catch {}
 
@@ -62,7 +88,7 @@ export async function parseCurrentURL(ensLooker: EnsLooker): Promise<ThoughtPara
   return new ThoughtParams(
     searchParams.get('thought-id'),
     searchParams.get('hashtag'),
-    skip,
+    from,
     searchParams.get('displayName'),
     resolved || address
   );

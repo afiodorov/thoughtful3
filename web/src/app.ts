@@ -1,6 +1,8 @@
 import { AppManager } from './app_manager';
 import { chainValues } from './config';
 
+const defaultChainID = '0x89';
+
 if (typeof (window as any).ethereum !== 'undefined') {
   const chainID = await (window as any).ethereum.request({ method: 'eth_chainId' });
 
@@ -10,10 +12,10 @@ if (typeof (window as any).ethereum !== 'undefined') {
     try {
       await (window as any).ethereum.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x89' }]
+        params: [{ chainId: defaultChainID }]
       });
 
-      new AppManager('0x89').init();
+      new AppManager(defaultChainID).init();
     } catch (switchError) {
       const thoughtsContainer = document.getElementById('thoughts-container')!;
       thoughtsContainer.innerHTML = '<h1>Unsupported network: switch to Polygon</h1>';
@@ -26,7 +28,7 @@ if (typeof (window as any).ethereum !== 'undefined') {
     }
   }
 } else {
-  new AppManager('0x89').init();
+  new AppManager(defaultChainID).init();
 }
 
 export {};
