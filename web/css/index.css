@@ -319,7 +319,11 @@ a:hover {
 .pages-container a:hover .feather-chevron-left {
   transform: translateX(-5px);
 }
-
-.pages-container a:hover .feather-chevron-right {
+ .pages-container a:hover .feather-chevron-right {
   transform: translateX(5px);
+}
+
+.pages-container a:active .feather-chevron-left,
+.pages-container a:active .feather-chevron-right {
+  transform: translateX(0px);
 }
