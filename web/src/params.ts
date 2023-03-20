@@ -20,6 +20,32 @@ export class ThoughtParams {
     this.address = address;
     this.from = from;
   }
+
+  url(): string {
+    const params = new URLSearchParams();
+
+    if (this.hashtag) {
+      params.append('hashtag', encodeURIComponent(this.hashtag));
+    }
+
+    if (this.displayName) {
+      params.append('displayName', encodeURIComponent(this.displayName));
+    }
+
+    if (this.address) {
+      params.append('address', this.address);
+    }
+
+    if (this.from) {
+      params.append('from', this.from.toString());
+    }
+
+    return params.toString();
+  }
+
+  shiftFrom(newFrom: bigint): ThoughtParams {
+    return new ThoughtParams(this.thoughtID, this.hashtag, newFrom, this.displayName, this.address);
+  }
 }
 
 export class ReplyParams {

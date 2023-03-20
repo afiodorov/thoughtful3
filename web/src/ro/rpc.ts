@@ -1,5 +1,5 @@
 import { Thought, Reply } from '../responses';
-import { Fetcher } from './fetcher';
+import { Fetcher, Thoughts } from './fetcher';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
@@ -175,26 +175,24 @@ export class RPCFetcher implements Fetcher {
     return new AbiThought(tweet, numReplies);
   }
 
-  async getThoughtsByHashtag(hashtag: string, from: bigint | null): Promise<Thought[] | null> {
-    let numTweets: bigint | null = from;
+  async getThoughtsByHashtag(hashtag: string, from: bigint | null): Promise<Thoughts | null> {
+    let numThoughts: bigint | null = null;
 
-    if (!numTweets) {
-      try {
-        numTweets = BigInt(await this._contract.methods.num_tweets_per_hashtag(hashtag).call());
-      } catch (error) {
-        console.error(error);
-      }
+    try {
+      numThoughts = BigInt(await this._contract.methods.num_tweets_per_hashtag(hashtag).call());
+    } catch (error) {
+      console.error(error);
     }
 
-    if (!numTweets) {
+    if (!numThoughts) {
       return null;
     }
 
     const tweets: Thought[] = new Array();
 
     for (
-      let tweetNum = numTweets;
-      tweetNum > max(BigInt(0), numTweets - BigInt(pageSize));
+      let tweetNum = from || numThoughts;
+      tweetNum > max(BigInt(0), (from || numThoughts) - BigInt(pageSize));
       tweetNum--
     ) {
       let tweetID: string | null = null;
@@ -220,31 +218,33 @@ export class RPCFetcher implements Fetcher {
       tweets.push(tweet);
     }
 
-    return tweets;
+    return new Thoughts(tweets, numThoughts);
   }
 
   async getThoughtsByAuthor(
     displayName: string | null,
     address: string | null,
     from: bigint | null
-  ): Promise<Thought[] | null> {
-    let numTweets: bigint | null = from;
+  ): Promise<Thoughts | null> {
+    let numThoughts: bigint | null = null;
 
-    if (!numTweets) {
-      try {
-        numTweets = BigInt(await this._contract.methods.num_tweets_per_sender(address).call());
-      } catch (error) {
-        console.error(error);
-      }
+    try {
+      numThoughts = BigInt(await this._contract.methods.num_tweets_per_sender(address).call());
+    } catch (error) {
+      console.error(error);
     }
 
-    if (!numTweets) {
+    if (numThoughts === null) {
       return null;
     }
 
     const tweets: Thought[] = new Array();
 
-    for (let tweetNum = numTweets; tweetNum > BigInt(0); tweetNum--) {
+    for (
+      let tweetNum = from || numThoughts;
+      tweetNum > max(BigInt(0), (from || numThoughts) - BigInt(pageSize));
+      tweetNum--
+    ) {
       let tweetID: string | null = null;
 
       try {
@@ -276,29 +276,27 @@ export class RPCFetcher implements Fetcher {
       }
     }
 
-    return tweets;
+    return new Thoughts(tweets, numThoughts);
   }
 
-  async getRecentThoughts(from: bigint | null): Promise<Thought[] | null> {
-    var numTweets: bigint | null = from;
+  async getRecentThoughts(from: bigint | null): Promise<Thoughts | null> {
+    var numThoughts: bigint | null = null;
 
-    if (!numTweets) {
-      try {
-        numTweets = BigInt(await this._contract.methods.num_tweets().call());
-      } catch (error) {
-        console.error(error);
-      }
+    try {
+      numThoughts = BigInt(await this._contract.methods.num_tweets().call());
+    } catch (error) {
+      console.error(error);
     }
 
-    if (numTweets === null) {
+    if (numThoughts === null) {
       return null;
     }
 
     const thoughts: Thought[] = new Array();
 
     for (
-      let tweetNum = numTweets;
-      tweetNum > max(BigInt(0), numTweets - BigInt(pageSize));
+      let tweetNum = from || numThoughts;
+      tweetNum > max(BigInt(0), (from || numThoughts) - BigInt(pageSize));
       tweetNum--
     ) {
       const tweet = await this.getThoughtByID(`${tweetNum}`);
@@ -309,7 +307,7 @@ export class RPCFetcher implements Fetcher {
       thoughts.push(tweet);
     }
 
-    return thoughts;
+    return new Thoughts(thoughts, numThoughts);
   }
 
   async getHashtagByThoughtID(thoughtID: string): Promise<string | null> {
@@ -329,22 +327,22 @@ export class RPCFetcher implements Fetcher {
   }
 
   async getLatestName(address: string): Promise<string | null> {
-    var numTweets: string | null = null;
+    var numThoughts: string | null = null;
 
     try {
-      numTweets = await this._contract.methods.num_tweets_per_sender(address).call();
+      numThoughts = await this._contract.methods.num_tweets_per_sender(address).call();
     } catch (error) {
       console.error(error);
     }
 
-    if (!numTweets) {
+    if (!numThoughts) {
       return null;
     }
 
     var tweetID: string | null = null;
 
     try {
-      tweetID = await this._contract.methods.tweets_per_sender(address, numTweets).call();
+      tweetID = await this._contract.methods.tweets_per_sender(address, numThoughts).call();
     } catch (error) {
       console.error(error);
     }

@@ -35,4 +35,4 @@ chainValues.set('0x89', {
 export const defaultName = 'Your Name';
 export const defaultHashtag = 'hashtag';
 export const defaultText = 'Make Every Word Count';
-export const pageSize = 30;
+export const pageSize = 5;

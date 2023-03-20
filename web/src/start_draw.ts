@@ -7,12 +7,14 @@ import { parseCurrentURL } from './params';
 import { ThoughtEntity, ReplyEntity } from './entity/entities';
 import { ThoughtParams, ReplyParams } from './params';
 import { makeNewReplyContainer } from './new_reply';
+import { pageSize } from './config';
 
 export async function startingDraw(appManager: AppManager) {
   const params = await parseCurrentURL(appManager.ensLooker);
 
   if (params instanceof ThoughtParams) {
     let thoughts: Thought[] = new Array();
+    let numThoughts: bigint | null = null;
 
     if (params.thoughtID) {
       const thought = await appManager.fetcher.getThoughtByID(params.thoughtID);
@@ -22,7 +24,8 @@ export async function startingDraw(appManager: AppManager) {
     } else if (params.hashtag) {
       const data = await appManager.fetcher.getThoughtsByHashtag(params.hashtag, params.from);
       if (data) {
-        thoughts = data;
+        thoughts = data.thoughts;
+        numThoughts = data.from;
       }
     } else if (params.displayName || params.address) {
       const data = await appManager.fetcher.getThoughtsByAuthor(
@@ -31,12 +34,14 @@ export async function startingDraw(appManager: AppManager) {
         params.from
       );
       if (data) {
-        thoughts = data;
+        thoughts = data.thoughts;
+        numThoughts = data.from;
       }
     } else {
       const data = await appManager.fetcher.getRecentThoughts(params.from);
       if (data) {
-        thoughts = data;
+        thoughts = data.thoughts;
+        numThoughts = data.from;
       }
     }
 
@@ -65,6 +70,31 @@ export async function startingDraw(appManager: AppManager) {
 
         replyContainer.appendChild(newReply);
       });
+    }
+
+    if (numThoughts) {
+      const from = params.from || numThoughts;
+      const pagesContainer = document.getElementById('pages-container')!;
+
+      let prevFrom = from - BigInt(pageSize);
+
+      if (prevFrom > 0) {
+        const prev = document.createElement('a');
+        prev.classList.add('prev-page');
+        prev.href = `?${params.shiftFrom(prevFrom).url()}`;
+        prev.text = '<';
+
+        pagesContainer.appendChild(prev);
+      }
+
+      if (from < numThoughts) {
+        const next = document.createElement('a');
+        next.classList.add('next-page');
+        next.href = `?${params.shiftFrom(from + BigInt(pageSize)).url()}`;
+        next.text = '>';
+
+        pagesContainer.appendChild(next);
+      }
     }
   } else if (params instanceof ReplyParams) {
     const fetchedReply = await appManager.fetcher.getReplyByID(params.replyID);
