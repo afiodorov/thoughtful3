@@ -284,13 +284,19 @@ a:hover {
 }
 
 .pages-container a {
-  background-color: rgba(185, 215, 217, 0.4);
-  padding: 10px 15px;
+  background-color: rgba(185, 215, 217, 0.4); 
   border-radius: 4px; 
-  font-size: 16px;
+  font-size: 17px;
   color: #2b2b2b;
   transition: all .3s ease-in-out;
   text-decoration: none;
+}
+
+.prev-page{
+  padding: 10px 20px 10px 10px;
+}
+.next-page{
+  padding: 10px 15px 10px 20px;
 }
 
 .pages-container a:hover {
@@ -307,6 +313,9 @@ a:hover {
 .icon-p{
   transition: all .3s ease-in-out;
 }
-.pages-container a:hover .icon-p{
+.pages-container a:hover .feather-chevron-left{
+  transform: translateX(-5px);
+}
+.pages-container a:hover .feather-chevron-right{
   transform: translateX(5px);
 }
