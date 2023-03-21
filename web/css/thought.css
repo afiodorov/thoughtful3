@@ -131,7 +131,7 @@
   color: #005bc5;
 }
 
-.thought-date:hover a svg {
+.thought-date:hover svg {
   stroke: #005bc5
 }
 
@@ -139,13 +139,13 @@
   display: block;
 }
 
-.thought-date-link a svg {
+.thought-date-link svg {
   stroke: #2b2b2b;
   height: 24px;
   width: 24px;
 }
 
-.thought-date-link:hover a svg {
+.thought-date-link:hover svg {
   stroke: #005bc5;
 }
 
@@ -223,7 +223,7 @@
     margin: 15px 0 0;
     padding: 20px 10px;
   }
- 
+
   .thought-domain {
     font-size: 12px;
   }
@@ -235,7 +235,8 @@
   .dialogue-text .thought-domain {
     word-break: break-all;
   }
+
   .thought-author {
-    font-size: 1.3em !important;  
+    font-size: 1.3em !important;
   }
 }

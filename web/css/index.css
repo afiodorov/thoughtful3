@@ -276,11 +276,11 @@ a:hover {
 }
 
 .pages-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: flex; 
   padding: 20px;
   gap: 20px;
+  height: 80px;
+  position: relative;
 }
 
 .pages-container a {
@@ -294,10 +294,16 @@ a:hover {
 
 .prev-page {
   padding: 10px 20px 10px 10px;
+  position: absolute;
+  top: 20px;
+  left:0;
 }
 
 .next-page {
   padding: 10px 15px 10px 20px;
+  position: absolute;
+  top: 20px;
+  right:0;
 }
 
 .pages-container a:hover {
