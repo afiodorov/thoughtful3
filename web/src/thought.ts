@@ -73,7 +73,7 @@ export function makeThoughtContainer(t: ThoughtEntity, appManager: AppManager): 
   authorContainer.appendChild(authorElement);
   authorContainer.appendChild(domainContainer);
 
-  const dateElement = document.createElement('a');
+  const dateElement = document.createElement('div');
   dateElement.classList.add('thought-date');
   dateElement.innerHTML = `<a href='?thought-id=${t.id}'> </a>`
 
