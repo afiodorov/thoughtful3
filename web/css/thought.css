@@ -125,6 +125,7 @@
   margin-left: auto;
   gap: 5px;
   cursor: pointer;
+  text-decoration: none !important;
 }
 
 .thought-date:hover {
