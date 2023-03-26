@@ -3,3 +3,5 @@ blockchain/
 tags
 
 .ipynb_checkpoints/
+
+node_modules
